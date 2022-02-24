@@ -1,0 +1,44 @@
+
+Dimitris Lynch11:06 AM
+https://www.linuxfromscratch.org/lfs/downloads/stable/LFS-BOOK-11.0.pdf
+Thomas Walker Lynch11:07 AM
+Marty can you hear us?
+Dimitris Lynch11:23 AM
+https://wiki.debian.org/QEMU#Setting_up_a_stable_system
+qemu-img create -f qcow2 debian.qcow 2G
+Marty11:24 AM
+Hi All;
+Marty11:25 AM
+I do not have a microphone, nor a camera, but I can hear You.. Thank You Marty
+Robert Lerche11:25 AM
+Hi Marty
+Dimitris Lynch11:32 AM
+https://wiki.debian.org/QEMU#Setting_up_a_stable_system
+Dimitris Lynch11:36 AM
+https://www.debian.org/distrib/netinst
+
+https://laotzu.ftp.acc.umu.se/debian-cd/current/amd64/iso-cd/debian-11.2.0-amd64-netinst.iso
+
+Marty11:40 AM
+Hi; First it's binutiles, then Gcc, then glibc.. Marty
+
+Thomas Walker Lynch11:54 AM
+debian-11.2.0-amd64-netinst.iso
+
+use qcal2 for image format
+
+Dimitris Lynch12:01 PM
+qemu-system-x86_64 -hda debian.img -cdrom debian-11.2.0-amd64-netinst.iso -boot d -m 4G
+
+Marty12:04 PM
+Hi; I have to go.. but, good show.. Marty
+
+https://wiki.debian.org/QEMU#Setting_up_a_stable_system
+
+Dimitris Lynch12:36 PM
+ffmpeg -video_size 1366x768 -framerate 25 -f x11grab -i :0.0 ~/screenrecordings/$(date +%y-%m-%d-%h-%m-%s).mkv
+
+Dimitris Lynch12:39 PM
+ qemu-system-x86_64 -hda debian.img -cdrom debian-11.2.0-amd64-netinst.iso -boot d -m 2G
+
+ 
