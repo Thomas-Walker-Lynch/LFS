@@ -1,0 +1,8 @@
+
+2022-02-17
+  first meeting
+
+2022-02-24 meeting
+
+   Pretty much everyone is stuck at some point before the disk partitioning.  Lots of ssh issues.  Robert showed
+   for a short time, he is on chapter 10, and his ssh works.
