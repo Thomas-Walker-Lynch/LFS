@@ -1,0 +1,12 @@
+
+linuxfromscratch.org
+
+Linux from Scratch
+
+    1. through menus:
+
+           linuxfromscratch.org -> Download (on left side menu) -> stable book  (blue link in "Current Stable"  at top of text)
+
+    2. jump to link: 
+
+            https://www.linuxfromscratch.org/lfs/downloads/stable/
