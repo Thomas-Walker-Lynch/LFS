@@ -1,0 +1,81 @@
+
+2022-02-17
+  first meeting
+
+2022-02-22
+  Robert discussed setting up the emulator and use of ssh
+
+2022-02-24
+  set up an emulator first time in years, screwed up the disk while going through LFS book starting again
+
+  isntalled emulated debian11, got ssh running
+
+  started on book - Linux from Scratch version 11.0  2021-09-01
+
+  installed LFS required packages, most already on the system by default
+  g++ was not listed as required by the check script complained it was missing
+  Xz is in xzutils (fedora at least)
+  
+  running the here-doc check script book page 14-15
+
+  creating a new partition
+
+2022-03-03
+  meeting in a few hours, better make some progress ...
+
+  running virt-manager doing a new install with a 40G disk, 20G for each of mnt-LFS and Debian
+
+  create a virtual machine -> error no connections ah, same D got, what did we do ..
+  https://askubuntu.com/questions/932200/kvm-virt-manager-error-no-active-connection-to-installed-on
+  sudo usermod -a -G libvirt Thomas-repos
+  ^ this fixed the problem
+  lib-vert
+  new machine
+  had to browse to find image
+  it complains that it "might" not have search path, I ignored this
+  4G memory 12 processors (used all cores available, someday there will be thousands of them eh?)
+  network virbr0 it already exists
+  I get the install window for debian
+  graphical install
+  it is running
+  machine name: lfs0  domain: reasoningtechnology.com
+  see 'creds/LFS' for passwords (not the project)
+  user: thomas
+
+  partitioning disks
+    nope need manual -> guided entire disk (no LVM, no encryption)
+      virtual disk a shows as 42.9 GB, though I had speced 40GB
+      all files on partition
+      oops no options for creating /mnt-LFS .. going back
+
+    "partioning disks"
+    undo changes
+    unobvious has a ">"  device name shows  "FREE SPACE", __clicked on that__ and get a menu to create a partition
+
+    made it "14 GB"  then done setting up partition,
+    label: 2022-03-03 Debian 11
+    don't forget to set boot flag to true, also careful as the partioner flips this off every chance it gets
+    (wonder if we still need to do that, does grub check it?)
+
+    clicking on "FREE SPACE" again
+    8 GB
+    "Beginning"   beginning of free space, not beginning of disk
+    use as, clicked, swap area
+
+    clicking on "FREE SPACE" again
+    mount point - /mnt/LFS
+    label: 2022-03-03 LFS 11.1 build
+    
+
+    write changes
+    journal_thomas.txt:  Xz is in xzutils (fedora at least)
+
+    the book wants me to mount /dev/vda3 as $LFS/home  not $LFS, so I made a /mnt/LFS/home directory, should be good
+
+    it looks they are expecting $LFS to be owned by root, buy mine is owned by thomas .. hmmm by these directions
+    they mounted the LFS partition on /mnt/LFS/home   so /mnt/LFS/sources will end up on the host drive rather
+    than on the LFS drive, ah well, mine will end up on the LFS drive because I mounted it at /mnt/LFS (not /mnt/LFS/home)
+
+    foo -- sources list and packages list are the same  I downloaded both the wget list and the tar files
+
+

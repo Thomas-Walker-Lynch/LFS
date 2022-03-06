@@ -8,3 +8,6 @@ pops up window for the emulator
 problems with Wayland, switched back to x.org
 
 
+# on debian
+
+ sudo apt install qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager -y

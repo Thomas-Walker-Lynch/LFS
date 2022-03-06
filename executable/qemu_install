@@ -15,6 +15,7 @@
 
 # installing kvm on F35
 # https://computingforgeeks.com/how-to-install-kvm-on-fedora/
+# add user to libvirt and to sudo
 # dnf install bridge-utils libvirt virt-install qemu-kvm
 # systemctl start libvirtd
 # systemctl enable libvirtd

@@ -1,0 +1,3 @@
+#!/bin/bash this file must be sourced
+
+export LFS=/mnt/lfs
