@@ -36,6 +36,7 @@
 
     Dimitris has written saying he has a class paper due tomorrow and will not make the meeting.
 
-
+    I think we need to do something about the missing md5s, and the check script not mentioning
+    missing sums.  This is a security hole.
 
 

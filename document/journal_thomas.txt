@@ -70,7 +70,7 @@
     write changes
     journal_thomas.txt:  Xz is in xzutils (fedora at least)
 
-    the book wants me to mount /dev/vda3 as $LFS/home  not $LFS, so I made a /mnt/LFS/home directory, should be good
+    people have their LFS mounts a little off. The 
 
     it looks they are expecting $LFS to be owned by root, buy mine is owned by thomas .. hmmm by these directions
     they mounted the LFS partition on /mnt/LFS/home   so /mnt/LFS/sources will end up on the host drive rather
@@ -81,4 +81,21 @@
 2022-03-10
 
     oh gosh, seems we are missing the meeting chat 
+    
+    alright getting started:
+      ch_repo LFS  and off we go
+
+    1. start the emulator
+     > virt-manager  
+       - then the triangle ‘play’ button to run the deb 11 machine, it shows a load usage graph. 
+    
+    2. emacs ssh
+       - haven't setup keys yet, so I will need the passwords.
+       - trick is to visit the home directory on the machine using tramp, then to launch a shell from there.
+         Apparently that is how people are doing it from the M-x line.  Think I will setup a function
+         to just shell in directly.
+       - the debian machine is not letting me ssh in as root, so I have to go to thomas, then su -l
+        to get a root shell
+
+192.168.122.115
     

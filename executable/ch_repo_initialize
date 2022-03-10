@@ -1,3 +1,4 @@
 #!/bin/bash
 
-# put commands to setup the project here
+ export LFS=/mnt/LFS
+
