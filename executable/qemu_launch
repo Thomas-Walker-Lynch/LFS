@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# F35 did a libvert install
+# for the libvert install just do this:
+#    > virt-manager
+#        then run the machine, open the machine if you want a console
+#
+#  for Debian 11 it went something like this:
+
 set -x
 
 mem="$1" 

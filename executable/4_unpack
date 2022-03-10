@@ -1,0 +1,7 @@
+#!/bin/bash
+# remove & from after tar to block on each tar expansion
+
+for i in  *.tar.*; do
+  echo expanding $i
+  tar -xf $i &
+done

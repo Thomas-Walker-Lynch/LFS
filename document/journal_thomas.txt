@@ -21,6 +21,8 @@
 
   creating a new partition
 
+  3 hours
+
 2022-03-03
   meeting in a few hours, better make some progress ...
 
@@ -78,6 +80,8 @@
 
     ** foo -- sources list and packages list are the same  I downloaded both the wget list and the tar files
 
+    6 hours including talking with D
+
 2022-03-10
 
     my virtual machine:
@@ -120,6 +124,8 @@
 
          > s4.3_useradd_lfs
 
+                ** should have made the intial user lfs when installing debian
+
                 They want the work user's name to be ‘lfs’ mine is thomas,
                 I will change my username rather than setting up another user.
 
@@ -130,11 +136,14 @@
                    usermod -l lfs -g lfs thomas
                    mv /home/thomas /home/lfs
                    usermod -d /home/lfs lfs
+                   usermod -aG sudo lfs
 
                    changing my emacs function ...
-                   checking .bashrc
-
                    (defun shell-lfs    () (interactive) (shell-make "/ssh:lfs@192.168.122.115:~" "shell-lfs"))
 
-    
+                   checking .bashrc
+                   updating ssh/config (has absolute pathnames)
+
+            when they say to make a 'build' directory they assume you are in the sources/<package expanded> directory.
+            i.e. sources/binutils/build  then ../configure  configure produces the makefile
  

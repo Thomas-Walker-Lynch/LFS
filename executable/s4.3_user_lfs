@@ -11,6 +11,4 @@ esac
 chown -v lfs $LFS/sources
 
 passwd lfs
-
-
-cd
+su -l lfs

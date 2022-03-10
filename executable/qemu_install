@@ -7,24 +7,18 @@
 # https://en.wikipedia.org/wiki/Libvirt
 
 #--------------------------------------------------------------------------------
-# debian
+# debian 11
+# hopefully someone will make this right
 # apt-get install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
 
 #--------------------------------------------------------------------------------
-#fedora
-
-# installing kvm on F35
-# https://computingforgeeks.com/how-to-install-kvm-on-fedora/
-# add user to libvirt and to sudo
-# dnf install bridge-utils libvirt virt-install qemu-kvm
-# systemctl start libvirtd
-# systemctl enable libvirtd
-
+# fedora 35
+#
 
 # https://docs.fedoraproject.org/en-US/quick-docs/getting-started-with-virtualization/
 dnf install @virtualization
 
-# the libvirtd creates the ip bridge virbr0, do not create it manually
+# the libvirtd creates the ip bridge virbr0, do not need to create it manually
 systemctl start libvirtd
 systemctl enable libvirtd
 
