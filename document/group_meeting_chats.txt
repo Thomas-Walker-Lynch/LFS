@@ -1,0 +1,261 @@
+------------------------------------------------------------------------------------------
+2022-02-17
+
+    Dimitris Lynch11:06 AM
+    https://www.linuxfromscratch.org/lfs/downloads/stable/LFS-BOOK-11.0.pdf
+    Thomas Walker Lynch11:07 AM
+    Marty can you hear us?
+    Dimitris Lynch11:23 AM
+    https://wiki.debian.org/QEMU#Setting_up_a_stable_system
+    qemu-img create -f qcow2 debian.qcow 2G
+    Marty11:24 AM
+    Hi All;
+    Marty11:25 AM
+    I do not have a microphone, nor a camera, but I can hear You.. Thank You Marty
+    Robert Lerche11:25 AM
+    Hi Marty
+    Dimitris Lynch11:32 AM
+    https://wiki.debian.org/QEMU#Setting_up_a_stable_system
+    Dimitris Lynch11:36 AM
+    https://www.debian.org/distrib/netinst
+
+    https://laotzu.ftp.acc.umu.se/debian-cd/current/amd64/iso-cd/debian-11.2.0-amd64-netinst.iso
+
+    Marty11:40 AM
+    Hi; First it's binutiles, then Gcc, then glibc.. Marty
+
+    Thomas Walker Lynch11:54 AM
+    debian-11.2.0-amd64-netinst.iso
+
+    use qcal2 for image format
+
+    Dimitris Lynch12:01 PM
+    qemu-system-x86_64 -hda debian.img -cdrom debian-11.2.0-amd64-netinst.iso -boot d -m 4G
+
+    Marty12:04 PM
+    Hi; I have to go.. but, good show.. Marty
+
+    https://wiki.debian.org/QEMU#Setting_up_a_stable_system
+
+    Dimitris Lynch12:36 PM
+    ffmpeg -video_size 1366x768 -framerate 25 -f x11grab -i :0.0 ~/screenrecordings/$(date +%y-%m-%d-%h-%m-%s).mkv
+
+    Dimitris Lynch12:39 PM
+     qemu-system-x86_64 -hda debian.img -cdrom debian-11.2.0-amd64-netinst.iso -boot d -m 2G
+
+------------------------------------------------------------------------------------------
+2022-02-24
+
+    Conversation opened. 6 messages. All messages read.
+
+    Skip to content
+    Using Reasoning Technology Mail with screen readers
+    3 of 16
+    everything settled down ok
+    External
+    Inbox
+    Thomas Walker Lynch
+
+            Wed, Feb 23, 9:54 AM
+    are you ready for the Linux From Scratch meeting on Thursday? Do you have memory and disk for the emulator? I know Robert and Peter are looking forward to it. R
+    Dimitris Lynch
+
+            Thu, Feb 24, 2:14 AM
+    I feel better, I'm quite tired at the moment. I have the memory for the disk and the emulator.
+    Dimitris Lynch
+
+            Thu, Feb 24, 2:41 AM
+    qemu-system-x86_64 -enable-kvm -machine q35 -device intel-iommu -hda debian_2022-02-24.img -boot d -m 4G It finished pretty quick this time.
+    Thomas Walker Lynch <thomas.lynch@reasoningtechnology.com>
+
+    Thu, Feb 24, 8:51 AM
+
+    to Robert, Peter, geist1122, Dimitris
+    Robert's command ended up being:
+
+    cores=  number of cpu cores
+    lib/disk = the drive the emulator will use
+    eth0= device for the network,  I it was originally net0 or something
+    mem= 4G the memory of course
+
+    qemu-kvm -cpu max -smp $cores -enable-kvm -hda "$lib"/"$disk" -cdrom "$lib"/"$isntall_image" -device e1000.netdev="$eth0" -netdev user.id=net0.hostfwd=tcp::5555-:22 -m "$mem" -boot d
+
+    I gather that cores and mem can be changed after the initial setup?
+
+    I had errors on the networking, and as I have Fedora I had to look up some other documentation.  I still could not get the command line to go even following what the doc had, so I ended up using libvert.   With libvert I get a vert-manager with a gui for creating virtual machines. 
+
+    I have created a git repository for our group.   www.github.com/thomas-walker-lynch/LFS  Hopefully people can record some commands/scripts in there.  I started it.
+
+    Thomas
+
+    Peter Ennis
+
+    AttachmentsThu, Feb 24, 4:42 PM
+
+    to me
+    Attached is the log from today.
+
+    I also spotted a few typos on your site - attached.
+
+    Will let you know if I come across more.
+
+    Thanks,
+
+    Peter
+    2 Attachments
+    Thomas Walker Lynch <thomas.lynch@reasoningtechnology.com>
+
+    Fri, Feb 25, 6:32 AM (13 days ago)
+
+    to Peter
+    typos -- thankyou!
+
+    great - I put it in the doc directory
+
+    Surprisingly productive meeting yesterday.  Really looks like we are going to get LFS together.
+
+
+
+
+    Marty10:59 AM
+    I tried to get qemu on my windows, but it wouldn't work, but I do have Debian 11.2 on my Dell 390 installed.. Thank You Marty
+    Thomas Walker Lynch11:00 AM
+    ok
+    Thomas Walker Lynch11:08 AM
+    Hello!
+    Marty11:09 AM
+    Hi, Peter and Dimitris. Marty
+    You11:10 AM
+    link to qemu overview https://youtu.be/BzlSGGgx6B0?t=21
+    Marty11:13 AM
+    Peter, Yes, I have seen and been in contact with Toybox and i get His emails regularily.. Marty
+    Thomas Walker Lynch11:14 AM
+    https://github.com/thomas-walker-lynch/LFS
+    Marty11:18 AM
+    YES 
+    Marty11:20 AM
+    Thomas, Your print is way too small
+
+
+    ip a
+
+
+    Marty11:28 AM
+    Much better
+    Marty11:31 AM
+    Thomas,  On Debian "How" do You access root ? Thank You Marty
+    Thomas Walker Lynch11:33 AM
+    su -l
+    is my usual method
+    that is the letter el
+    > su -l 
+    then it gives me a shell
+    Marty11:34 AM
+    Under terminal, I can access marty@debian:/home/marty  -- but, not by root Thank You Marty
+    Thomas Walker Lynch11:35 AM
+    yeah, it did not let me ssh into the emulated machine as root either.  So I logged in as thomas.   Then at the bash shell prompt I used su -l  to become root.
+    How far have you gotten Marty .. I think the rest of us have not even partitioned a drive for LFS yet
+    Marty11:38 AM
+    Hi; I have typed su-l and it says  -- command not found
+    Thomas Walker Lynch11:39 AM
+    I am not sharing right now, but I thought we solved that.   You might have been looking at Dimitris's share.
+    excuse me, ... that was the wrong point in the chat
+    You11:39 AM
+    https://github.com/peterennis/lfs-ftw/commit/cba4c318a7d0060b04e8893a91e2642565da88b5
+    Thomas Walker Lynch11:39 AM
+    su   and -l  are separate
+    -l is an option
+    Marty11:40 AM
+    Got it Yeah !
+
+
+    Dimitris Lynch11:54 AM
+    ip addr
+    1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+        link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+        inet 127.0.0.1/8 scope host lo
+           valid_lft forever preferred_lft forever
+        inet6 ::1/128 scope host 
+           valid_lft forever preferred_lft forever
+    2: enp0s25: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000
+        link/ether 00:21:cc:5d:ed:ba brd ff:ff:ff:ff:ff:ff
+    3: wlp3s0: <BROADCA
+    Robert Lerche12:01 PM
+    -misc-fixed-medium-r-normal--20-200-75-75-c-100-iso8859-1
+    qemu-system-x86_64 -cpu max -smp 4  -enable-kvm -hda lfs.vm -cdrom debian-11.2.0-amd64-DVD-1.iso  -m 4G -device e1000,netdev=net0 -netdev user,id=net0,hostfwd=tcp::5555-:22 
+
+    Marty12:10 PM
+    Hi all; I use copy and paste from the html file.. marty
+    Marty12:13 PM
+    Robert, which version of LFS are you building ?? Thank You marty
+    Marty12:21 PM
+    Hi, All; I used a seperate disk for my Linuxfromscratch..
+    Marty12:27 PM
+    Are we going to make lfs 11.0 then ?? Marty
+    Thomas Walker Lynch12:27 PM
+    Peter is going to do 11.1
+
+    Thomas Walker Lynch12:28 PM
+    11.1 it is
+    Marty12:29 PM
+    Ok, 11.1 is Ok with me.. Marty
+    Thomas Walker Lynch12:29 PM
+    good
+
+    Marty12:58 PM
+    I can't get foxfire or Linuxfromscratch to display half page instead of full screen.. Thank You marty
+    Thomas Walker Lynch12:59 PM
+    github.com/thomas-walker-lynch/LFS
+
+    Marty1:00 PM
+    I have debian terminal on one side and I want lfs to be displayed on the other side of my display
+
+    So I can copy and paste from the linux page to the debian terminal
+
+    Thomas Walker Lynch1:15 PM
+     sudo apt install qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager -y
+
+    Thomas Walker Lynch1:17 PM
+    virt-manager
+
+    Thomas Walker Lynch1:21 PM
+    https://www.how2shout.com/linux/how-to-install-and-configure-kvm-on-debian-11-bullseye-linux/
+
+    Thomas Walker Lynch1:33 PM
+    https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/virtualization_host_configuration_and_guest_installation_guide/app_bridge_device
+    Thomas Walker Lynch1:34 PM
+    virsh iface-bridge eth0 br0
+
+    Marty1:37 PM
+    hi ; I just downloaded the files for qemu using sudo apt etc from your 1:15 link
+
+------------------------------------------------------------------------------------------
+2022-03-03
+
+   scp is secure copy?
+
+    Thomas Walker Lynch11:35 AM
+    scp ssh.tar thomas@192.168.122.115:
+
+    can go both ways host<>emulator
+
+    Marty11:40 AM
+    Hi Everyone.. Did I miss much ?? Marty
+
+    Thomas Walker Lynch11:42 AM
+    2
+
+    I just put the mouse in the top centre to of the screen and a toolbar with exit fullscreen appears. Running fedora 23 with gnome
+
+    Thomas Walker Lynch11:45 AM
+    https://developers.cloudflare.com/1.1.1.1/encryption/
+    Thomas Walker Lynch11:47 AM
+    1.1.1.1
+    Thomas Walker Lynch11:51 AM
+    rm /bin/sh; ln -s /usr/bin/bash /bin/bash
+
+    Marty12:04 PM
+    Hi Thomas; I can't read Your Screen, but I can see enough to know what You are doing.. Downloading packages.. Thank You Marty
+
+    Marty12:11 PM
+    Hi; The tar files to be downloaded, need to be downloaded into the source directory.. It says to use the Wget to dl.list .. then you can skip over the individual package loading.. Thank You marty

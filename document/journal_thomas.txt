@@ -2,8 +2,9 @@
 2022-02-17
   first meeting
 
-2022-02-22
-  Robert discussed setting up the emulator and use of ssh
+2022-02-22 [Tuesday]
+  Robert and Thomas discussed setting up the emulator and use of ssh, now on Youtube:
+    https://www.youtube.com/watch?v=X5_CRIbRjBo
 
 2022-02-24
   set up an emulator first time in years, screwed up the disk while going through LFS book starting again
@@ -65,7 +66,6 @@
     clicking on "FREE SPACE" again
     mount point - /mnt/LFS
     label: 2022-03-03 LFS 11.1 build
-    
 
     write changes
     journal_thomas.txt:  Xz is in xzutils (fedora at least)
@@ -78,4 +78,7 @@
 
     foo -- sources list and packages list are the same  I downloaded both the wget list and the tar files
 
+2022-03-10
 
+    oh gosh, seems we are missing the meeting chat 
+    

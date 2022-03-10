@@ -6,3 +6,19 @@
 
    Pretty much everyone is stuck at some point before the disk partitioning.  Lots of ssh issues.  Robert showed
    for a short time, he is on chapter 10, and his ssh works.
+
+2022-03-03
+
+    Robert didn't make the meeting.  Turns out he doesn't see it on the Google calendar and didn't have a link (ouch).  Well
+    email one next time.
+
+    Dimitris, Peter, and I are just at the point the emulator is working, can scp stuff, and have downloaded the sources.
+    Marty appears to be nearly finished.
+
+2022-03-10
+
+    Dimitris has written that he has a class paper due tomorrow and will not make the meeting.
+
+
+
+
