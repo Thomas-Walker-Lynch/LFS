@@ -15,6 +15,9 @@
     Dimitris, Peter, and I are just at the point the emulator is working, can scp stuff, and have downloaded the sources.
     Marty appears to be nearly finished.
 
+    Peter pointed out that a couple of the sources do not have md5 sums.  dbus is one of them - a very important package
+    from a security perspective.
+
 2022-03-10
 
     Dimitris has written that he has a class paper due tomorrow and will not make the meeting.
