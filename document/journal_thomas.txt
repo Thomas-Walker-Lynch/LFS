@@ -76,7 +76,7 @@
     they mounted the LFS partition on /mnt/LFS/home   so /mnt/LFS/sources will end up on the host drive rather
     than on the LFS drive, ah well, mine will end up on the LFS drive because I mounted it at /mnt/LFS (not /mnt/LFS/home)
 
-    foo -- sources list and packages list are the same  I downloaded both the wget list and the tar files
+    ** foo -- sources list and packages list are the same  I downloaded both the wget list and the tar files
 
 2022-03-10
 

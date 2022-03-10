@@ -18,9 +18,23 @@
     Peter pointed out that a couple of the sources do not have md5 sums.  dbus is one of them - a very important package
     from a security perspective.
 
+    It seems that setting up QEMU has been the hardest step.  D & I used Fedora 35 virtualizaiton tag.  This was simple,
+    but brings little understanding of what is under the hood.  Robert has a firm grasp of it and made a video, but those
+    commands did not quite work for us, perhaps due to differences in the distros the emulator is being run on.  libvert did
+    not quite work for D on Debian 11, so he changed to F35 as a host machine. Peter is working on a Windows host, and ran
+    into support and deprecation issues for his eventual target machine, but those have worked out (?).   Not sure
+    what Marty is using.
+
+    We are using two different approaches for ssh to the virtual machine.   Robert has ssh reachable on the host machine
+    but a non-standard port for sshd.   D and I are using bridge device, virtbr0 and the IP that shows on the virtual
+    machine using ‘ip a’.
+
+    ‘ssh’ and ‘scpy’ turn out to be valuable tools.  Both Robert and I are just opening Tramp shells in emacs to work
+    on the virtual machine.
+
 2022-03-10
 
-    Dimitris has written that he has a class paper due tomorrow and will not make the meeting.
+    Dimitris has written saying he has a class paper due tomorrow and will not make the meeting.
 
 
 
