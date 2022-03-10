@@ -80,22 +80,61 @@
 
 2022-03-10
 
-    oh gosh, seems we are missing the meeting chat 
-    
-    alright getting started:
-      ch_repo LFS  and off we go
+    my virtual machine:
+    IP: 192.168.122.115.  (I wonder about overlapping route options, as my local network is also 192.168)
+    hostname: debian11
 
-    1. start the emulator
-     > virt-manager  
-       - then the triangle ‘play’ button to run the deb 11 machine, it shows a load usage graph. 
-    
-    2. emacs ssh
-       - haven't setup keys yet, so I will need the passwords.
-       - trick is to visit the home directory on the machine using tramp, then to launch a shell from there.
-         Apparently that is how people are doing it from the M-x line.  Think I will setup a function
-         to just shell in directly.
-       - the debian machine is not letting me ssh in as root, so I have to go to thomas, then su -l
-        to get a root shell
+    I. alright getting started:
 
-192.168.122.115
+        1. start the emulator
+         > virt-manager  
+           - then the triangle ‘play’ button to run the deb 11 machine, it shows a load usage graph. 
+
+        2. emacs ssh
+           - haven't setup keys yet, so I will need the passwords.
+           - trick is to visit the home directory on the machine using tramp, then to launch a shell from there.
+             Apparently that is how people are doing it from the M-x line.  Think I will setup a function
+             to just shell in directly...
+           - the debian machine is not letting me ssh in as root, so:
+                   ssh as thomas@, then su -l to get a root shell
+           - can login on the console as root 
+
+        3. with shell on emulated machine
+
+           > ch_repo LFS
+           > pull
+
+           The pull change ch_repo_initialize, so I had to ch_repo again.
+           $LFS automounts
+
+    II. now continuing from where I left off last time, at the beginning of chapter 4.
+
+         > echo $LFS
+            yes, that is the mount point for the LFS partition
+
+         >  su -l root
+
+         > s4.2_create_dir_tree
+
+                ah great, now we have all the usual linux system directories
+
+         > s4.3_useradd_lfs
+
+                They want the work user's name to be ‘lfs’ mine is thomas,
+                I will change my username rather than setting up another user.
+
+                making use of the root console,
+
+                   killall -5 -u thomas
+                   groupmod -n lfs thomas
+                   usermod -l lfs -g lfs thomas
+                   mv /home/thomas /home/lfs
+                   usermod -d /home/lfs lfs
+
+                   changing my emacs function ...
+                   checking .bashrc
+
+                   (defun shell-lfs    () (interactive) (shell-make "/ssh:lfs@192.168.122.115:~" "shell-lfs"))
+
     
+ 
