@@ -1,5 +1,5 @@
 #!/bin/bash
 
 # book used /mnt/lfs
-export LFS=/mnt/LFS
+export LFS=/mnt/lfs
 

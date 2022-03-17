@@ -1,0 +1,28 @@
+
+1. first try install
+
+    note: https://wiki.debian.org/QEMU#Setting_up_a_stable_system
+
+    > qemu-img create -f qcow2 qemu-disk-0 30G
+    > qemu-system-x86_64 -hda qemu-disk-0 -cdrom debian-11.2.0-amd64-netinst.iso -boot d -m 4G
+
+    pops up window for the emulator
+    problems with Wayland, switched back to x.org
+
+
+    # on debian
+
+     sudo apt install qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager -y
+
+2. directions for Debian suggested using kvm-ok to see if virtualization is allowed, but thtat does not
+   work with Fedora.  The thing to do with Fedora was to install with the virtualization tag.  This stuff
+   did not really help:
+
+    https://github.com/UPC/ravada/issues/899
+
+      think that kmv-ok looks for other things too, but we could check the processor flags: "vmx" for intel or "svm" for
+      amd. Maybe something like this?  cat /proc/cpuinfo | grep 'vmx\|svm'
+
+    It turned out to be difficult.  Some say the "AMD-V" processor flag.  Some say the "svm" flag.  I had a different flag
+    "svm_lock" though many sites describe it, none actually said whether that meant kvm would work.  In the end I installed
+    using the directions for Fedora, and ran the virt-manager.  That has an info tab that said kvm work working.

@@ -11,6 +11,85 @@
 
   isntalled emulated debian11, got ssh running
 
+  ----------------------------------------
+  creating a new machine
+    because I screwed up the other one by removing package dependecies when removing python3 before
+    reinstalling it .., which deleted all sorts of stuff including apparently xfce4.
+
+  running virt-manager electing to create a new machine off the menus
+
+  machine name: debian11-2
+  network: bridge virbr0
+
+  Used browse option to select the install image from local lib.
+
+  Used the browse option to select already created disk located in lib.
+    Had one already, otherwise would have created a new one.  Should
+    go find where virt-manager stores those by default, and delete any
+    existing ones.
+
+  mem: 4096
+  secondary storage: 30G
+  cores: 12
+     Wonder if it is a bad idea to let is loose on all the cores on
+     the machine.  Funny, noticed in /proc/cpuinfo that only 11 cores
+     are listed ...
+
+  ----------------------------------------
+  Now installing Debian
+
+    graphical install 
+    hostname: debian11-2 (same as the machine name)
+    user: thomas
+    use entire disk, all files in single volume
+    no proxy info
+    window manager: xfce4 - perhaps save a little space
+    
+    ok finally it is install grub
+    it makes me click on and select /dev/sda1
+
+    ok, completed, what happens when I hit continue?
+    machine is booting, I have a grub boot menu, timed out while typing this booting debian
+    ok have a login window
+    logging in for the heck of it (i really just want to ssh in) yep, there is my desktop
+
+  ----------------------------------------
+  ssh into the emulator
+
+   > ip addr 
+
+    both my local network and virbr0 are 192.x.x.x/24 and they overlap. I wish they
+    were /8 don't know how routing will work, but I am using the full address of the
+    device so it will be ok.
+
+   > ssh thomas@192.168.122.1
+        ssh: connect to host 192.168.122.1 port 22: Connection refused
+
+   installing sshd on debian11-2:
+   https://techviewleo.com/install-configure-ssh-server-on-debian/
+
+   $ su -l
+   # apt update   <- strange all packages up to date from the install cdrom
+   # apt upgrade
+   # apt install openssh-server
+   # systemctl enable ssh
+   # systemctl start ssh
+   # ip a
+       -> 192.168.122.77
+
+   Oh gosh, had the wrong address, now I don't know if I really needed to
+   install sshd
+
+   > ssh thomas@192.168.122.77
+
+   yes I get a prompt and log in
+
+   ok back to emacs and back to the LFS book starting over ...
+   Find file: /ssh:thomas@192.168.122.77/~
+   <alt-x> shell
+   etc.
+   
+  ----------------------------------------
   started on book - Linux from Scratch version 11.0  2021-09-01
 
   installed LFS required packages, most already on the system by default
@@ -155,4 +234,30 @@
  
             permission errors on installing bin utils
 
-            
+2022-03-17T13:21:51Z [LFS]
+
+  I.
+      shell-lfs
+      > ch_repo LFS
+      > ./s4.2_create_dir_tree 
+        /mnt/lfs /home/lfs/repos/LFS/executable
+        mkdir: created directory '/mnt/lfs/etc' 
+        mkdir: created directory '/mnt/lfs/var'
+        mkdir: created directory '/mnt/lfs/usr'
+        mkdir: created directory '/mnt/lfs/usr/bin'
+        mkdir: created directory '/mnt/lfs/usr/lib'
+        mkdir: created directory '/mnt/lfs/usr/sbin'
+        ln: failed to create symbolic link '/mnt/lfs/usr': File exists
+        ln: failed to create symbolic link '/mnt/lfs/usr': File exists
+        ln: failed to create symbolic link '/mnt/lfs/usr': File exists
+        mkdir: created directory '/mnt/lfs/lib64'
+        mkdir: created directory '/mnt/lfs/tools'
+        /home/lfs/repos/LFS/executable
+
+      > 
+      
+     for some reason I am getting errors from the 4.2 script that directories already exist, I guess it is
+     a $LFS problem.  Anway, so I am moving $LFS/packages  and $LFS/sources to /mnt to get them out of
+     /mnt/lfs == $LFS.  This makes it easier to blow away the mess made by the directory building 
+    .. ah solved  the hearedoc was expanding the forloop LCV
+                

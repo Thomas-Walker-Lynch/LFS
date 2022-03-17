@@ -1,9 +1,0 @@
-
-https://github.com/UPC/ravada/issues/899
-
-  think that kmv-ok looks for other things too, but we could check the processor flags: "vmx" for intel or "svm" for
-  amd. Maybe something like this?  cat /proc/cpuinfo | grep 'vmx\|svm'
-
-It turned out to be difficult.  Some say the "AMD-V" processor flag.  Some say the "svm" flag.  I had a different flag
-"svm_lock" though many sites describe it, none actually said whether that meant kvm would work.  In the end I installed
-using the directions for Fedora, and ran the virt-manager.  That has an info tab that said kvm work working.

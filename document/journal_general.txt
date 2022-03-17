@@ -1,13 +1,12 @@
-
-2022-02-17
+2022-02-17   (1)
   first meeting
 
-2022-02-24 meeting
+2022-02-24 meeting (2)
 
    Pretty much everyone is stuck at some point before the disk partitioning.  Lots of ssh issues.  Robert showed
    for a short time, he is on chapter 10, and his ssh works.
 
-2022-03-03
+2022-03-03 (3)
 
     Robert didn't make the meeting.  Turns out he doesn't see it on the Google calendar and didn't have a link (ouch).  Well
     email one next time.
@@ -32,11 +31,66 @@
     ‘ssh’ and ‘scpy’ turn out to be valuable tools.  Both Robert and I are just opening Tramp shells in emacs to work
     on the virtual machine.
 
-2022-03-10
+2022-03-10  (4)
 
     Dimitris has written saying he has a class paper due tomorrow and will not make the meeting.
 
     I think we need to do something about the missing md5s, and the check script not mentioning
     missing sums.  This is a security hole.
 
+    Robert finished and uploaded his logs to the github.
+
+    I guess that Marty has finished, or is very close.
+
+    Peter and I are still trying to get the sources to compile.  We sepnt some time with scp, so
+    the emulation part continues to be a large part of the effort.
+
+
+2022-03-17 (5)
+
+        ---------- Forwarded message ---------
+        From: geist1122@juno.com <geist1122@juno.com>
+        Date: Fri, Mar 11, 2022 at 10:21 AM
+        Subject: Re: LFS meeting in about 20 minutes
+        To: <thomas.lynch@reasoningtechnology.com>
+
+
+        Hi Thomas;
+
+        Here is the video Link :
+
+        CHARITY STREAM: Building Linux (and Firefox) From Scratch (Part 1) - YouTube
+
+        I can't get it to copy and paste the actual link while watching it, I will try something else..
+
+        NCommander - YouTube
+
+        It won't copy and paste the actual links, but hopefully if You go to Youtube and copy one of these in, it will get You closer or there..
+
+        THANK YOU Marty
+
+        > I have been watching for a number of days a site that I just came across, He is building LFS 11.0 and at the
+        > end He got it to boot and work.. So, I wanted to see what He had to offer.. And today, I was watching Him
+        >  build a cross compiler, because it have had this insane idea of trying to build a cross compiler for my old
+        >  Power Mac G4..
+
+    https://www.youtube.com/watch?v=tCh0XjyIAKU
+    https://www.youtube.com/c/NCommander/videos
+
+
+        ​---------- Forwarded message ---------
+        From: geist1122@juno.com <geist1122@juno.com>
+        Date: Mon, Mar 14, 2022 at 11:51 PM
+        Subject: Re: LFS meeting in about 20 minutes
+        To: <thomas.lynch@reasoningtechnology.com>
+
+
+        Hi Thomas;
+
+        I have over 20 + hours into LFS 11.1 and trying to set up vi, I did something wrong and couldn't get out of it, and Had to close the Terminal.. I could NOT get back into chroot, properly..
+        It looks like In the morning, I will need to re-install Linux Mint and start ALL over on LFS 11.1..
+
+        THANK YOU Marty
+
+    [I also have about 20 hours into it at this point, that being only 4 or 5 half days -Thomas]
 

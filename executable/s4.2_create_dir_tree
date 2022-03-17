@@ -1,17 +1,27 @@
 #!/bin/bash
 
-pushd $LFS
 
-mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin}
 
-for i in bin lib sbin; do
-  ln -sv usr/$i $LFS/$i
-done
+cat > "$TMP"/script <<-EOF
+  set -x
+  pushd $LFS
 
-case $(uname -m) in
-  x86_64) mkdir -pv $LFS/lib64 ;;
-esac
+  mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin}
 
-mkdir -pv $LFS/tools
+  # escapes on the dollar i so that the heardoc does not expand them
+  for i in bin lib sbin; do
+    ln -sv usr/\$i $LFS/\$i
+  done
 
-popd
+  case $(uname -m) in
+    x86_64) mkdir -pv $LFS/lib64 ;;
+  esac
+
+  mkdir -pv $LFS/tools
+
+  popd 
+  set +x
+EOF
+
+chmod ug+x "$TMP"/script
+sudo "$TMP"/script
