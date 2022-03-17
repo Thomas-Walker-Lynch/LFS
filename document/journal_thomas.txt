@@ -146,4 +146,13 @@
 
             when they say to make a 'build' directory they assume you are in the sources/<package expanded> directory.
             i.e. sources/binutils/build  then ../configure  configure produces the makefile
+
+            one SBU
+
+            real	0m48.637s
+             user	3m19.919s
+             sys	0m46.193s
  
+            permission errors on installing bin utils
+
+            
