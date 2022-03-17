@@ -1,12 +1,13 @@
 #!/bin/bash
-
+# in chapter 5 things are complaining there is no /usr/inclucde ... adding it
 
 
 cat > "$TMP"/script <<-EOF
   set -x
   pushd $LFS
 
-  mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin}
+  umask 0022
+  mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin,include}
 
   # escapes on the dollar i so that the heardoc does not expand them
   for i in bin lib sbin; do
