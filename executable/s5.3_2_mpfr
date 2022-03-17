@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -x
+pushd "$SOURCES"/mpfr
+
+mkdir -v build
+cd build
+
+# using bintils config remove options that gave errors:
+../configure --prefix=$LFS/tools \
+             --with-sysroot=$LFS 
+
+
+make
+
+popd
+set +x

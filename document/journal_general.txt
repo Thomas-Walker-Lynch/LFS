@@ -48,6 +48,10 @@
 
 2022-03-17 (5)
 
+     So far only Marty and I today.   Marty is installing to real hardware.  The rest of us used
+     an emulator.
+
+
         ---------- Forwarded message ---------
         From: geist1122@juno.com <geist1122@juno.com>
         Date: Fri, Mar 11, 2022 at 10:21 AM
@@ -93,4 +97,14 @@
         THANK YOU Marty
 
     [I also have about 20 hours into it at this point, that being only 4 or 5 half days -Thomas]
+
+    ** had to sudo the make install for binutils
+
+    ** configure gcc failed due to lack of C++,  apt install g++
+     configure still configure: error: Building GCC requires GMP 4.2+, MPFR 3.1.0+ and MPC 0.8.0+.
+
+     mpfr says it needs gmp so:
+     making gmp using same proceedure.  make install again gets errors running it with sudo
+
+
 

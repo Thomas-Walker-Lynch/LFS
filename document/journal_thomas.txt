@@ -260,4 +260,96 @@
      a $LFS problem.  Anway, so I am moving $LFS/packages  and $LFS/sources to /mnt to get them out of
      /mnt/lfs == $LFS.  This makes it easier to blow away the mess made by the directory building 
     .. ah solved  the hearedoc was expanding the forloop LCV
+
+   II. chapter 5.2
                 
+     for binutils ... configure ... make ...
+     libtool: link: warning: ignoring multiple `-rpath's for a libtool library
+
+     now for make install, this is where I had permission problems last time, surely this should be done
+     as root, but it does not say to do that
+
+     I am going to run it again with sudo ...
+
+**     sudo make install  <-- this ran without errors
+
+     there are patches in the sources directory which were not applied.
+
+   III. chapter 5.3
+
+      case $(uname -m) in
+        x86_64)
+          sed -e '/m64=/s/lib64/lib/' \
+              -i.orig gcc/config/i386/t-linux64
+       ;;
+      esac
+
+      There is no 'gcc' directory in sources ...
+      > ls -ld gcc*
+      drwxr-xr-x 38 lfs lfs 4096 2021-07-28 03:12 gcc-11.2.0
+
+     no i386 in gcc/config, breaking for dinner ...
+     2022-03-17T16:52:04Z [LFS-build-env]
+
+     2022-03-17T17:21:10Z [LFS-build-env]
+     "$SOURCES"/gcc-11.2.0/gcc
+
+     ah I see there is another layer, still why didn't find find this? 
+
+     2022-03-17T17:23:22Z [LFS-build-env]
+     lfs@debian11§/mnt/sources§
+     > ln -s gcc-11.2.0/ gcc
+
+     2022-03-17T17:23:30Z [LFS-build-env]
+     lfs@debian11§/mnt/sources§
+     > find gcc -iname 'i386'
+
+     2022-03-17T17:23:36Z [LFS-build-env]
+     lfs@debian11§/mnt/sources§
+     > find gcc-11.2.0/ -iname 'i386'
+     gcc-11.2.0/gcc/testsuite/g++.target/i386
+     gcc-11.2.0/gcc/testsuite/gcc.dg/vect/costmodel/i386
+     gcc-11.2.0/gcc/testsuite/gcc.target/i386
+     gcc-11.2.0/gcc/common/config/i386
+     gcc-11.2.0/gcc/config/i386
+     gcc-11.2.0/fixincludes/tests/base/i386
+     gcc-11.2.0/libstdc++-v3/config/cpu/i386
+     gcc-11.2.0/libgcc/config/i386
+
+     ... so find does not follow links by default, even as the sole directory specified
+
+     configure failed due to lack of g++, installing g++
+     still fails:
+       configure: error: Building GCC requires GMP 4.2+, MPFR 3.1.0+ and MPC 0.8.0+.
+       we have mpfr-4.11  ... gmp 6.2 ... mpc 1.2 .. hmmm
+       guess I should build those first?
+
+
+     2022-03-17T17:40:52Z [LFS-build-env]
+     lfs@debian11§/mnt/sources/gmp/build§
+     > ../configure                  \
+         --target=$LFS_TGT         \
+         --prefix=$LFS/tools       \
+         --with-glibc-version=2.35 \
+         --with-sysroot=$LFS       \
+         --with-newlib             \
+         --without-headers         \
+         --enable-initfini-array   \
+         --disable-nls             \
+         --disable-shared          \
+         --disable-multilib        \
+         --disable-decimal-float   \
+         --disable-threads         \
+         --disable-libatomic       \
+         --disable-libgomp         \
+         --disable-libquadmath     \
+         --disable-libssp          \
+         --disable-libvtv          \
+         --disable-libstdcxx       \
+         --enable-languages=c,c++
+
+     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>configure: WARNING: unrecognized options: --with-glibc-version, --with-newlib, --without-headers, --enable-initfini-array, --disable-nls, --disable-multilib, --disable-decimal-float, --disable-threads, --disable-libatomic, --disable-libgomp, --disable-libquadmath, --disable-libssp, --disable-libvtv, --disable-libstdcxx, --enable-languages
+     configure: error: --target is not appropriate for GMP
+     Use --build=CPU-VENDOR-OS if you need to specify your CPU and/or system
+     explicitly.  Use --host if cross-compiling (see "Installing GMP" in the
+     manual for more on this).

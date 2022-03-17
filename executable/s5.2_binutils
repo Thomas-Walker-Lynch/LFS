@@ -1,0 +1,25 @@
+#!/bin/bash
+# 
+# hmm.. what about those patches?  We never applied them ...
+#
+
+# yeah, not good that this has the binutils version on it
+pushd "$SOURCES/binutils-2.38"
+
+# kind of interesting, making the build directory inside the source directory
+mkdir -v build
+cd       build
+
+
+# gosh wonder where this was set, perhaps in the environment ... yes
+# > echo $LFS_TGT
+# x86_64-lfs-linux-gnu
+
+
+../configure --prefix=$LFS/tools \
+             --with-sysroot=$LFS \
+             --target=$LFS_TGT   \
+             --disable-nls       \
+             --disable-werror
+
+popd
