@@ -1,4 +1,5 @@
 #!/bin/bash
+# this has to be built befor mpfr, and probably before mpc
 
 set -x
 pushd "$SOURCES"/gmp
@@ -12,6 +13,10 @@ cd build
 
 
 make
+
+sudo make install
+
+# make check
 
 popd
 set +x

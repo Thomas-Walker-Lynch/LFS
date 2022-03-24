@@ -353,3 +353,11 @@
      Use --build=CPU-VENDOR-OS if you need to specify your CPU and/or system
      explicitly.  Use --host if cross-compiling (see "Installing GMP" in the
      manual for more on this).
+
+     build bin utils (starting over again)
+     2022-03-17T19:48:50Z [LFS-build-env] finish
+     2022-03-17T19:47:22Z [LFS-build-env] start
+                    1:28
+     make and installed without errors
+
+     

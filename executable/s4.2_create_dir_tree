@@ -1,28 +1,38 @@
 #!/bin/bash
-# in chapter 5 things are complaining there is no /usr/inclucde ... adding it
 
+# We are in section 4.2 of 11.1
+#
+# We created user 'lfs' as our non-administrative user when we created the virtual machine.
+# Hence, we are currently logged in as lfs when we arrive here.  But the book for some reasons
+# expects us to be 'root' when we arrive here.
+#
+# Here in section 4.2 The book then has us build the directory tree as the root user.
+#
+# In the next section, 4.3, it has us create the 'lfs' user and then change the ownership of the tree
+# to the lfs user.  But why?  If we want the tree owned by 'lfs'  why not just have 'lfs' build it
+# in the first place?  And that is what I am going to do.
+#
 
-cat > "$TMP"/script <<-EOF
-  set -x
-  pushd $LFS
+if [[ "$HOME" != "/home/lfs" ]]; then
+  echo "error we should be logged in as user lfs" 
+fi
 
-  umask 0022
-  mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin,include}
+set -x
+pushd $LFS
 
-  # escapes on the dollar i so that the heardoc does not expand them
-  for i in bin lib sbin; do
+umask 0022
+mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin,include}
+
+# escapes on the dollar i so that the heardoc does not expand them
+for i in bin lib sbin; do
     ln -sv usr/\$i $LFS/\$i
-  done
+done
 
-  case $(uname -m) in
+case $(uname -m) in
     x86_64) mkdir -pv $LFS/lib64 ;;
-  esac
+esac
 
-  mkdir -pv $LFS/tools
+mkdir -pv $LFS/tools
 
-  popd 
-  set +x
-EOF
-
-chmod ug+x "$TMP"/script
-sudo "$TMP"/script
+popd 
+set +x

@@ -263,4 +263,114 @@
 ------------------------------------------------------------------------------------------
 2022-03-10
 
-    <missing>
+    -  2 lfs  root  4096 2022-03-10 09:40 lib64
+    drwx------  2 root root 16384 2022-03-03 10:32 lost+found
+    drw
+    getting errors on make install for binutils
+    You11:11 AM
+    https://stackoverflow.com/questions/13781746/permission-error-in-binutil-while-make-install
+    Thomas Walker Lynch11:13 AM
+    kdir -p -- /usr/local/share/locale/fr/LC_MESSAGES
+    mkdir: cannot create directory '/usr/local/share/locale': Permission denied
+    Thomas Walker Lynch11:17 AM
+    ../configure --prefix=$LFS/tools              --with-sysroot=$LFS              --target=$LFS_TGT                --disable-nls                    --disable-werror
+    Thomas Walker Lynch11:37 AM
+    github.com/thomas-walker-lynch/LFS
+
+    Thomas Walker Lynch12:16 PM
+    scp -p 80 username@www.myserver.com:/root/file.txt .
+    needs a capital p
+    Thomas Walker Lynch12:19 PM
+    scp local_unix_file  login@localhost
+    ^while on emulator
+    ??  (it is a guess)
+    scp -P 5555 local_windows file login@localhost
+    ^ while on windows machine
+    ?? (again a guess)
+    Thomas Walker Lynch12:22 PM
+    ip -a
+    ipconfig
+    ifconfig
+    Thomas Walker Lynch12:25 PM
+    https://stackoverflow.com/questions/10235778/scp-from-linux-to-windows
+    scp /home/ubuntu/myfile username@IP_of_windows_machine:/C:/Users/Anshul/Desktop 
+    Thomas Walker Lynch12:46 PM
+    Hello Mary, did you finish?
+    Marty12:46 PM
+    Hi;
+
+    Thomas Walker Lynch12:48 PM
+    LOL,  I sent an email, but not as early as much before the meeting as I should have.  I think it had the correct time, let me know if not.
+    So I am off to dinner
+    Next week?
+    You12:48 PM
+    ok
+    Marty12:48 PM
+    I got my build up to chroot
+    Thomas Walker Lynch12:49 PM
+    cool
+    Marty12:49 PM
+    this saturday I should be able to build the rest..
+    You12:49 PM
+    cool gottago also
+    Thomas Walker Lynch12:49 PM
+    next week same day same time about 2 hours back.
+
+------------------------------------------------------------------------------------------
+before 2022-03-17
+
+        ---------- Forwarded message ---------
+        From: geist1122@juno.com <geist1122@juno.com>
+        Date: Fri, Mar 11, 2022 at 10:21 AM
+        Subject: Re: LFS meeting in about 20 minutes
+        To: <thomas.lynch@reasoningtechnology.com> 
+
+
+        Hi Thomas;
+
+        Here is the video Link :
+
+        CHARITY STREAM: Building Linux (and Firefox) From Scratch (Part 1) - YouTube
+
+        I can't get it to copy and paste the actual link while watching it, I will try something else..
+
+        NCommander - YouTube
+
+        It won't copy and paste the actual links, but hopefully if You go to Youtube and copy one of these in, it will get You closer or there..
+
+        THANK YOU Marty
+
+        > I have been watching for a number of days a site that I just came across, He is building LFS 11.0 and at the
+        > end He got it to boot and work.. So, I wanted to see what He had to offer.. And today, I was watching Him
+        >  build a cross compiler, because it have had this insane idea of trying to build a cross compiler for my old
+        >  Power Mac G4..
+
+    https://www.youtube.com/watch?v=tCh0XjyIAKU
+    https://www.youtube.com/c/NCommander/videos
+
+
+        ​---------- Forwarded message ---------
+        From: geist1122@juno.com <geist1122@juno.com>
+        Date: Mon, Mar 14, 2022 at 11:51 PM
+        Subject: Re: LFS meeting in about 20 minutes
+        To: <thomas.lynch@reasoningtechnology.com>
+
+
+        Hi Thomas;
+
+        I have over 20 + hours into LFS 11.1 and trying to set up vi, I did something wrong and couldn't get out of it, and Had to close the Terminal.. I could NOT get back into chroot, properly..
+        It looks like In the morning, I will need to re-install Linux Mint and start ALL over on LFS 11.1..
+
+        THANK YOU Marty
+
+    [I also have about 20 hours into it at this point, that being only 4 or 5 half days -Thomas]
+
+    ** had to sudo the make install for binutils
+
+    ** configure gcc failed due to lack of C++,  apt install g++
+     configure still configure: error: Building GCC requires GMP 4.2+, MPFR 3.1.0+ and MPC 0.8.0+.
+
+     mpfr says it needs gmp so:
+     making gmp using same proceedure.  make install again gets errors running it with sudo
+
+

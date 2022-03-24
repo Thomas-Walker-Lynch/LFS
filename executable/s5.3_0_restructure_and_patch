@@ -1,11 +1,12 @@
 #!/bin/bash
+# should apply some more patches here, e.g. binutils had a patch
 
 set -x
 pushd "$SOURCES"/gcc-11.2.0
 
-# mv -v gmp-6.2.1 gmp
-# mv -v mpfr-4.1.0 mpfr
-# mv -v mpc-1.2.1 mpc
+mv -v gmp-6.2.1 gmp
+mv -v mpfr-4.1.0 mpfr
+mv -v mpc-1.2.1 mpc
 
 case $(uname -m) in
   x86_64)

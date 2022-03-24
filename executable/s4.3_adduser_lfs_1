@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+# deprecated
+# this step is not needed because we are already setup and have thus far installed as user lfs
+# btw the file is currently a bit of a mess
+#
+
+if [[ "$HOME" != "/home/lfs" ]]; then
+  echo "error we should be logged in as user lfs" 
+fi
+
+
+# id "lfs" &>/dev/null
+# no_lfs_user=$?
+
+# cat > "$TMP"/script <<-EOF
+#   set -x
+
+#   if $no_lfs_user; then
+#     groupadd lfs
+#     useradd -s /bin/bash -g lfs -m -k /dev/null lfs
+#   fi
+
+#   chown -v lfs $LFS/{usr{,/*},lib,var,etc,bin,sbin,tools}
+#   case $(uname -m) in
+#     x86_64) chown -v lfs $LFS/lib64 ;;
+#   esac
+
+#   chown -v lfs $LFS/sources
+
+#   if $no_lfs_user; then
+#     passwd lfs
+#     su -l lfs
+#   fi  
+
+#   set +x
+# EOF
+
+# chmod ug+x "$TMP"/script
+# sudo "$TMP"/script
+
+
+# user_subu="$stem-$subu"
+# home_subu="/home/$stem/$subu"
+# bashrc="$home_subu/.bashrc"
+# xauthority="$home_subu/.Xauthority"
+
+# read -r -d '' script0 <<-EOF
+#     cd "$home_subu" \
+#     ;export DISPLAY=$DISPLAY \
+#     ;export NO_AT_BRIDGE=1 \
+#     ;export PULSE_SERVER=localhost \
+#     ;touch "$xauthority" \
+#     ;xauth add "$DISPLAY" . "$xkey" \
+#     ;gnome-terminal
+# EOF
+
+
+# sudo su  -l "$user_subu" -c "$script0"

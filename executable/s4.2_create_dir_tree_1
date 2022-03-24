@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# deprecated, just make the tree as lfs in the first place
+#
+
+cat > "$TMP"/script <<-EOF
+  set -x
+  pushd $LFS
+
+  umask 0022
+  mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin,include}
+
+  # escapes on the dollar i so that the heardoc does not expand them
+  for i in bin lib sbin; do
+    ln -sv usr/\$i $LFS/\$i
+  done
+
+  case $(uname -m) in
+    x86_64) mkdir -pv $LFS/lib64 ;;
+  esac
+
+  mkdir -pv $LFS/tools
+
+  popd 
+  set +x
+EOF
+
+chmod ug+x "$TMP"/script
+sudo "$TMP"/script

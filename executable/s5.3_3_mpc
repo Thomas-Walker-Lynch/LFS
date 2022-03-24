@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -x
-pushd "$SOURCES"/mpfr
+pushd "$SOURCES"/mpc
 
 mkdir -v build
 cd build
@@ -10,6 +10,7 @@ cd build
 # using bintils config remove options that gave errors:
 ../configure --prefix=$LFS/tools \
              --with-gmp=$LFS/tools \
+             --with-mpfr=$LFS/tools \
              --with-sysroot=$LFS \
              --target=$LFS_TGT   
 

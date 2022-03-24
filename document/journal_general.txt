@@ -48,63 +48,17 @@
 
 2022-03-17 (5)
 
-     So far only Marty and I today.   Marty is installing to real hardware.  The rest of us used
-     an emulator.
+     Marty, Peter, Dimtris, Thomas -- Robert couldn't make it.  Not surprised he is done anyway.
 
+     If I understand correctly, Peter is still dealing with trying to get files to the emulator.
+     Dimitris had DNS problems last week and continues to have WIFI issues. He is dealing with
+     getting an emulated machine with a properly partitioned disk.  Will have to check with Marty,
+     not sure if he finished one or not, but is now downloading files for the PowerPC
 
-        ---------- Forwarded message ---------
-        From: geist1122@juno.com <geist1122@juno.com>
-        Date: Fri, Mar 11, 2022 at 10:21 AM
-        Subject: Re: LFS meeting in about 20 minutes
-        To: <thomas.lynch@reasoningtechnology.com>
+     Thomas is working on trying to get gcc to compile.  Had many permission problems following
+     the book, ended up building a couple of the packages just mentioned, and adding 'sudo'  to
+     make install.
 
-
-        Hi Thomas;
-
-        Here is the video Link :
-
-        CHARITY STREAM: Building Linux (and Firefox) From Scratch (Part 1) - YouTube
-
-        I can't get it to copy and paste the actual link while watching it, I will try something else..
-
-        NCommander - YouTube
-
-        It won't copy and paste the actual links, but hopefully if You go to Youtube and copy one of these in, it will get You closer or there..
-
-        THANK YOU Marty
-
-        > I have been watching for a number of days a site that I just came across, He is building LFS 11.0 and at the
-        > end He got it to boot and work.. So, I wanted to see what He had to offer.. And today, I was watching Him
-        >  build a cross compiler, because it have had this insane idea of trying to build a cross compiler for my old
-        >  Power Mac G4..
-
-    https://www.youtube.com/watch?v=tCh0XjyIAKU
-    https://www.youtube.com/c/NCommander/videos
-
-
-        ​---------- Forwarded message ---------
-        From: geist1122@juno.com <geist1122@juno.com>
-        Date: Mon, Mar 14, 2022 at 11:51 PM
-        Subject: Re: LFS meeting in about 20 minutes
-        To: <thomas.lynch@reasoningtechnology.com>
-
-
-        Hi Thomas;
-
-        I have over 20 + hours into LFS 11.1 and trying to set up vi, I did something wrong and couldn't get out of it, and Had to close the Terminal.. I could NOT get back into chroot, properly..
-        It looks like In the morning, I will need to re-install Linux Mint and start ALL over on LFS 11.1..
-
-        THANK YOU Marty
-
-    [I also have about 20 hours into it at this point, that being only 4 or 5 half days -Thomas]
-
-    ** had to sudo the make install for binutils
-
-    ** configure gcc failed due to lack of C++,  apt install g++
-     configure still configure: error: Building GCC requires GMP 4.2+, MPFR 3.1.0+ and MPC 0.8.0+.
-
-     mpfr says it needs gmp so:
-     making gmp using same proceedure.  make install again gets errors running it with sudo
-
+  
 
 
