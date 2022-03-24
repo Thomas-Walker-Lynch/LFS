@@ -25,7 +25,7 @@ mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin,include}
 
 # escapes on the dollar i so that the heardoc does not expand them
 for i in bin lib sbin; do
-    ln -sv usr/\$i $LFS/\$i
+    ln -sv usr/$i $LFS/$i
 done
 
 case $(uname -m) in
