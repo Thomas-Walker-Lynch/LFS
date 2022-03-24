@@ -1,0 +1,22 @@
+
+;;--------------------------------------------------------------------------------     
+;; Tramp
+;;
+;;;https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
+;;
+  (setq tramp-completion-reread-directory-timeout nil)
+
+  (defun shell-make (dir buffer-name)
+    (let* (
+           (default-directory dir)
+           (buffer (get-buffer-create buffer-name))
+           )
+      (set-buffer buffer)
+      (shell buffer)
+      ))
+
+  (defun shell~       () (interactive) (shell-make "~" "shell~"))
+  (defun shell-root   () (interactive) (shell-make "/sudo::/root" "shell-root"))
+  (defun shell-lfs    () (interactive) (shell-make "/ssh:lfs@192.168.122.115:~" "shell-lfs"))
+
+

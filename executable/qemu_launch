@@ -9,14 +9,14 @@
 
 set -x
 
-mathod=0
-if [ "$method" == 0 ]; then
+method=0
+if [[ "$method" == 0 ]]; then
     echo "using virtual manager"
     virt-manager
     exit
 fi
 
-if [ "$method" == 1 ]; then
+if [[ "$method" == 1 ]]; then
     echo "using virt-install command line "
 
     mem="$1" 
