@@ -1,0 +1,26 @@
+#!/bin/bash
+# should apply some more patches here, e.g. binutils had a patch
+
+set -x
+
+pushd "$SOURCE"/gcc-11.2.0
+
+
+mv ../gmp* gmp
+mv ../mpfr* mpfr
+mv ../mpc* mpc
+
+# It is uncool to break the source tree.  I would rather do this:
+# ln -s ../gmp-6.2.1 gmp
+# ln -s ../ mpfr-4.1.0 mpfr
+# ln -s ../mpc-1.2.1 mpc
+
+case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+ ;;
+esac
+
+popd
+set +x

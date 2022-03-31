@@ -4,7 +4,7 @@
 #
 
 # yeah, not good that this has the binutils version on it
-pushd "$SOURCES/binutils-2.38"
+pushd "$SOURCE/binutils-2.38"
 
 # kind of interesting, making the build directory inside the source directory
 mkdir -v build

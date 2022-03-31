@@ -382,3 +382,14 @@
       ...
 
       package tzdata2021e.tar.gz expands out without a directory ....
+
+    2022-03-31T16:09:28Z [LFS-build-env]
+    lfs@debian11§~/repos/LFS/executable§
+    > ./s5.2_binutils 
+    2022-03-31T16:10:22Z [LFS-build-env]
+    no errors   
+
+    2022-03-31T16:10:22Z [LFS-build-env]
+    2022-03-31T16:09:28Z [LFS-build-env]
+                    ;54
+

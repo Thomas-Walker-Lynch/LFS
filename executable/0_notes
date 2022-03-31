@@ -1,6 +1,6 @@
 
-I am using github.com/Thomas-Walker-Lynch/resources.  This includes the directory names 'executable library document' instead
-of 'bin lib docs'  for the build (not for LFS!)
+I am using github.com/Thomas-Walker-Lynch/resources.  This includes the directory names 'executable library source document' instead
+of 'bin lib src docs'  for the LFS build scripts repo - not for LFS!
 
 Divergences from the book:
 

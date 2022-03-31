@@ -13,7 +13,7 @@ umask 0022
 #paths relative to $LFS
 package=package
 package_reject="package_reject"
-sources="sources"
+source="source"
 
 if [[ ! -d "$package" ]]; then
     echo "oh no! no package!"
@@ -25,14 +25,14 @@ if [[ ! -d "$package_reject" ]]; then
 fi
 mv "$package"/tzdata2021e.tar.gz "$package_reject"
 
-if [[ ! -d "$sources" ]]; then
-    mkdir sources
+if [[ ! -d "$source" ]]; then
+    mkdir source
 fi
 
 for i in  "$package"/*.tar.*; do
   echo expanding $i
-#  tar -C "$sources" -xf $i &
-  tar -C "$sources" -xf $i 
+#  tar -C "$source" -xf $i &
+  tar -C "$source" -xf $i 
 done
 
 popd

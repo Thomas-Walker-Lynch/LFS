@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -x
-pushd "$SOURCES"/gcc-11.2.0
+pushd "$SOURCE"/gcc*
 
 mkdir -v build
 cd build
