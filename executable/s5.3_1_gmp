@@ -13,10 +13,7 @@ cd build
 
 
 make
-
-sudo make install
-
-# make check
+make install
 
 popd
 set +x

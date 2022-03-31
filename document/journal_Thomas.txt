@@ -360,4 +360,25 @@
                     1:28
      make and installed without errors
 
+2022-03-24T16:30:19Z
+
+     Alright, found the permissions problem.  The book has us first work as root, then shift to lfs.  When we
+     shift to lfs it wants to change the ownership to lfs.  I am just going to start as lfs in the first place ...
+
+     Robert pointed out the renaming of gmp etc. was to go into the gcc dir.
      
+     2022-03-24T20:31
+     4 hours
+
+2022-03-31T14:08:08Z
+      
+     oh gosh, where the tar files in $LFS/packages come from?  Should have a script to populate that
+     directory
+
+      > ls $LFS/sources
+      africa		  etcetera	     less-590		SECURITY
+      antarctica	  eudev-3.2.11	     libffi-3.4.2	southamerica
+      asia		  europe	     libpipeline-1.5.5	sysklogd-1.5.1
+      ...
+
+      package tzdata2021e.tar.gz expands out without a directory ....

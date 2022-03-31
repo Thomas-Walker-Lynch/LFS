@@ -3,7 +3,7 @@
 set -x
 pushd "$SOURCES"/gcc-11.2.0
 
-# mkdir -v build
+mkdir -v build
 cd build
 
 ../configure                  \
@@ -28,6 +28,7 @@ cd build
     --enable-languages=c,c++
 
 make
+make install
 
 popd
 set +x

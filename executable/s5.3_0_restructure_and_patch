@@ -2,11 +2,20 @@
 # should apply some more patches here, e.g. binutils had a patch
 
 set -x
+
 pushd "$SOURCES"/gcc-11.2.0
 
-mv -v gmp-6.2.1 gmp
-mv -v mpfr-4.1.0 mpfr
-mv -v mpc-1.2.1 mpc
+# It says mv, but I don't want to break my source tree. I want to see what versions were downloaded, and that they were downloaded
+# so I will gamble here and make links rather than moving directories.
+ln -s ../gmp-6.2.1 gmp
+ln -s ../ mpfr-4.1.0 mpfr
+ln -s ../mpc-1.2.1 mpc
+
+#oops .. fix
+# pushd $SOURCES
+# mv gmp gmp-6.2.1 
+# mv mpfr mpfr-4.1.0
+# mv mpc mpc-1.2.1
 
 case $(uname -m) in
   x86_64)

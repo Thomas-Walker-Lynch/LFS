@@ -1,7 +1,39 @@
 #!/bin/bash
+# still need to apply patches!
 # remove & from after tar to block on each tar expansion
 
-for i in  *.tar.*; do
+if [[ "$HOME" != "/home/lfs" ]]; then
+  echo "error we should be logged in as user lfs" 
+fi
+
+set -x
+pushd $LFS
+umask 0022
+
+#paths relative to $LFS
+package=package
+package_reject="package_reject"
+sources="sources"
+
+if [[ ! -d "$package" ]]; then
+    echo "oh no! no package!"
+    exit 1
+fi
+
+if [[ ! -d "$package_reject" ]]; then
+    mkdir "$package_reject"
+fi
+mv "$package"/tzdata2021e.tar.gz "$package_reject"
+
+if [[ ! -d "$sources" ]]; then
+    mkdir sources
+fi
+
+for i in  "$package"/*.tar.*; do
   echo expanding $i
-  tar -xf $i &
+#  tar -C "$sources" -xf $i &
+  tar -C "$sources" -xf $i 
 done
+
+popd
+set +x

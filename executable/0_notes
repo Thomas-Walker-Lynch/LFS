@@ -1,0 +1,14 @@
+
+I am using github.com/Thomas-Walker-Lynch/resources.  This includes the directory names 'executable library document' instead
+of 'bin lib docs'  for the build (not for LFS!)
+
+Divergences from the book:
+
+  1. The initial user created with the Debian install (on the QEMU virtual machine)
+  is already lfs.  We don't start out as root in the book.  Hence we do not need to add the lfs user and
+  fix permissions in s4.3.  I am wondering if we will need a grand fix permissions at some point.
+
+Scripts are in flux .. see notes in the scripts
+
+still neeed to apply patches s3.3
+

@@ -59,6 +59,10 @@
      the book, ended up building a couple of the packages just mentioned, and adding 'sudo'  to
      make install.
 
+2022-03-17 (6)
   
+     Just Marty and I today .. ah Robert popped in and solved one my compile problems.  Peter and Dimitris had
+     comittments.  Sounds like Marty has it all running, so it was good of him to drop by.
+
 
 
