@@ -64,5 +64,12 @@
      Just Marty and I today .. ah Robert popped in and solved one my compile problems.  Peter and Dimitris had
      comittments.  Sounds like Marty has it all running, so it was good of him to drop by.
 
+2022-03-31
+
+     Dimitris, Marty, and I, Robert popped in.  Peter sent some email, but didn't seem him online.
+     D and I are on chapter 5 C compile.  D has a slow machine so that is taking a while.  Peter says he
+     is on the 'slow track'  .. pretty much somes up my progress as well lol.
+
+
 
 

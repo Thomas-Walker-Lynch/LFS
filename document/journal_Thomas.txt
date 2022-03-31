@@ -393,3 +393,14 @@
     2022-03-31T16:09:28Z [LFS-build-env]
                     ;54
 
+    great, the chapter 5 C compile worked
+
+    make[2]: Leaving directory '/mnt/lfs/source/gcc-11.2.0/build/gcc'
+    make[1]: Leaving directory '/mnt/lfs/source/gcc-11.2.0/build'
+    + popd
+    ~/repos/LFS/executable
+    + set +x
+
+    2022-03-31T18:45:54Z [LFS-build-env]
+
+
