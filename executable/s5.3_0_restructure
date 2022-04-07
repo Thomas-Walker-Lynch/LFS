@@ -1,5 +1,4 @@
 #!/bin/bash
-# should apply some more patches here, e.g. binutils had a patch
 
 set -x
 
@@ -11,6 +10,7 @@ mv ../mpfr* mpfr
 mv ../mpc* mpc
 
 # It is uncool to break the source tree.  I would rather do this:
+# but alas, it crashed and burned when I tried it
 # ln -s ../gmp-6.2.1 gmp
 # ln -s ../ mpfr-4.1.0 mpfr
 # ln -s ../mpc-1.2.1 mpc

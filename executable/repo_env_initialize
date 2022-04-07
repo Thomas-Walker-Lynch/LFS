@@ -1,5 +1,6 @@
 #!/bin/bash
 
 export LFS=/mnt/lfs
+export PACKAGE=$LFS/package
+export PATCH=$LFS/patch
 export SOURCE=$LFS/source
-

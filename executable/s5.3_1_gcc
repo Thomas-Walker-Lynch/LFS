@@ -1,7 +1,9 @@
 #!/bin/bash
 
 set -x
+
 pushd "$SOURCE"/gcc*
+# will now be in /mnt/lfs/source/gcc-11.2.0/gcc
 
 mkdir -v build
 cd build
@@ -29,6 +31,15 @@ cd build
 
 make
 make install
+
+cd ..
+# will now be in /mnt/lfs/source/gcc-11.2.0
+
+#fyi
+#  > dirname $($LFS_TGT-gcc -print-libgcc-file-name)
+#  /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/11.2.0
+cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+  `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/install-tools/include/limits.h
 
 popd
 set +x

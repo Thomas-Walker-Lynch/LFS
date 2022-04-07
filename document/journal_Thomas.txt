@@ -403,4 +403,57 @@
 
     2022-03-31T18:45:54Z [LFS-build-env]
 
+2022-04-07T15:22:57Z
+
+    apparently section 5.4 expects us to be in the source/linux* directory.
+
+    ask about package reject if Robert shows today
+
+    section 5.5.1 
+
+        no idea what directory we ares upposed to be in.  I asks to make links to '../lib/ld-linux ...'  The
+        lib directory exists at $LFS but it has no such file.  source/linux also has a lib directory, but again there
+        is no such file.  Are we creating this for later?
+
+        now it asks us to make a build directory, then we must be in the source/glib directory, but then there is
+        no such ../lib directory.
+
+        Something is messed up with this section.
+
+        Is it normal to build sources in a build directory under the sources themselves?  I've always
+        had src as a subdirectory under the default directory which make is run in, with intermediate
+        files going to other directories.
+
+        wow the glib make runs for a long time ...
+
+          2022-04-07T17:39:14Z [LFS-build-env]
+          lfs@debian11§/mnt/lfs/source/glibc-2.35/build§
+          > make
+          ...
+             interesting to see python3 used:
+                python3 -B ../scripts/gen-as-const.py --cc="x86_64-lfs-linux-gnu-gcc -std=gnu11 -fgnu89-inline  -g -O2 -Wall -Wwrite-strings -Wundef -Werror -fmerge-all-constants -frounding-math -fno-stack-protector -fno-common -Wstrict-prototypes -Wold-style-definition -fmath-errno      -ftls-model=initial-exec      -I../include -I/mnt/lfs/source/glibc-2.35/build/nptl  -I/mnt/lfs/source/glibc-2.35/build  -I../sysdeps/unix/sysv/linux/x86_64/64  -I../sysdeps/unix/sysv/linux/x86_64  -I../sysdeps/unix/sysv/linux/x86/include -I../sysdeps/unix/sysv/linux/x86  -I../sysdeps/x86/nptl  -I../sysdeps/unix/sysv/linux/wordsize-64  -I../sysdeps/x86_64/nptl  -I../sysdeps/unix/sysv/linux/include -I../sysdeps/unix/sysv/linux  -I../sysdeps/nptl  -I../sysdeps/pthread  -I../sysdeps/gnu  -I../sysdeps/unix/inet  -I../sysdeps/unix/sysv  -I../sysdeps/unix/x86_64  -I../sysdeps/unix  -I../sysdeps/posix  -I../sysdeps/x86_64/64  -I../sysdeps/x86_64/fpu/multiarch  -I../sysdeps/x86_64/fpu  -I../sysdeps/x86/fpu  -I../sysdeps/x86_64/multiarch  -I../sysdeps/x86_64  -I../sysdeps/x86/include -I../sysdeps/x86  -I../sysdeps/ieee754/float128  -I../sysdeps/ieee754/ldbl-96/include -I../sysdeps/ieee754/ldbl-96  -I../sysdeps/ieee754/dbl-64  -I../sysdeps/ieee754/flt-32  -I../sysdeps/wordsize-64  -I../sysdeps/ieee754  -I../sysdeps/generic  -I.. -I../libio -I. -nostdinc -isystem /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/include -isystem /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/include-fixed -isystem /mnt/lfs/usr/include -D_LIBC_REENTRANT -include /mnt/lfs/source/glibc-2.35/build/libc-modules.h -DMODULE_NAME=libc -include ../include/libc-symbols.h       -DTOP_NAMESPACE=glibc -DGEN_AS_CONST_HEADERS \
+
+
+         wonder how config parameters get into configure  (s5.5_1_Glibc)             
+            echo "rootsbindir=/usr/sbin" > configparms
+
+            ../configure                             \
+               --prefix=/usr                      \
+
+           crashed, out of diskspace, restarting make did not work ... redoing build ..
+
+        2022-04-07T18:43:48Z [LFS-build-env]
+        lfs@debian11§~/repos/LFS/executable§
+        > ./s5.5_1_Glibc 
+        2022-04-07T18:56:58Z
+        2022-04-07T18:43:48Z
+                      13:10 to compile Glibc
+
+        Chapter 5 done
+
+        2022-04-07T19:30:49Z
+        2022-04-07T15:22:57Z
+                    4:08    
+                 -    30  dinner
+                     3:30  three and half hour session today though probably come back and do chapter 6 tonight 
 

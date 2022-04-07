@@ -1,0 +1,39 @@
+#!/bin/bash
+# book is bad about telling us what working directory we should be in for running these commands...
+
+set -x
+pushd $SOURCE/glibc-*
+
+if [[ -d build ]]; then
+    #not what a person likes to see in a script ... like what could go wrong?
+    rm -rf build  
+fi
+
+mkdir -v build
+cd build
+
+echo "rootsbindir=/usr/sbin" > configparms
+
+../configure                             \
+      --prefix=/usr                      \
+      --host=$LFS_TGT                    \
+      --build=$(../scripts/config.guess) \
+      --enable-kernel=3.2                \
+      --with-headers=$LFS/usr/include    \
+      libc_cv_slibdir=/usr/lib
+
+# book says this is normal:
+# configure: WARNING:
+# *** These auxiliary programs are missing or incompatible versions: msgfmt
+
+make
+
+make DESTDIR=$LFS install
+sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
+
+# this book has us run the test compile in s5.5_2 before this command:
+# I don't know if it makes any difference ...
+$LFS/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders
+
+popd
+set +x
