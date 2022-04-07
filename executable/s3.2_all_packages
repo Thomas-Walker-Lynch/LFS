@@ -1,4 +1,5 @@
 #!/bin/bash
+#seem to have lost my unpack and check the MD5sums script
 
 if [[ "$HOME" != "/home/lfs" ]]; then
   echo "error we should be logged in as user lfs" 

@@ -1,6 +1,7 @@
 #!/bin/bash
 # still need to apply patches!
 # remove & from after tar to block on each tar expansion
+# need to check the md5sums !
 
 if [[ "$HOME" != "/home/lfs" ]]; then
   echo "error we should be logged in as user lfs" 
