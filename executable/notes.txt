@@ -1,0 +1,9 @@
+
+
+Need to make a script to grab the package and unpack it, and another to clean up the source directory to be run after
+the source is installed.  This way we do them one at a time and have a fresh one every time.
+
+Mod the chapter 6 script and others that look for the build directory and delete it. Instead we unpack fresh
+each time, then make the build directory.
+
+Need to check the md5 sums after the wget

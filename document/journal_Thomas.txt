@@ -457,3 +457,15 @@
                  -    30  dinner
                      3:30  three and half hour session today though probably come back and do chapter 6 tonight 
 
+2022-04-07T23:47:42Z 
+
+        2022-04-07T23:56:39Z [LFS-build-env]
+        lfs@debian11§~/repos/LFS/executable§
+        > ./s6
+        2022-04-08T00:09:52Z
+
+        chapter 6 done
+
+        session ~22 minutes
+
+
