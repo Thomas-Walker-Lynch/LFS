@@ -53,7 +53,7 @@ ln -sv bash $LFS/bin/sh
 popd
 
 #----------------------------------------
-pushd $SOURCE/Coreutils-*
+pushd $SOURCE/coreutils-*
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess) \
@@ -76,7 +76,7 @@ make DESTDIR=$LFS install
 popd
 
 #----------------------------------------
-pushd $SOURCE/File-*
+pushd $SOURCE/file-*
 mkdir build
 pushd build
   ../configure --disable-bzlib      \
@@ -153,7 +153,7 @@ make DESTDIR=$LFS install
 popd
 
 #----------------------------------------
-pushd $SOURCE/Tar-*
+pushd $SOURCE/tar-*
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess)

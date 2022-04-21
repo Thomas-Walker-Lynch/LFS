@@ -468,4 +468,28 @@
 
         session ~22 minutes
 
+2022-04-14T14:33:37Z
+
+        many updates to build scripts in general, resource and system, fix some nits.  Interesting
+        to be setting up projects on two systems, the usual one and now this emulated one.  I get
+        to see how the project management flow works out.
+
+        2022-04-14T16:01:49Z        
+        starting LFS chapter 7 finally..
+
+        2022-04-14T16:38:10Z
+        chapter 7 wants to run as root, my emulator was setup not to allow root, probably should
+        be writing scripts to do sudo, but following the book, have a root prompt with $LFS set.
+
+        Oh gee, sound problems for meeting, pulled away again, not getting much done on LFS
+        this afternoon!
+
+        2022-04-14T17:48:20Z
+        Getting back to, really starting, LFS session for today.  Turned out to be a repo organization
+        and sound fixing problem session...
+
+        
+        a couple of errors in the chapter 6 build script due to capital letters (package names were headings in the book).
+        should tee script output to grep for error and dump output into a log
+
 
