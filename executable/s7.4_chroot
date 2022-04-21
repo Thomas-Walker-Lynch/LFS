@@ -1,4 +1,5 @@
 #!/bin/bash
+# as root
 
 chroot "$LFS" /usr/bin/env -i   \
     HOME=/root                  \

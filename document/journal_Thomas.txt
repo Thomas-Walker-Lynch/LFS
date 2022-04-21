@@ -492,4 +492,13 @@
         a couple of errors in the chapter 6 build script due to capital letters (package names were headings in the book).
         should tee script output to grep for error and dump output into a log
 
+        stopping about 19:00Z  abt a 3 hour session
 
+2022-04-21T12:44:25Z
+
+         picking up with chapter 7
+         this chapter is slog going through package compiles
+         
+         RFC 2119 would be useful
+
+   

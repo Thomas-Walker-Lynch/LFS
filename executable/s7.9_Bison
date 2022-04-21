@@ -1,0 +1,16 @@
+#!/bin/bash
+# as root
+
+umask 0022
+
+cd /source/bison*
+
+
+./configure --prefix=/usr \
+              --docdir=/usr/share/doc/bison-3.8.2
+
+#had warnings
+make
+make install
+
+

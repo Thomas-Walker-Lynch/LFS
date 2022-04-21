@@ -80,4 +80,7 @@
 
 2022-04-21
 
-   
+      LFS book and some GNU messages would benefit from RFC 2119.  They consistely use the word 'may'
+      when they mean 'might'.
+
+
