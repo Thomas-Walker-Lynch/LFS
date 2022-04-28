@@ -501,4 +501,19 @@
          
          RFC 2119 would be useful
 
-   
+         really didn't do much after 17:00Z
+
+         Peter brought up tiny box, looks like a good way to do.  Discussed licenses.
+
+2022-04-28T15:32:52Z
+
+          running into strange problems with devices, think it might be related
+          to the mask setting difference on prior install.  I had tried to
+          fix it with a chmod -R.  Anyway, will run through it from the beginning
+          today after setting the umask to 022.
+
+          One thing for sure, tramp in emacs always fails with the first try for
+          a password.  Really should setup ssh for the virtual machine.
+
+
+

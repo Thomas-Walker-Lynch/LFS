@@ -1,6 +1,8 @@
 #!/bin/bash
+# this is sourced into the environment with the repo_env command
 
 export LFS=/mnt/lfs
 export PACKAGE=$LFS/package
 export PATCH=$LFS/patch
 export SOURCE=$LFS/source
+umask 0022

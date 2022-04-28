@@ -13,6 +13,9 @@ cd /source/Python-3*
             --enable-shared \
             --without-ensurepip
 
+# to get Python to make had to build libffi way up in 8.49 hmmmm
+# still give error that it can not find TCL header, but still seems to build
 make
+
 make install
 

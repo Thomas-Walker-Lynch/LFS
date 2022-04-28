@@ -27,5 +27,5 @@ df -h .
 
 cd $LFS
 #tar -cJpf $HOME/lfs-temp-tools-11.1.tar.xz .
-tar -cJpf /home/lfs/repo/LFS/archive/lfs-temp-tools-11.1.tar.xz .
+tar -cJpf /home/lfs/archive/lfs-temp-tools-11.1.tar.xz .
 

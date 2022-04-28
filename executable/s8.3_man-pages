@@ -1,0 +1,11 @@
+#!/bin/bash
+# as root
+
+umask 0022
+
+cd /source/man-pages*
+make prefix=/usr install
+
+
+
+
