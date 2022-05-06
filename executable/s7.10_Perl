@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -x
+source package_untar "perl"
+
+script_name=$(basename $(mktemp -p $LFS/tmp -t))
+script_path_0="$LFS/tmp/$script_name"
+script_path_1="/tmp/$script_name"
+cat > "$script_path_0" <<-EOF
+  set -x
+  set -e
+  cd /source/$SOURCE_DIR
+  echo "In directory: " $(pwd)
+
+
+  # wonder why not ./configure like the others
+  sh Configure -des                                        \
+               -Dprefix=/usr                               \
+               -Dvendorprefix=/usr                         \
+               -Dprivlib=/usr/lib/perl5/5.34/core_perl     \
+               -Darchlib=/usr/lib/perl5/5.34/core_perl     \
+               -Dsitelib=/usr/lib/perl5/5.34/site_perl     \
+               -Dsitearch=/usr/lib/perl5/5.34/site_perl    \
+               -Dvendorlib=/usr/lib/perl5/5.34/vendor_perl \
+               -Dvendorarch=/usr/lib/perl5/5.34/vendor_perl
+
+    make
+    make install
+EOF
+
+chmod ug+rwx "$script_path_0"
+if chroot_LFS "$script_path_1" ;then
+    cd $LFS
+    #this has to be done with sudo because the build process runs as root and it modifies the source tree
+    sudo rm -rf source/$SOURCE_DIR
+fi
+
+set +x
+
+
+

@@ -6,6 +6,8 @@ script_path_1="/tmp/$script_name"
 
 cat > "$script_path_0" <<-EOF
   set -x
+  set -e
+
   # many of these directories already exist, seems mkdir -pv doesn't mind
   mkdir -pv /{boot,home,mnt,opt,srv}
   mkdir -pv /etc/{opt,sysconfig}
@@ -24,9 +26,14 @@ cat > "$script_path_0" <<-EOF
   ln -sfv /run/lock /var/lock
 
   install -dv -m 0750 /root
-  install -dv -m 1777 /tmp /var/tmp
+
+  #I had to build temp earlier in s4.2, because I use it for these scripts ...
+  #install -dv -m 1777 /tmp /var/tmp
+  install -dv -m 1777 /var/tmp
+
   set +x
 EOF
+chmod ug+rwx "$script_path_0"
 
 chroot_LFS "$script_path_1"
 

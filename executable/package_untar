@@ -1,6 +1,6 @@
 #!/bin/bash
 # this should be sourced from the calling script, not executed directly
-# this returns the variables: package, source_dir
+# this returns the variables: package, SOURCE_DIR
 
 package="$1"
 if [ -z "$package" ]; then
@@ -15,5 +15,5 @@ fi
 cd source
 
 tar -xf "$LFS"/package/"$package"-*.tar*
-source_dir=$(ls -d "$package"-*)
-cd "$source_dir"
+export SOURCE_DIR=$(ls -d "$package"-*)
+cd "$SOURCE_DIR"

@@ -2,6 +2,8 @@
 # book is bad about telling us what working directory we should be in for running these commands...
 
 set -x
+set -e
+
 cd $LFS/source
 
 #--------------------------------------------------------------------------------
@@ -68,6 +70,6 @@ rm -v dummy.c a.out
 $LFS/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders
 
 cd $LFS
-rm -rf source/$source_dir
+rm -rf source/$SOURCE_DIR
 
 set +x

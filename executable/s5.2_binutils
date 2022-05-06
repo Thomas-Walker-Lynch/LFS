@@ -5,6 +5,7 @@
 #
 
 set -x
+set -e
 
 source package_untar "binutils"
 
@@ -26,6 +27,6 @@ make
 make install
 
 cd $LFS
-rm -rf source/$source_dir
+rm -rf source/$SOURCE_DIR
 
 set +x

@@ -12,3 +12,14 @@ Scripts are in flux .. see notes in the scripts
 
 still neeed to apply patches s3.3
 
+s7.07_libstdc++
+  #the book has this, but gthr-posix.h is inside libgcc
+  #ln -s gthr-posix.h libgcc/gthr-default.h
+  ln -s libgcc/gthr-posix.h libgcc/gthr-default.h
+  ...
+    #this has to be done with sudo because the build process runs as root and it modifies the source tree
+    sudo rm -rf source/$SOURCE_DIR
+
+book does not conform to RFC2119
+
+

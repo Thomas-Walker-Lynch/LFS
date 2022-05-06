@@ -2,6 +2,8 @@
 # book is bad about telling us what working directory we should be in for running these commands...
 
 set -x
+set -e
+
 pushd $SOURCE/glibc-*/build
 
 echo 'int main(){}' > dummy.c

@@ -1,0 +1,7 @@
+2022-05-06T15:06:00Z
+
+  should break up the long s6 script into a script per package, then if desired, make
+  s6 call each of the smaller scripts
+
+  Need to check the md5 sums after the wget
+

@@ -3,7 +3,7 @@
 
 
 set -x
-
+set -e
 
 mkdir -pv "$LFS"/{etc,var} "$LFS"/usr/{bin,lib,sbin,include}
 

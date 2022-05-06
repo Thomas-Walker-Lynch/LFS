@@ -1,7 +1,8 @@
-#!/bin/bash
+  #!/bin/bash
 # book is bad about telling us what working directory we should be in for running these commands...
 
 set -x
+set -e
 
 source package_untar "gcc"
 
@@ -39,6 +40,6 @@ make
 make DESTDIR=$LFS install
 
 cd $LFS
-rm -rf source/$source_dir
+rm -rf source/$SOURCE_DIR
 
 set +x

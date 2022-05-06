@@ -18,7 +18,8 @@ export CONFIG_SITE=$LFS/usr/share/config.site
 # export PATCH=$LFS/patch
 # export SOURCE=$LFS/source
 
-PATH=~/repos/resources/executable:"$PATH"
-PATH=~/repos/LFS/executable:~/repos/LFS/executable_root:"$PATH"
+PATH=~/repo/resources/executable:"$PATH"
+PATH=~/repo/LFS/executable:"$PATH"
 PATH=$LFS/tools/bin:$PATH
 export PATH
+
