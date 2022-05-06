@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -x
+
+#--------------------------------------------------------------------------------
+# change ownership to root, the only common user between m1 and m2
+#
+script_name=$(basename $(mktemp -p $LFS/tmp -t))
+script_path_0="$LFS/tmp/$script_name"
+cat > "$script_path_0" <<-EOF
+  set -x
+  chown -R root:root $LFS/{usr,lib,var,etc,bin,sbin,tools}
+  case $(uname -m) in
+    x86_64) chown -R root:root $LFS/lib64 ;;
+  esac
+  set +x
+EOF
+chmod ug+x "$script_path_0"
+sudo "$script_path_0"

@@ -503,17 +503,60 @@
 
          really didn't do much after 17:00Z
 
-         Peter brought up tiny box, looks like a good way to do.  Discussed licenses.
+         Peter brought up ToyBox, looks like a good way to do.  Discussed licenses.
 
 2022-04-28T15:32:52Z
 
-          running into strange problems with devices, think it might be related
-          to the mask setting difference on prior install.  I had tried to
-          fix it with a chmod -R.  Anyway, will run through it from the beginning
-          today after setting the umask to 022.
+          running into strange problems with devices, think it might be related to the mask setting difference on prior
+          install.  I had tried to fix it with a chmod -R.  Anyway, will run through it from the beginning today after
+          setting the umask to 022.
 
-          One thing for sure, tramp in emacs always fails with the first try for
-          a password.  Really should setup ssh for the virtual machine.
+          One thing for sure, tramp in emacs always fails with the first try for a password.  Really should setup ssh
+          for the virtual machine.
 
+          Apparently we are building tools the first time to be capable of doing a cross compile.  However we are not
+          really doing a cross compile, rather the 'cross compile' that we are doing is mainly just to separate the host
+          system from the target system.
 
+          cross linux from scratch for a true cross compile:
+          https://trac.clfs.org/
+
+          ended at about 20:00 as the meeting turned into a discussion
+
+2022-05-05T12:01:20Z
+
+          running the new binutils build script
+
+          binutils:
+          2022-05-05T12:10:02Z
+          2022-05-05T12:08:53Z
+                         1:07
+
+          2022-05-05T15:07:29Z
+          2022-05-05T15:06:15Z
+                         1:14 # perhaps some time passed before command entry ..
+
+          2022-05-05T16:24:54Z
+          2022-05-05T16:23:52Z
+                         1:02
+
+          gcc:
+          2022-05-05T15:15:08Z
+          2022-05-05T15:07:47Z
+                         7:21
+
+          2022-05-05T16:32:56Z
+          2022-05-05T16:26:25Z
+                         6:32
+          glibc:
+          2022-05-05T18:29:41Z
+          2022-05-05T18:10:08Z
+                        19:33
+
+          all in chapter 6:
+          2022-05-05T18:59:23Z
+          2022-05-05T19:17:04Z
+                        42:19
+
+          ending 17:00
 

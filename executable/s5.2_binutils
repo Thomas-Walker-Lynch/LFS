@@ -1,20 +1,20 @@
 #!/bin/bash
 # 
 # hmm.. what about those patches?  We never applied them ...
+# at this point $LFS has only the packages directory in it 
 #
 
-# yeah, not good that this has the binutils version on it
-pushd "$SOURCE/binutils-2.38"
+set -x
+
+source package_untar "binutils"
 
 # kind of interesting, making the build directory inside the source directory
 mkdir -v build
 cd       build
 
-
 # gosh wonder where this was set, perhaps in the environment ... yes
 # > echo $LFS_TGT
 # x86_64-lfs-linux-gnu
-
 
 ../configure --prefix=$LFS/tools \
              --with-sysroot=$LFS \
@@ -25,4 +25,7 @@ cd       build
 make
 make install
 
-popd
+cd $LFS
+rm -rf source/$source_dir
+
+set +x

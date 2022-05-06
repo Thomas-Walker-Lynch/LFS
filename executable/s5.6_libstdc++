@@ -2,12 +2,8 @@
 # book is bad about telling us what working directory we should be in for running these commands...
 
 set -x
-pushd $SOURCE/gcc-*
 
-if [[ -d build ]]; then
-    #not what a person likes to see in a script ... like what could go wrong?
-    rm -rf build  
-fi
+source package_untar "gcc"
 
 mkdir -v build
 cd build
@@ -42,5 +38,7 @@ make
 
 make DESTDIR=$LFS install
 
-popd
+cd $LFS
+rm -rf source/$source_dir
+
 set +x

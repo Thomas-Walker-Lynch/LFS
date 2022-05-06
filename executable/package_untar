@@ -1,0 +1,19 @@
+#!/bin/bash
+# this should be sourced from the calling script, not executed directly
+# this returns the variables: package, source_dir
+
+package="$1"
+if [ -z "$package" ]; then
+  echo $0 requires a first parameter for the package name
+  exit
+fi
+
+cd $LFS
+if [[ ! -d source ]]; then
+    mkdir source
+fi
+cd source
+
+tar -xf "$LFS"/package/"$package"-*.tar*
+source_dir=$(ls -d "$package"-*)
+cd "$source_dir"

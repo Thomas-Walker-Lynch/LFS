@@ -4,15 +4,19 @@
 set -x
 
 #----------------------------------------
-pushd $SOURCE/m4-*
+source package_untar "m4"
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
 make
 make DESTDIR=$LFS install
 
+cd $LFS
+rm -rf source/$source_dir
+
+
 #----------------------------------------
-pushd $SOURCE/ncurses-*
+source package_untar "ncurses"
 
 sed -i s/mawk// configure
 
@@ -39,10 +43,12 @@ make
 make DESTDIR=$LFS TIC_PATH=$(pwd)/build/progs/tic install
 echo "INPUT(-lncursesw)" > $LFS/usr/lib/libncurses.so
 
-popd
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/bash-*
+source package_untar "bash"
+
 ./configure --prefix=/usr                   \
             --build=$(support/config.guess) \
             --host=$LFS_TGT                 \
@@ -50,10 +56,13 @@ pushd $SOURCE/bash-*
 make
 make DESTDIR=$LFS install
 ln -sv bash $LFS/bin/sh
-popd
+
+cd $LFS
+rm -rf source/$source_dir
+
 
 #----------------------------------------
-pushd $SOURCE/coreutils-*
+source package_untar "coreutils"
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess) \
@@ -66,17 +75,21 @@ mv -v $LFS/usr/bin/chroot              $LFS/usr/sbin
 mkdir -pv $LFS/usr/share/man/man8
 mv -v $LFS/usr/share/man/man1/chroot.1 $LFS/usr/share/man/man8/chroot.8
 sed -i 's/"1"/"8"/'                    $LFS/usr/share/man/man8/chroot.8
-popd
+
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/diffutils-*
+source package_untar "diffutils"
 ./configure --prefix=/usr --host=$LFS_TGT
 make
 make DESTDIR=$LFS install
-popd
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/file-*
+source package_untar "file"
+
 mkdir build
 pushd build
   ../configure --disable-bzlib      \
@@ -88,81 +101,93 @@ popd
 ./configure --prefix=/usr --host=$LFS_TGT --build=$(./config.guess)
 make FILE_COMPILE=$(pwd)/build/src/file
 make DESTDIR=$LFS install
-popd
+
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/findutils-*
+source package_untar "findutils"
+
 ./configure --prefix=/usr                   \
             --localstatedir=/var/lib/locate \
             --host=$LFS_TGT                 \
             --build=$(build-aux/config.guess)
 make
 make DESTDIR=$LFS install
-popd
+
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/gawk-*
+source package_untar "gawk"
 sed -i 's/extras//' Makefile.in
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
 make
 make DESTDIR=$LFS install
-popd
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/grep-*
+source package_untar "grep"
 ./configure --prefix=/usr   \
             --host=$LFS_TGT
 make
 make DESTDIR=$LFS install
-popd
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/Gzip-*
+source package_untar "gzip"
 ./configure --prefix=/usr --host=$LFS_TGT
 make
 make DESTDIR=$LFS install
-popd
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/make-*
+source package_untar "make"
 ./configure --prefix=/usr   \
             --without-guile \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
 make
 make DESTDIR=$LFS install
-popd
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/patch-*
+source package_untar "patch"
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
 make
 make DESTDIR=$LFS install
-popd
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/sed-*
+source package_untar "sed"
 ./configure --prefix=/usr   \
             --host=$LFS_TGT
 make
 make DESTDIR=$LFS install
-popd
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/tar-*
+source package_untar "tar"
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess)
 make
 make DESTDIR=$LFS install
-popd
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-pushd $SOURCE/xz-*
+source package_untar "xz"
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess) \
@@ -170,12 +195,12 @@ pushd $SOURCE/xz-*
             --docdir=/usr/share/doc/xz-5.2.5
 make
 make DESTDIR=$LFS install
-popd
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
-# pass 2
 #
-pushd $SOURCE/binutils-*
+source package_untar "binutils"
 if [[ -d build ]]; then
     rm -rf build
 fi
@@ -191,17 +216,21 @@ cd build
     --enable-64-bit-bfd
 make
 make DESTDIR=$LFS install
-popd
+cd $LFS
+rm -rf source/$source_dir
 
 #----------------------------------------
 # pass 2
 #
-tar -xf ../mpfr-4.1.0.tar.xz
-mv -v mpfr-4.1.0 mpfr
-tar -xf ../gmp-6.2.1.tar.xz
-mv -v gmp-6.2.1 gmp
-tar -xf ../mpc-1.2.1.tar.gz
-mv -v mpc-1.2.1 mpc
+source package_untar "gcc"
+
+tar -xf "$LFS"/package/mpfr-*.tar.*
+tar -xf "$LFS"/package/gmp-*.tar.*
+tar -xf "$LFS"/package/mpc-*.tar.*
+
+mv -v mpfr-* mpfr
+mv -v gmp-* gmp
+mv -v mpc-* mpc
 
 case $(uname -m) in
   x86_64)
@@ -209,10 +238,6 @@ case $(uname -m) in
   ;;
 esac
 
-pushd $SOURCE/gcc-*
-if [[ -d build ]]; then
-    rm -rf build
-fi
 mkdir -v build
 cd       build
 
@@ -240,5 +265,8 @@ ln -s ../../../libgcc/gthr-posix.h $LFS_TGT/libgcc/gthr-default.h
 make
 make DESTDIR=$LFS install
 ln -sv gcc $LFS/usr/bin/cc
+
+cd $LFS
+rm -rf source/$source_dir
 
 set +x

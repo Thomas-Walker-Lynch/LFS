@@ -17,7 +17,7 @@ package_reject="package_reject"
 source="source"
 
 if [[ ! -d "$package" ]]; then
-    echo "oh no! no package directory!"
+    echo "oh no! no package!"
     exit 1
 fi
 
