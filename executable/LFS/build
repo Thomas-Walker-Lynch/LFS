@@ -10,47 +10,49 @@ set -e
 # if it would exit without a message.  It is a good idea to run it first, but it is not necessary
 # for the build.
 #
-# ./s2.2_check_script
+# LFS/s2.2_check_script
 
 # We already have the packages and patches, so don't need to run this
 #
-# s3.2_wget_all_packages
-# s3.2_wget_all_patches
+# LFS/s3.2_wget_all_packages
+# LFS/s3.2_wget_all_patches
 
 # give some structure to the m2 directory tree
-s4.2_target_dir_tree
+LFS/s4.2_target_dir_tree
 
 # user space package installs on the m2 directory tree
 #
-s5.2_binutils
-s5.3_gcc
-s5.4_API_headers
-s5.5_glibc
-s5.6_libstdc++
+LFS/s5.2_binutils
+LFS/s5.3_gcc
+LFS/s5.4_API_headers
+LFS/s5.5_glibc
+LFS/s5.6_libstdc++
 
-s6.02_m4
-s6.03_ncurses
-s6.04_bash
-s6.05_coreutils
-s6.06_diffutils
-s6.07_file
-s6.08_findutils
-s6.09_gawk
-s6.10_grep
-s6.11_gzip
-s6.12_make
-s6.13_patch
-s6.14_sed
-s6.15_tar
-s6.16_xz
-s6.17_binutils
-s6.18_gcc
+LFS/s6.02_m4
+LFS/s6.03_ncurses
+LFS/s6.04_bash
+LFS/s6.05_coreutils
+LFS/s6.06_diffutils
+LFS/s6.07_file
+LFS/s6.08_findutils
+LFS/s6.09_gawk
+LFS/s6.10_grep
+LFS/s6.11_gzip
+LFS/s6.12_make
+LFS/s6.13_patch
+LFS/s6.14_sed
+LFS/s6.15_tar
+LFS/s6.16_xz
+LFS/s6.17_binutils
+LFS/s6.18_gcc
 
 # here starts the root and chroot stuff
 #
-sudo s7.03_devices
-chroot_env s7.05_mkdirs
-chroot_env s7.06_essential
+cp -r $PROJECT_HOME/executable/LFS $LFS/sbin # copy the build scripts into the m2 directory tree
+sudo LFS/s7.02_m2_directory_tree_chown_root
+sudo LFS/s7.03_devices
+LFS/chroot_m2_directory_tree s7.05_mkdirs
+LFS/chroot_m2_directory_tree s7.06_essential
 
 
 set +x

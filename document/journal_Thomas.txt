@@ -568,4 +568,27 @@
   understand why we are setting permissions to root at this point.  Surely changing permissions
   to root should be the last step.
 
-  
+  interesting observation about install and the race condition for cp and chmod.
+
+  -2:00 breaks
+  2022-05-06T22:56:52Z
+
+      22:56
+      14:14
+     ------
+       6:42
+      -2:00 dinner etc.
+    -------
+       4:42
+
+    I seem to be fairly consistent in putting in about 4 hours per session
+
+2022-05-07T15:59:09Z[LFS]
+
+  Making this transition to the chroot environment look simple and be executable from an
+  m1 script has been a bit difficult.  I think I have a new approach that makes it look
+  cleaner, and will implement it today.  I will put the scripts in an LFS directory
+  in the execution PATH, so they will be found in either the m1 directory tree, or the
+  m2 directory tree after a chroot.  Then I will call them without having state explicitly
+  where they are found.
+

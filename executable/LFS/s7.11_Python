@@ -27,7 +27,7 @@ cat > "$script_path_0" <<-EOF
 
 EOF
 chmod ug+rwx "$script_path_0"
-if chroot_env "$script_path_1" ;then
+if chroot_m2_directory_tree "$script_path_1" ;then
     cd $LFS
     #this has to be done with sudo because the build process runs as root and it modifies the source tree
     sudo rm -rf source/$SOURCE_DIR
