@@ -1,7 +1,8 @@
 #!/bin/bash
 
 set -x
-source package_untar "bison"
+# note the capital P 
+source package_untar "Python"
 
 script_name=$(basename $(mktemp -p $LFS/tmp -t))
 script_path_0="$LFS/tmp/$script_name"
@@ -12,20 +13,24 @@ cat > "$script_path_0" <<-EOF
   cd /source/$SOURCE_DIR
   echo "In directory: " $(pwd)
 
-  ./configure --prefix=/usr --docdir=/usr/share/doc/bison-3.8.2
 
+
+  ./configure --prefix=/usr   \
+              --enable-shared \
+              --without-ensurepip
+
+  # to get Python to make had to build libffi way up in 8.49 hmmmm
+  # still give error that it can not find TCL header, but still seems to build
   make
+
   make install
 
 EOF
 chmod ug+rwx "$script_path_0"
-if chroot_LFS "$script_path_1" ;then
+if chroot_env "$script_path_1" ;then
     cd $LFS
     #this has to be done with sudo because the build process runs as root and it modifies the source tree
     sudo rm -rf source/$SOURCE_DIR
 fi
 
 set +x
-
-
-

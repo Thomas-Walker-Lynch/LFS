@@ -1,8 +1,5 @@
 #!/bin/bash
 
-set -x
-set -e
-
 source package_untar "linux"
 
 make mrproper
@@ -14,4 +11,3 @@ cp -rv usr/include $LFS/usr
 cd $LFS
 rm -rf source/$SOURCE_DIR
 
-set +x

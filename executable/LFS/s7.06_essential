@@ -71,4 +71,4 @@ cat > "$script_path_0" <<EOF_SCRIPT
 EOF_SCRIPT
 chmod ug+rwx "$script_path_0"
 
-chroot_LFS "$script_path_1"
+chroot_env "$script_path_1"

@@ -1,14 +1,10 @@
 #!/bin/bash
 #seem to have lost my unpack and check the MD5sums script
 
-set -x
-
-if [[ ! -d "$PATCH" ]]; then
-    mkdir "$patch"
+if [[ ! -d "$LFS/patch" ]]; then
+    mkdir "$LFS/patch"
 fi
-
-pushd "$PATCH"
-umask 0022
+pushd "$LFS/patch"
 
 wget https://www.linuxfromscratch.org/patches/lfs/11.1/binutils-2.38-lto_fix-1.patch
 wget https://www.linuxfromscratch.org/patches/lfs/11.1/bzip2-1.0.8-install_docs-1.patch
@@ -20,4 +16,4 @@ wget https://www.linuxfromscratch.org/patches/lfs/11.1/perl-5.34.0-upstream_fixe
 wget https://www.linuxfromscratch.org/patches/lfs/11.1/sysvinit-3.01-consolidated-1.patch
 
 popd
-set +x
+

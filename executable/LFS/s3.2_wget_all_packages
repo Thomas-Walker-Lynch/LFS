@@ -1,14 +1,10 @@
 #!/bin/bash
 #seem to have lost my unpack and check the MD5sums script
 
-set -x
-
-if [[ ! -d "$PACKAGE" ]]; then
-    mkdir "$PACKAGE"
+if [[ ! -d "$LFS/package" ]]; then
+    mkdir "$LFS/package"
 fi
-
-pushd "$PACKAGE"
-umask 0022
+pushd "$LFS/package"
 
 wget https://download.savannah.gnu.org/releases/acl/acl-2.3.1.tar.xz
 wget https://download.savannah.gnu.org/releases/attr/attr-2.5.1.tar.gz
@@ -91,4 +87,4 @@ wget https://zlib.net/zlib-1.2.11.tar.xz
 wget https://github.com/facebook/zstd/releases/download/v1.5.2/zstd-1.5.2.tar.gz
 
 popd
-set +x
+

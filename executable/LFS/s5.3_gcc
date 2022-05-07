@@ -1,8 +1,5 @@
 #!/bin/bash
 
-set -x
-set -e
-
 source package_untar "gcc"
 
 tar -xf "$LFS"/package/mpfr-*.tar.*
@@ -67,4 +64,3 @@ cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
 cd $LFS
 rm -rf source/$SOURCE_DIR
 
-set +x

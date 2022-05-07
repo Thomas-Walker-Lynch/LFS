@@ -1,0 +1,8 @@
+#!/bin/bash
+#----------------------------------------
+source package_untar "diffutils"
+./configure --prefix=/usr --host=$LFS_TGT
+make
+make DESTDIR=$LFS install
+cd $LFS
+rm -rf source/$SOURCE_DIR

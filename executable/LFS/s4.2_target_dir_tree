@@ -1,10 +1,6 @@
 #!/bin/bash
 # 
 
-
-set -x
-set -e
-
 mkdir -pv "$LFS"/{etc,var} "$LFS"/usr/{bin,lib,sbin,include}
 
 for i in bin lib sbin; do
@@ -17,8 +13,7 @@ esac
 
 mkdir -pv "$LFS"/tools
 
-# I am adding this:
-mkdir -pv "$LFS"/tmp
-chmod ugo+rwxt "$LFS"/tmp
+# might need to add this if we need the tmp directory sooner
+# install -dv -m 1777 /tmp 
 
-set +x
+

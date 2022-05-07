@@ -1,0 +1,56 @@
+#!/bin/bash
+#
+# this is the top level call to build LFS
+#
+
+set -x
+set -e
+
+# I don't know how this script would act with the set -e, if it would exit with a correct code, ir
+# if it would exit without a message.  It is a good idea to run it first, but it is not necessary
+# for the build.
+#
+# ./s2.2_check_script
+
+# We already have the packages and patches, so don't need to run this
+#
+# s3.2_wget_all_packages
+# s3.2_wget_all_patches
+
+# give some structure to the m2 directory tree
+s4.2_target_dir_tree
+
+# user space package installs on the m2 directory tree
+#
+s5.2_binutils
+s5.3_gcc
+s5.4_API_headers
+s5.5_glibc
+s5.6_libstdc++
+
+s6.02_m4
+s6.03_ncurses
+s6.04_bash
+s6.05_coreutils
+s6.06_diffutils
+s6.07_file
+s6.08_findutils
+s6.09_gawk
+s6.10_grep
+s6.11_gzip
+s6.12_make
+s6.13_patch
+s6.14_sed
+s6.15_tar
+s6.16_xz
+s6.17_binutils
+s6.18_gcc
+
+# here starts the root and chroot stuff
+#
+sudo s7.03_devices
+chroot_env s7.05_mkdirs
+chroot_env s7.06_essential
+
+
+set +x

@@ -568,17 +568,4 @@
   understand why we are setting permissions to root at this point.  Surely changing permissions
   to root should be the last step.
 
-  There are fundamentally two mentalities in computing.  According to one mentality computing is about learning how to
-  do things. A person with this mentality becomes a power center as he or she knows how, and if something goes wrong for
-  someone, apparently that person does not.  According to the other mentality computing is about gaining a better
-  understanding of a force of nature.  The two mentalities can be distinguished in their approach to teaching.  The 'it
-  is body of knowledge people' teach by giving steps to follow.  The it is a 'force of nature' people try to describe
-  this force and how it is interacting with the machines, i.e. explain what is happening.  While doing so they will
-  speak of such things as design patterns and properties of information.  The people in the two camps are often at odds
-  with each other.  We may call the people of the first mentality, computer technitians, and those of the second,
-  computer scientists.
-
-  .. the LFS book is for technicians.
-
-  LOL
   
