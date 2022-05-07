@@ -9,9 +9,9 @@ export LC_ALL=POSIX
 # if [ ! -L /bin ]; then PATH=/bin:$PATH; fi
 
 export MAKEFLAGS='-j12'
-export LFS=/mnt/lfs
-export LFS_TGT=$(uname -m)-lfs-linux-gnu
-export CONFIG_SITE=$LFS/usr/share/config.site
+export M2_ROOT="/mnt/lfs"
+export LFS_TGT="$(uname -m)-lfs-linux-gnu"
+export CONFIG_SITE="$M2_ROOT/usr/share/config.site"
 
 # will just refer to these relative to $LFS
 # export PACKAGE=$LFS/package
@@ -20,6 +20,7 @@ export CONFIG_SITE=$LFS/usr/share/config.site
 
 PATH=~/repo/resources/executable:"$PATH"
 PATH=~/repo/LFS/executable:"$PATH"
-PATH=$LFS/tools/bin:$PATH
+PATH=~/repo/LFS/executable/LFS:"$PATH"
+PATH="$M2_ROOT"/tools/bin:$PATH
 export PATH
 

@@ -1,9 +1,9 @@
 #!/bin/bash
 source package_untar "gcc"
 
-tar -xf "$LFS"/package/mpfr-*.tar.*
-tar -xf "$LFS"/package/gmp-*.tar.*
-tar -xf "$LFS"/package/mpc-*.tar.*
+tar -xf "$M2_ROOT"/package/mpfr-*.tar.*
+tar -xf "$M2_ROOT"/package/gmp-*.tar.*
+tar -xf "$M2_ROOT"/package/mpc-*.tar.*
 
 mv -v mpfr-* mpfr
 mv -v gmp-* gmp
@@ -18,15 +18,15 @@ esac
 mkdir -v build
 cd       build
 
-mkdir -pv $LFS_TGT/libgcc
-ln -s ../../../libgcc/gthr-posix.h $LFS_TGT/libgcc/gthr-default.h
+mkdir -pv $M2_ROOT_TGT/libgcc
+ln -s ../../../libgcc/gthr-posix.h $M2_ROOT_TGT/libgcc/gthr-default.h
 
 ../configure                                       \
     --build=$(../config.guess)                     \
-    --host=$LFS_TGT                                \
+    --host=$M2_ROOT_TGT                                \
     --prefix=/usr                                  \
-    CC_FOR_TARGET=$LFS_TGT-gcc                     \
-    --with-build-sysroot=$LFS                      \
+    CC_FOR_TARGET=$M2_ROOT_TGT-gcc                     \
+    --with-build-sysroot=$M2_ROOT                      \
     --enable-initfini-array                        \
     --disable-nls                                  \
     --disable-multilib                             \
@@ -40,8 +40,8 @@ ln -s ../../../libgcc/gthr-posix.h $LFS_TGT/libgcc/gthr-default.h
     --enable-languages=c,c++
 
 make
-make DESTDIR=$LFS install
-ln -sv gcc $LFS/usr/bin/cc
+make DESTDIR=$M2_ROOT install
+ln -sv gcc $M2_ROOT/usr/bin/cc
 
-cd $LFS
+cd $M2_ROOT
 rm -rf source/$SOURCE_DIR

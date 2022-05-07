@@ -10,9 +10,9 @@ pushd build
                --disable-zlib
   make
 popd
-./configure --prefix=/usr --host=$LFS_TGT --build=$(./config.guess)
+./configure --prefix=/usr --host=$M2_ROOT_TGT --build=$(./config.guess)
 make FILE_COMPILE=$(pwd)/build/src/file
-make DESTDIR=$LFS install
+make DESTDIR=$M2_ROOT install
 
-cd $LFS
+cd $M2_ROOT
 rm -rf source/$SOURCE_DIR

@@ -1,8 +1,5 @@
 #!/bin/bash
 
-set -x
-set -e
-
 # many of these directories already exist, seems mkdir -pv doesn't mind
 mkdir -pv /{boot,home,mnt,opt,srv}
 mkdir -pv /etc/{opt,sysconfig}
@@ -17,12 +14,13 @@ mkdir -pv /usr/{,local/}share/man/man{1..8}
 mkdir -pv /var/{cache,local,log,mail,opt,spool}
 mkdir -pv /var/lib/{color,misc,locate}
 
+# because of these absolute links, this script must be run in the chroot_m2 environment
 ln -sfv /run /var/run
 ln -sfv /run/lock /var/lock
 
+# Using install instead of cp avoids the race conditions for someone else accessing these files between the copy and the
+# permissions change.
 install -dv -m 0750 /root
 install -dv -m 1777 /tmp /var/tmp
-#I had to build temp earlier in s4.2, because I use it for these scripts ...
-#install -dv -m 1777 /var/tmp
 
 

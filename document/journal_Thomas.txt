@@ -3,17 +3,17 @@
   first meeting
 
 2022-02-22 [Tuesday]
-  Robert and Thomas discussed setting up the emulator and use of ssh, now on Youtube:
+  Robert and Thomas discussed setting up the emulator and use of ssh, now on YouTube:
     https://www.youtube.com/watch?v=X5_CRIbRjBo
 
 2022-02-24
   set up an emulator first time in years, screwed up the disk while going through LFS book starting again
 
-  isntalled emulated debian11, got ssh running
+  installed emulated debian11, got ssh running
 
   ----------------------------------------
   creating a new machine
-    because I screwed up the other one by removing package dependecies when removing python3 before
+    because I screwed up the other one by removing package dependencies when removing python3 before
     reinstalling it .., which deleted all sorts of stuff including apparently xfce4.
 
   running virt-manager electing to create a new machine off the menus
@@ -203,7 +203,7 @@
 
          > s4.3_useradd_lfs
 
-                ** should have made the intial user lfs when installing debian
+                ** should have made the initial user lfs when installing debian
 
                 They want the work user's name to be ‘lfs’ mine is thomas,
                 I will change my username rather than setting up another user.
@@ -257,9 +257,9 @@
       > 
       
      for some reason I am getting errors from the 4.2 script that directories already exist, I guess it is
-     a $LFS problem.  Anway, so I am moving $LFS/packages  and $LFS/sources to /mnt to get them out of
+     a $LFS problem.  Anyway, so I am moving $LFS/packages  and $LFS/sources to /mnt to get them out of
      /mnt/lfs == $LFS.  This makes it easier to blow away the mess made by the directory building 
-    .. ah solved  the hearedoc was expanding the forloop LCV
+    .. ah solved  the hearedoc was expanding the for loop LCV
 
    II. chapter 5.2
                 
@@ -411,7 +411,7 @@
 
     section 5.5.1 
 
-        no idea what directory we ares upposed to be in.  I asks to make links to '../lib/ld-linux ...'  The
+        no idea what directory we are supposed to be in.  I asks to make links to '../lib/ld-linux ...'  The
         lib directory exists at $LFS but it has no such file.  source/linux also has a lib directory, but again there
         is no such file.  Are we creating this for later?
 
@@ -515,7 +515,7 @@
           for the virtual machine.
 
           Apparently we are building tools the first time to be capable of doing a cross compile.  However we are not
-          really doing a cross compile, rather the 'cross compile' that we are doing is mainly just to separate the host
+          really doing a cross compile, rather the cross compile' that we are doing is mainly just to separate the host
           system from the target system.
 
           cross linux from scratch for a true cross compile:
@@ -585,10 +585,14 @@
 
 2022-05-07T15:59:09Z[LFS]
 
-  Making this transition to the chroot environment look simple and be executable from an
-  m1 script has been a bit difficult.  I think I have a new approach that makes it look
-  cleaner, and will implement it today.  I will put the scripts in an LFS directory
-  in the execution PATH, so they will be found in either the m1 directory tree, or the
-  m2 directory tree after a chroot.  Then I will call them without having state explicitly
-  where they are found.
+  Making this transition to the chroot environment look simple and be executable from an m1 script has been a bit
+  difficult.  I think I have a new approach that makes it look cleaner, and will implement it today.  I will put the
+  scripts in an LFS directory in the execution PATH, so they will be found in either the m1 directory tree, or the m2
+  directory tree after a chroot.  Then I will call them without having state explicitly where they are found.
+
+  LFS is a system administration exercise. It is not computer science, OS science etc.
+
+  Every Bodhisattva has written a biography of the life of Buddha channeled from his or her enlightened state. Thus in
+  the West we Herman Hesse's Sidartha.  Similarly, everyone Linux administrator must write a paper with his or her
+  interpretation of Linux from Scratch.
 

@@ -1,0 +1,30 @@
+#!/bin/bash
+# Make the top of the m2 tree the root of the file system, then run the script
+
+script="$1"
+if [[ -z "$script" ]];then
+  echo $0 " requires a first argument as a script name"
+  exit
+fi
+if [[ ! -x "$M2_ROOT/usr/sbin/LFS/$script" ]]; then
+  echo "no executable program named \$M2_ROOT/sbin/LFS/" $script
+  exit
+fi
+
+# We will be searching for $script after the chroot, so it must be found in PATH given to env as shown below - and we
+# just checked that $script is indeed there, so this a) looks in the wrong place b) would be redundant even if it did work.
+# 
+# if ! command -v "$script" &> /dev/null; then
+#   echo "$script" " not found in the executables search PATH"
+#   exit
+# fi
+  
+sudo chroot "$M2_ROOT" /usr/bin/env -i   \
+     HOME=/root                  \
+     TERM="$TERM"                \
+     PS1='(lfs chroot) \u:\w\$ ' \
+     PATH=/usr/bin:/usr/sbin:/usr/sbin/LFS  \
+     SOURCE_DIR="$SOURCE_DIR"    \
+     "$script"
+
+

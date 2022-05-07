@@ -8,12 +8,12 @@ if [ -z "$package" ]; then
   exit
 fi
 
-cd $LFS
+cd $M2_ROOT
 if [[ ! -d source ]]; then
     mkdir source
 fi
 cd source
 
-tar -xf "$LFS"/package/"$package"-*.tar*
+tar -xf "$M2_ROOT"/package/"$package"-*.tar*
 export SOURCE_DIR=$(ls -d "$package"-*)
 cd "$SOURCE_DIR"

@@ -3,10 +3,10 @@
 #----------------------------------------
 source package_untar "m4"
 ./configure --prefix=/usr   \
-            --host=$LFS_TGT \
+            --host=$M2_ROOT_TGT \
             --build=$(build-aux/config.guess)
 make
-make DESTDIR=$LFS install
+make DESTDIR=$M2_ROOT install
 
-cd $LFS
+cd $M2_ROOT
 rm -rf source/$SOURCE_DIR

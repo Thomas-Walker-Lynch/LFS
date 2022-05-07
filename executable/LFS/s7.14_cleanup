@@ -17,15 +17,15 @@ rm -rf /tools
 exit
 
 # hmm gave an error, no such mount
-umount $LFS/dev/pts
+umount $M2_ROOT/dev/pts
 
 # yeah none of this stuff is mounted
-umount $LFS/{sys,proc,run,div}
+umount $M2_ROOT/{sys,proc,run,div}
 
 # plenty of free space
 df -h .
 
-cd $LFS
+cd $M2_ROOT
 #tar -cJpf $HOME/lfs-temp-tools-11.1.tar.xz .
 tar -cJpf /home/lfs/archive/lfs-temp-tools-11.1.tar.xz .
 

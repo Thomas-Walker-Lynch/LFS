@@ -4,12 +4,12 @@ source package_untar "bash"
 
 ./configure --prefix=/usr                   \
             --build=$(support/config.guess) \
-            --host=$LFS_TGT                 \
+            --host=$M2_ROOT_TGT                 \
             --without-bash-malloc
 make
-make DESTDIR=$LFS install
-ln -sv bash $LFS/bin/sh
+make DESTDIR=$M2_ROOT install
+ln -sv bash $M2_ROOT/bin/sh
 
-cd $LFS
+cd $M2_ROOT
 rm -rf source/$SOURCE_DIR
 

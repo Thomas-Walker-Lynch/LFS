@@ -1,10 +1,10 @@
 #!/bin/bash
 # book is bad about telling us what working directory we should be in for running these commands...
 
-cd $LFS/source
+cd $M2_ROOT/source
 
 #--------------------------------------------------------------------------------
-# ../lib from $LFS/lib64 is the same as $LFS/lib, however after we do a changeroot a symlink to an absolute location
+# ../lib from $M2_ROOT/lib64 is the same as $M2_ROOT/lib, however after we do a changeroot a symlink to an absolute location
 # relative to the old root would be a bad thing.
 #
 # ../lib/ld-linux-x86-64.so.2 currently does not exist.  It is ok to have a symlink to nowhere, but at some point there
@@ -15,10 +15,10 @@ cd $LFS/source
 # We assume it will exist in the future.
 #
 case $(uname -m) in
-    i?86)   ln -sfv ld-linux.so.2 $LFS/lib/ld-lsb.so.3
+    i?86)   ln -sfv ld-linux.so.2 $M2_ROOT/lib/ld-lsb.so.3
     ;;
-    x86_64) ln -sfv ../lib/ld-linux-x86-64.so.2 $LFS/lib64
-            ln -sfv ../lib/ld-linux-x86-64.so.2 $LFS/lib64/ld-lsb-x86-64.so.3
+    x86_64) ln -sfv ../lib/ld-linux-x86-64.so.2 $M2_ROOT/lib64
+            ln -sfv ../lib/ld-linux-x86-64.so.2 $M2_ROOT/lib64/ld-lsb-x86-64.so.3
     ;;
 esac
 
@@ -34,10 +34,10 @@ echo "rootsbindir=/usr/sbin" > configparms
 
 ../configure                             \
       --prefix=/usr                      \
-      --host=$LFS_TGT                    \
+      --host=$M2_ROOT_TGT                    \
       --build=$(../scripts/config.guess) \
       --enable-kernel=3.2                \
-      --with-headers=$LFS/usr/include    \
+      --with-headers=$M2_ROOT/usr/include    \
       libc_cv_slibdir=/usr/lib
 
 # book says this is normal:
@@ -45,14 +45,14 @@ echo "rootsbindir=/usr/sbin" > configparms
 # *** These auxiliary programs are missing or incompatible versions: msgfmt
 
 make
-make DESTDIR=$LFS install
-sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
+make DESTDIR=$M2_ROOT install
+sed '/RTLDLIST=/s@/usr@@g' -i $M2_ROOT/usr/bin/ldd
 
 #--------------------------------------------------------------------------------
 # run a test compile
 
 echo 'int main(){}' > dummy.c
-$LFS_TGT-gcc dummy.c
+$M2_ROOT_TGT-gcc dummy.c
 readelf -l a.out | grep '/ld-linux'
 
 # If everything is working correctly, there should be no errors, and the output of the last command will be of the form:
@@ -63,9 +63,9 @@ rm -v dummy.c a.out
 #--------------------------------------------------------------------------------
 # not really sure what this is doing.  mkheaders is a program that reads C source and creates headers
 
-$LFS/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders
+$M2_ROOT/tools/libexec/gcc/$M2_ROOT_TGT/11.2.0/install-tools/mkheaders
 
-cd $LFS
+cd $M2_ROOT
 rm -rf source/$SOURCE_DIR
 
 set +x
