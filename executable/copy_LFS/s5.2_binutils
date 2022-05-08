@@ -1,0 +1,29 @@
+#!/bin/bash
+# 
+# hmm.. what about those patches?  We never applied them ...
+# at this point $M2_ROOT has only the packages directory in it 
+#
+
+source package_untar "binutils"
+
+# kind of interesting, making the build directory inside the source directory
+mkdir -v build
+cd       build
+
+# gosh wonder where this was set, perhaps in the environment ... yes
+# > echo $M2_ROOT_TGT
+# x86_64-lfs-linux-gnu
+
+../configure --prefix=$M2_ROOT/tools \
+             --with-sysroot=$M2_ROOT \
+             --target=$M2_ROOT_TGT   \
+             --disable-nls       \
+             --disable-werror
+
+make
+make install
+
+cd $M2_ROOT
+rm -rf source/$SOURCE_DIR
+
+

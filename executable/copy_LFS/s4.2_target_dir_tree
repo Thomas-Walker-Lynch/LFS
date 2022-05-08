@@ -1,0 +1,19 @@
+#!/bin/bash
+# 
+
+mkdir -pv "$M2_ROOT"/{etc,var} "$M2_ROOT"/usr/{bin,lib,sbin,include}
+
+for i in bin lib sbin; do
+    ln -sv usr/$i "$M2_ROOT"/$i
+done
+
+case $(uname -m) in
+    x86_64) mkdir -pv "$M2_ROOT"/lib64 ;;
+esac
+
+mkdir -pv "$M2_ROOT"/tools
+
+# might need to add this if we need the tmp directory sooner
+# install -dv -m 1777 /tmp 
+
+

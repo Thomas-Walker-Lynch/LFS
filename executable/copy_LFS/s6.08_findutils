@@ -1,0 +1,13 @@
+#!/bin/bash
+#----------------------------------------
+source package_untar "findutils"
+
+./configure --prefix=/usr                   \
+            --localstatedir=/var/lib/locate \
+            --host=$M2_ROOT_TGT                 \
+            --build=$(build-aux/config.guess)
+make
+make DESTDIR=$M2_ROOT install
+
+cd $M2_ROOT
+rm -rf source/$SOURCE_DIR

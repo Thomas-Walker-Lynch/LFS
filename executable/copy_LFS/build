@@ -6,9 +6,6 @@ export SHELLOPTS
 set -x
 set -e
 
-# start by cleaning the target media
-wipe_m2
-
 # I don't know how this script would act with the set -e, if it would exit with a correct code, ir
 # if it would exit without a message.  It is a good idea to run it first, but it is not necessary
 # for the build.

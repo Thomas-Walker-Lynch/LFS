@@ -1,0 +1,32 @@
+#!/bin/bash
+# as root
+#
+# book notes:
+# There are two package files whose name starts with “python”. The one to extract from is Python-3.10.2.tar.xz (notice the uppercase first letter). 
+
+umask 0022
+
+# note the capital P and the 3
+cd /source/util-linux*
+
+mkdir -pv /var/lib/hwclock
+
+./configure ADJTIME_PATH=/var/lib/hwclock/adjtime    \
+            --libdir=/usr/lib    \
+            --docdir=/usr/share/doc/util-linux-2.37.4 \
+            --disable-chfn-chsh  \
+            --disable-login      \
+            --disable-nologin    \
+            --disable-su         \
+            --disable-setpriv    \
+            --disable-runuser    \
+            --disable-pylibmount \
+            --disable-static     \
+            --without-python     \
+            runstatedir=/run
+
+# has warnings
+make
+
+make install
+

@@ -1,0 +1,20 @@
+#!/bin/bash
+set -x
+set -e
+
+mkdir -pv $M2_ROOT/{dev,proc,sys,run}
+
+mknod -m 600 $M2_ROOT/dev/console c 5 1
+mknod -m 666 $M2_ROOT/dev/null c 1 3
+
+mount -v --bind /dev $M2_ROOT/dev
+
+mount -v --bind /dev/pts $M2_ROOT/dev/pts
+mount -vt proc proc $M2_ROOT/proc
+mount -vt sysfs sysfs $M2_ROOT/sys
+mount -vt tmpfs tmpfs $M2_ROOT/run
+
+if [ -h $M2_ROOT/dev/shm ]; then
+    mkdir -pv $M2_ROOT/$(readlink $M2_ROOT/dev/shm)
+fi
+

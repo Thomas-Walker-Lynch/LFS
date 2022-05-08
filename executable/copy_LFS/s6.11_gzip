@@ -1,0 +1,8 @@
+#!/bin/bash
+#----------------------------------------
+source package_untar "gzip"
+./configure --prefix=/usr --host=$M2_ROOT_TGT
+make
+make DESTDIR=$M2_ROOT install
+cd $M2_ROOT
+rm -rf source/$SOURCE_DIR

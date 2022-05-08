@@ -1,0 +1,37 @@
+#!/bin/bash
+# This might require sudo_LFS depending on the stage in the build that it is run at.
+# This is dangerous. This is the kind of thing that causes a person to use an emulated m1 machine.
+set -x
+set -e
+
+if [[ -z "$M2_ROOT" ]];then
+  echo $0 " requires that \$M2_ROOT has a value"
+  exit
+fi
+
+# read -p "Are you sure? [y|n]:" -n 1 -r
+# echo    # (optional) move to a new line
+# if [[ ! $REPLY =~ ^[y]$ ]]
+# then
+#     exit 1
+# fi
+  
+pushd "$M2_ROOT"
+echo "now in directory: " "$M2_ROOT"
+
+# Find just bludgons forward causing hundreds of rm {} 'can't delete due to permission' errors when clean_m2
+# is invoked after the m2 directory tree has been chown to root.  So to instead make it stop on the first error:
+#
+# set -e did not cause find to bail on the first rm permisison error.
+# Terminating with a '+' instead of '\;' did not stop find, though this was a Stack Exchange solution.
+# Piping into  xargs instead of using -exec did not stop find and rm from spewing hundreds of no permission errors,
+# though this solution was suggested by many people.
+# The following syntax causes it to stop on the first error, but apparently not all versions of unix find have a -quit.
+# for testing:
+#find . -maxdepth 1 -mindepth 1 ! -name 'package' ! -name 'patch' -print \( -exec echo {} \; -o -quit \)
+
+find . -maxdepth 1 -mindepth 1 ! -name 'package' ! -name 'patch' -type d -exec umount {} \;
+find . -maxdepth 1 -mindepth 1 ! -name 'package' ! -name 'patch' -print \( -exec rm -rf {} \; -o -quit \)
+
+popd
+set +x

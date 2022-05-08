@@ -1,0 +1,48 @@
+cat header s2.2_check_script                        > tt && mv tt  s2.2_check_script                     
+cat header s3.2_raw.txt                             > tt && mv tt  s3.2_raw.txt                          
+cat header s3.2_wget_all_packages                   > tt && mv tt  s3.2_wget_all_packages                
+cat header s3.2_wget_all_patches                    > tt && mv tt  s3.2_wget_all_patches                 
+cat header s4.2_target_dir_tree                     > tt && mv tt  s4.2_target_dir_tree                  
+cat header s5.2_binutils                            > tt && mv tt  s5.2_binutils                         
+cat header s5.3_gcc                                 > tt && mv tt  s5.3_gcc                              
+cat header s5.4_API_headers                         > tt && mv tt  s5.4_API_headers                      
+cat header s5.5_Glibc                               > tt && mv tt  s5.5_Glibc                            
+cat header s5.5_glibc                               > tt && mv tt  s5.5_glibc                            
+cat header s5.6_libstdc++                           > tt && mv tt  s5.6_libstdc++                        
+cat header s6.02_m4                                 > tt && mv tt  s6.02_m4                              
+cat header s6.03_ncurses                            > tt && mv tt  s6.03_ncurses                         
+cat header s6.04_bash                               > tt && mv tt  s6.04_bash                            
+cat header s6.05_coreutils                          > tt && mv tt  s6.05_coreutils                       
+cat header s6.06_diffutils                          > tt && mv tt  s6.06_diffutils                       
+cat header s6.07_file                               > tt && mv tt  s6.07_file                            
+cat header s6.08_findutils                          > tt && mv tt  s6.08_findutils                       
+cat header s6.09_gawk                               > tt && mv tt  s6.09_gawk                            
+cat header s6.10_grep                               > tt && mv tt  s6.10_grep                            
+cat header s6.11_gzip                               > tt && mv tt  s6.11_gzip                            
+cat header s6.12_make                               > tt && mv tt  s6.12_make                            
+cat header s6.13_patch                              > tt && mv tt  s6.13_patch                           
+cat header s6.14_sed                                > tt && mv tt  s6.14_sed                             
+cat header s6.15_tar                                > tt && mv tt  s6.15_tar                             
+cat header s6.16_xz                                 > tt && mv tt  s6.16_xz                              
+cat header s6.17_binutils                           > tt && mv tt  s6.17_binutils                        
+cat header s6.18_gcc                                > tt && mv tt  s6.18_gcc                             
+cat header s7.02_m2_directory_tree_chown_root       > tt && mv tt  s7.02_m2_directory_tree_chown_root    
+cat header s7.03_devices                            > tt && mv tt  s7.03_devices                         
+cat header s7.05_mkdirs                             > tt && mv tt  s7.05_mkdirs                          
+cat header s7.06_essential                          > tt && mv tt  s7.06_essential                       
+cat header s7.07_libstc++                           > tt && mv tt  s7.07_libstc++                        
+cat header s7.08_gettext                            > tt && mv tt  s7.08_gettext                         
+cat header s7.09_Bison                              > tt && mv tt  s7.09_Bison                           
+cat header s7.10_Perl                               > tt && mv tt  s7.10_Perl                            
+cat header s7.11_Python                             > tt && mv tt  s7.11_Python                          
+cat header s7.12_Texinfo                            > tt && mv tt  s7.12_Texinfo                         
+cat header s7.13_Util-linux                         > tt && mv tt  s7.13_Util-linux                      
+cat header s7.14_cleanup                            > tt && mv tt  s7.14_cleanup                         
+cat header s7.2_chown_root                          > tt && mv tt  s7.2_chown_root                       
+cat header s8.3_man-pages                           > tt && mv tt  s8.3_man-pages                        
+cat header s8.4_Iana-Etc                            > tt && mv tt  s8.4_Iana-Etc                         
+cat header s8.5_Glibc                               > tt && mv tt  s8.5_Glibc                            
+
+
+
+

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#----------------------------------------
+source package_untar "ncurses"
+
+sed -i s/mawk// configure
+
+mkdir build
+pushd build
+  ../configure
+  make -C include
+  make -C progs tic
+popd
+
+./configure --prefix=/usr                \
+            --host=$M2_ROOT_TGT              \
+            --build=$(./config.guess)    \
+            --mandir=/usr/share/man      \
+            --with-manpage-format=normal \
+            --with-shared                \
+            --without-debug              \
+            --without-ada                \
+            --without-normal             \
+            --disable-stripping          \
+            --enable-widec
+
+make
+make DESTDIR=$M2_ROOT TIC_PATH=$(pwd)/build/progs/tic install
+echo "INPUT(-lncursesw)" > $M2_ROOT/usr/lib/libncurses.so
+
+cd $M2_ROOT
+rm -rf source/$SOURCE_DIR
+

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source package_untar "linux"
+
+make mrproper
+make headers
+find usr/include -name '.*' -delete
+rm usr/include/Makefile
+cp -rv usr/include $M2_ROOT/usr
+
+cd $M2_ROOT
+rm -rf source/$SOURCE_DIR
+

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -x
+set -e
+source package_untar "gettext"
+
+script_name=$(basename $(mktemp -p $M2_ROOT/tmp -t))
+script_path_0="$M2_ROOT/tmp/$script_name"
+script_path_1="/tmp/$script_name"
+cat > "$script_path_0" <<-EOF
+  set -x
+  set -e
+  cd /source/$SOURCE_DIR
+  echo "In directory: " $(pwd)
+
+  ./configure --disable-shared
+  make
+  cp -v gettext-tools/src/{msgfmt,msgmerge,xgettext} /usr/bin
+
+EOF
+chmod ug+rwx "$script_path_0"
+if chroot_m2 "$script_path_1" ;then
+    cd $M2_ROOT
+    #this has to be done with sudo because the build processes run as root and sometimes modify the source tree
+    sudo rm -rf source/$SOURCE_DIR
+fi
+

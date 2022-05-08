@@ -1,4 +1,9 @@
 #!/bin/bash
 
-sudo --preserve-env "$@"
+command=$(command -v $@)
+if [[ -z "command" ]]; then
+  exit(1)
+fi
+
+sudo --preserve-env "$command"
 

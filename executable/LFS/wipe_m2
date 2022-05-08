@@ -1,6 +1,7 @@
 #!/bin/bash
 # This might require sudo_LFS depending on the stage in the build that it is run at.
 # This is dangerous. This is the kind of thing that causes a person to use an emulated m1 machine.
+set -x
 set -e
 
 if [[ -z "$M2_ROOT" ]];then
@@ -8,14 +9,13 @@ if [[ -z "$M2_ROOT" ]];then
   exit
 fi
 
-read -p "Are you sure? " -n 1 -r
+read -p "Remove all files except package/ on $M2_ROOT? [y|n]:" -n 1 -r
 echo    # (optional) move to a new line
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
-    exit 1
+if [[ ! $REPLY =~ ^[y]$ ]];then
+  exit 1
 fi
   
-pushd "$M2_ROOT" 
+
 
 # Find just bludgons forward causing hundreds of rm {} 'can't delete due to permission' errors when clean_m2
 # is invoked after the m2 directory tree has been chown to root.  So to instead make it stop on the first error:
@@ -25,7 +25,14 @@ pushd "$M2_ROOT"
 # Piping into  xargs instead of using -exec did not stop find and rm from spewing hundreds of no permission errors,
 # though this solution was suggested by many people.
 # The following syntax causes it to stop on the first error, but apparently not all versions of unix find have a -quit.
-find . -maxdepth 1 -mindepth 1 ! -name 'package' ! -name 'patch' \( -exec rm -rf {} \; -o -quit \)
+# for testing:
+#find . -maxdepth 1 -mindepth 1 ! -name 'package' ! -name 'patch' -print \( -exec echo {} \; -o -quit \)
 
-popd
+sudo find $M2_ROOT -maxdepth 1 -mindepth 1 ! -name 'package' ! -name 'patch' -type d -execdir umount {} >& /dev/null '&&' echo "unmounted:" {} \;
+sudo find $M2_ROOT -maxdepth 1 -mindepth 1 ! -name 'package' ! -name 'patch' -print \( -execdir rm -rf {} \; -o -quit \)
 
+sudo chown lfs:lfs $M2_ROOT
+sudo chmod 0755 $M2_ROOT
+
+
+set +x
