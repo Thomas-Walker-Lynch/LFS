@@ -1,4 +1,7 @@
 #!/bin/bash
+echo \#--------------------------------------------------------------------------------
+echo \# $0
+
 # book is bad about telling us what working directory we should be in for running these commands...
 
 cd $M2_ROOT/source

@@ -1,3 +1,6 @@
+#!/bin/bash
+echo \#--------------------------------------------------------------------------------
+echo \# $0
 note the MD5 sums, some were missing
 https://www.linuxfromscratch.org/patches/downloads/
 

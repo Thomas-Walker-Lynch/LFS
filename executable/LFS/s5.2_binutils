@@ -1,4 +1,7 @@
 #!/bin/bash
+echo \#--------------------------------------------------------------------------------
+echo \# $0
+
 # 
 # hmm.. what about those patches?  We never applied them ...
 # at this point $M2_ROOT has only the packages directory in it 
@@ -14,11 +17,12 @@ cd       build
 # > echo $M2_ROOT_TGT
 # x86_64-lfs-linux-gnu
 
+# configure exits with 1, which bash interprets as an error, then set -e stops the script
 ../configure --prefix=$M2_ROOT/tools \
              --with-sysroot=$M2_ROOT \
              --target=$M2_ROOT_TGT   \
              --disable-nls       \
-             --disable-werror
+             --disable-werror  
 
 make
 make install

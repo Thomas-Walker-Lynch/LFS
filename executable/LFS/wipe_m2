@@ -15,8 +15,6 @@ if [[ ! $REPLY =~ ^[y]$ ]];then
   exit 1
 fi
   
-
-
 # Find just bludgons forward causing hundreds of rm {} 'can't delete due to permission' errors when clean_m2
 # is invoked after the m2 directory tree has been chown to root.  So to instead make it stop on the first error:
 #

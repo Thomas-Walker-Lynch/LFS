@@ -1,4 +1,7 @@
 #!/bin/bash
+echo \#--------------------------------------------------------------------------------
+echo \# $0
+
 #seem to have lost my unpack and check the MD5sums script
 
 if [[ ! -d "$M2_ROOT/package" ]]; then

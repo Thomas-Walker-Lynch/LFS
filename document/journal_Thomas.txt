@@ -596,3 +596,14 @@
   the West we Herman Hesse's Sidartha.  Similarly, everyone Linux administrator must write a paper with his or her
   interpretation of Linux from Scratch.
 
+  clean_m2 script is not working, it umounted important dirs in m1 by accident.
+
+  spent about 5:30
+
+2022-05-08T12:39:27Z
+
+  clean_m2 -> wipe_m2 hopefully fixed. Issues with sudo, path, find -exec ..
+
+
+
+  

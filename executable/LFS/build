@@ -2,9 +2,12 @@
 #
 # this is the top level call to build LFS
 #
-export SHELLOPTS
-set -x
+#set -x
 set -e
+export SHELLOPTS
+
+# emacs tramp confused by the shell ops for the sudo password, so lets get this out of the way.
+sudo ls
 
 # start by cleaning the target media
 wipe_m2
@@ -65,4 +68,4 @@ sudo s7.03_devices
 # chroot_m2 s7.06_essential
 
 
-set +x
+#set +x

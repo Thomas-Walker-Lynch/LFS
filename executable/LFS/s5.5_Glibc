@@ -1,8 +1,8 @@
 #!/bin/bash
-# book is bad about telling us what working directory we should be in for running these commands...
+echo \#--------------------------------------------------------------------------------
+echo \# $0
 
-set -x
-set -e
+# book is bad about telling us what working directory we should be in for running these commands...
 
 cd $M2_ROOT/source
 
