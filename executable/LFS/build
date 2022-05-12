@@ -2,12 +2,13 @@
 #
 # this is the top level call to build LFS
 #
+
+# emacs tramp can get confused by the shell set stuff when getting the sudo password, so lets get this out of the way.
+sudo ls $M2_ROOT
+
 #set -x
 set -e
-export SHELLOPTS
-
-# emacs tramp confused by the shell ops for the sudo password, so lets get this out of the way.
-sudo ls
+#export SHELLOPTS
 
 # start by cleaning the target media
 wipe_m2
