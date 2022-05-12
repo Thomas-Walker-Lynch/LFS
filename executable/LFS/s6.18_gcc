@@ -21,14 +21,14 @@ esac
 mkdir -v build
 cd       build
 
-mkdir -pv $M2_ROOT_TGT/libgcc
-ln -s ../../../libgcc/gthr-posix.h $M2_ROOT_TGT/libgcc/gthr-default.h
+mkdir -pv $LFS_TGT/libgcc
+ln -s ../../../libgcc/gthr-posix.h $LFS_TGT/libgcc/gthr-default.h
 
 ../configure                                       \
     --build=$(../config.guess)                     \
-    --host=$M2_ROOT_TGT                                \
+    --host=$LFS_TGT                                \
     --prefix=/usr                                  \
-    CC_FOR_TARGET=$M2_ROOT_TGT-gcc                     \
+    CC_FOR_TARGET=$LFS_TGT-gcc                     \
     --with-build-sysroot=$M2_ROOT                      \
     --enable-initfini-array                        \
     --disable-nls                                  \

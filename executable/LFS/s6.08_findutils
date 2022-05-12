@@ -6,7 +6,7 @@ source package_untar "findutils"
 
 ./configure --prefix=/usr                   \
             --localstatedir=/var/lib/locate \
-            --host=$M2_ROOT_TGT                 \
+            --host=$LFS_TGT                 \
             --build=$(build-aux/config.guess)
 make
 make DESTDIR=$M2_ROOT install

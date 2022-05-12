@@ -46,7 +46,7 @@ echo "rootsbindir=/usr/sbin" > configparms
 
 ../configure                             \
       --prefix=/usr                      \
-      --host=$M2_ROOT_TGT                    \
+      --host=$LFS_TGT                    \
       --build=$(../scripts/config.guess) \
       --enable-kernel=3.2                \
       --with-headers=$M2_ROOT/usr/include    \
@@ -64,7 +64,7 @@ sed '/RTLDLIST=/s@/usr@@g' -i $M2_ROOT/usr/bin/ldd
 # run a test compile
 
 echo 'int main(){}' > dummy.c
-$M2_ROOT_TGT-gcc dummy.c
+$LFS_TGT-gcc dummy.c
 readelf -l a.out | grep '/ld-linux'
 
 # If everything is working correctly, there should be no errors, and the output of the last command will be of the form:
@@ -75,7 +75,7 @@ rm -v dummy.c a.out
 #--------------------------------------------------------------------------------
 # not really sure what this is doing.  mkheaders is a program that reads C source and creates headers
 
-$M2_ROOT/tools/libexec/gcc/$M2_ROOT_TGT/11.2.0/install-tools/mkheaders
+$M2_ROOT/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders
 
 cd $M2_ROOT
 rm -rf source/$SOURCE_DIR

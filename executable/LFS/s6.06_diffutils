@@ -3,7 +3,7 @@ echo \#-------------------------------------------------------------------------
 echo \# $0
 
 source package_untar "diffutils"
-./configure --prefix=/usr --host=$M2_ROOT_TGT
+./configure --prefix=/usr --host=$LFS_TGT
 make
 make DESTDIR=$M2_ROOT install
 cd $M2_ROOT

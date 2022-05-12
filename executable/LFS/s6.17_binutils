@@ -11,7 +11,7 @@ cd build
 ../configure                   \
     --prefix=/usr              \
     --build=$(../config.guess) \
-    --host=$M2_ROOT_TGT            \
+    --host=$LFS_TGT            \
     --disable-nls              \
     --enable-shared            \
     --disable-werror           \

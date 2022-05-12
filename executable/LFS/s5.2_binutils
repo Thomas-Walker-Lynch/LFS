@@ -8,6 +8,8 @@ echo \#
 echo \#
 echo \#
 
+set -e
+
 # 
 # hmm.. what about those patches?  We never applied them ...
 # at this point $M2_ROOT has only the packages directory in it 
@@ -20,13 +22,13 @@ mkdir -v build
 cd       build
 
 # gosh wonder where this was set, perhaps in the environment ... yes
-# > echo $M2_ROOT_TGT
+# > echo $LFS_TGT
 # x86_64-lfs-linux-gnu
 
 # configure exits with 1, which bash interprets as an error, then set -e stops the script
 ../configure --prefix=$M2_ROOT/tools \
              --with-sysroot=$M2_ROOT \
-             --target=$M2_ROOT_TGT   \
+             --target=$LFS_TGT   \
              --disable-nls       \
              --disable-werror  
 

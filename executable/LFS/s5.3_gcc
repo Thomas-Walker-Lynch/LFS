@@ -8,6 +8,8 @@ echo \#
 echo \#
 echo \#
 
+set -e
+
 source package_untar "gcc"
 
 tar -xf "$M2_ROOT"/package/mpfr-*.tar.*
@@ -17,16 +19,6 @@ tar -xf "$M2_ROOT"/package/mpc-*.tar.*
 mv -v mpfr-* mpfr
 mv -v gmp-* gmp
 mv -v mpc-* mpc
-
-# It is uncool to break the source tree.  I would rather do this:
-# but alas, it crashed and burned when I tried it
-# ln -s ../gmp-6.2.1 gmp
-# ln -s ../ mpfr-4.1.0 mpfr
-# ln -s ../mpc-1.2.1 mpc
-
-mv ../gmp* gmp
-mv ../mpfr* mpfr
-mv ../mpc* mpc
 
 case $(uname -m) in
   x86_64)
@@ -39,7 +31,7 @@ mkdir -v build
 cd build
 
 ../configure                  \
-    --target=$M2_ROOT_TGT         \
+    --target=$LFS_TGT         \
     --prefix=$M2_ROOT/tools       \
     --with-glibc-version=2.35 \
     --with-sysroot=$M2_ROOT       \
@@ -64,9 +56,9 @@ make install
 
 cd ..
 cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
-  `dirname $($M2_ROOT_TGT-gcc -print-libgcc-file-name)`/install-tools/include/limits.h
+  `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/install-tools/include/limits.h
 #fyi
-#  > dirname $($M2_ROOT_TGT-gcc -print-libgcc-file-name)
+#  > dirname $($LFS_TGT-gcc -print-libgcc-file-name)
 #  /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/11.2.0
 
 cd $M2_ROOT

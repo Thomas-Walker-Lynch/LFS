@@ -6,7 +6,7 @@ source package_untar "bash"
 
 ./configure --prefix=/usr                   \
             --build=$(support/config.guess) \
-            --host=$M2_ROOT_TGT                 \
+            --host=$LFS_TGT                 \
             --without-bash-malloc
 make
 make DESTDIR=$M2_ROOT install

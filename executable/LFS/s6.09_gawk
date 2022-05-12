@@ -6,7 +6,7 @@ source package_untar "gawk"
 
 sed -i 's/extras//' Makefile.in
 ./configure --prefix=/usr   \
-            --host=$M2_ROOT_TGT \
+            --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
 make
 make DESTDIR=$M2_ROOT install
