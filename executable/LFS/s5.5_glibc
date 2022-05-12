@@ -1,6 +1,15 @@
 #!/bin/bash
+echo \#
+echo \#
+echo \#
 echo \#--------------------------------------------------------------------------------
 echo \# $0
+echo \#
+echo \#
+echo \#
+
+set -e
+
 
 # book is bad about telling us what working directory we should be in for running these commands...
 
@@ -70,5 +79,3 @@ $M2_ROOT/tools/libexec/gcc/$M2_ROOT_TGT/11.2.0/install-tools/mkheaders
 
 cd $M2_ROOT
 rm -rf source/$SOURCE_DIR
-
-set +x
