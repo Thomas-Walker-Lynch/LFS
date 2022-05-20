@@ -1,17 +1,5 @@
 #!/bin/bash
 
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
-
-set -e
-
-source package_untar "binutils"
 if [[ -d build ]]; then
     rm -rf build
 fi
@@ -27,5 +15,4 @@ cd build
     --enable-64-bit-bfd
 make
 make DESTDIR=$M2_ROOT install
-cd $M2_ROOT
-rm -rf source/$SOURCE_DIR
+

@@ -1,16 +1,4 @@
 #!/bin/bash
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
-
-set -e
-
-source package_untar "file"
 
 mkdir build
 pushd build
@@ -24,5 +12,3 @@ popd
 make FILE_COMPILE=$(pwd)/build/src/file
 make DESTDIR=$M2_ROOT install
 
-cd $M2_ROOT
-rm -rf source/$SOURCE_DIR

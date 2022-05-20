@@ -1,4 +1,0 @@
-package=$1
-script=${@:2}
-u $package $script
-

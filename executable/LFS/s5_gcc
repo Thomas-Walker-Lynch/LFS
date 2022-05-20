@@ -1,16 +1,4 @@
 #!/bin/bash
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
-
-set -e
-
-source package_untar "gcc"
 
 tar -xf "$M2_ROOT"/package/mpfr-*.tar.*
 tar -xf "$M2_ROOT"/package/gmp-*.tar.*
@@ -60,7 +48,4 @@ cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
 #fyi
 #  > dirname $($LFS_TGT-gcc -print-libgcc-file-name)
 #  /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/11.2.0
-
-cd $M2_ROOT
-rm -rf source/$SOURCE_DIR
 

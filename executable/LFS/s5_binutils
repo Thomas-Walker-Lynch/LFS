@@ -1,21 +1,4 @@
 #!/bin/bash
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
-
-set -e
-
-# 
-# hmm.. what about those patches?  We never applied them ...
-# at this point $M2_ROOT has only the packages directory in it 
-#
-
-source package_untar "binutils"
 
 # kind of interesting, making the build directory inside the source directory
 mkdir -v build
@@ -35,7 +18,5 @@ cd       build
 make
 make install
 
-cd $M2_ROOT
-rm -rf source/$SOURCE_DIR
 
 

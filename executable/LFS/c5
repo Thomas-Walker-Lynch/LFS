@@ -1,9 +1,16 @@
 #!/bin/bash
 
-s5.2_binutils
-s5.3_gcc
-s5.4_API_headers
-s5.5_glibc
-s5.6_libstdc++
+section="
+binutils 
+gcc
+linux
+glibc
+libstdc++
+"
+
+IFS=$'\n'; for s in $section;do
+  # echo s6_$s
+  eval frame package_scope $s s5_$s
+done
 
 

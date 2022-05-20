@@ -1,15 +1,27 @@
 #!/bin/bash
 
 # give ownership of the m2 directoy tree to root
-s7.02_m2_directory_tree_chown_root
+frame s7.02_m2_directory_tree_chown_root
 
 # build device file in the m2 directory tree
-s7.03_devices
+frame s7.03_devices
 
 # contain further builds to the m2 directory tree
-chroot_m2 s7.05_mkdirs
-chroot_m2 s7.06_essential
+frame chroot_m2 s7.05_mkdirs
+frame chroot_m2 s7.06_essential
+
 chroot_m2 package_scope "gcc" s7.07_libstdc++
+
+section="
+s7.08_gettext
+s7.09_Bison
+s7.10_Perl
+s7.11_Python
+s7.12_Texinfo
+s7.13_Util-linux
+s7.14_cleanup_m2
+
+
 chroot_m2 s7.08_gettext
 chroot_m2 s7.09_Bison
 chroot_m2 s7.10_Perl

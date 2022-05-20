@@ -1,12 +1,4 @@
 #!/bin/bash
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
 
 mkdir -pv "$M2_ROOT"/{etc,var} "$M2_ROOT"/usr/{bin,lib,sbin,include}
 

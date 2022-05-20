@@ -1,8 +1,4 @@
 #!/bin/bash
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-
-source package_untar "ncurses"
 
 sed -i s/mawk// configure
 
@@ -28,7 +24,4 @@ popd
 make
 make DESTDIR=$M2_ROOT TIC_PATH=$(pwd)/build/progs/tic install
 echo "INPUT(-lncursesw)" > $M2_ROOT/usr/lib/libncurses.so
-
-cd $M2_ROOT
-rm -rf source/$SOURCE_DIR
 

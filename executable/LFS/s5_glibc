@@ -1,21 +1,9 @@
 #!/bin/bash
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
 
-set -e
-
-
-# book is bad about telling us what working directory we should be in for running these commands...
-
-cd $M2_ROOT/source
 
 #--------------------------------------------------------------------------------
+# book is bad about telling us what working directory we should be in for running these commands...
+#
 # ../lib from $M2_ROOT/lib64 is the same as $M2_ROOT/lib, however after we do a changeroot a symlink to an absolute location
 # relative to the old root would be a bad thing.
 #
@@ -26,6 +14,7 @@ cd $M2_ROOT/source
 # the book says that is where builds are supposed to start.  Secondly the source file does not exist (the link target).
 # We assume it will exist in the future.
 #
+pushd $M2_ROOT/source
 case $(uname -m) in
     i?86)   ln -sfv ld-linux.so.2 $M2_ROOT/lib/ld-lsb.so.3
     ;;
@@ -33,11 +22,10 @@ case $(uname -m) in
             ln -sfv ../lib/ld-linux-x86-64.so.2 $M2_ROOT/lib64/ld-lsb-x86-64.so.3
     ;;
 esac
+popd
 
 #--------------------------------------------------------------------------------
 # now we build the package
-
-source package_untar "glibc"
 
 mkdir -v build
 cd build
@@ -77,5 +65,3 @@ rm -v dummy.c a.out
 
 $M2_ROOT/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders
 
-cd $M2_ROOT
-rm -rf source/$SOURCE_DIR

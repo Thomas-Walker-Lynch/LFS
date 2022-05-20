@@ -1,16 +1,5 @@
 #!/bin/bash
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
 
-set -e
-
-source package_untar "xz"
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
             --build=$(build-aux/config.guess) \
@@ -18,5 +7,4 @@ source package_untar "xz"
             --docdir=/usr/share/doc/xz-5.2.5
 make
 make DESTDIR=$M2_ROOT install
-cd $M2_ROOT
-rm -rf source/$SOURCE_DIR
+

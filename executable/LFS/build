@@ -29,10 +29,10 @@ c5
 c6
 
 # copy the build scripts into the m2 directory tree
-export_scripts
+# export_scripts
 
 # builds libstdc++ again
-c7
+# c7
 
 
 set +x

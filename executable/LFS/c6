@@ -1,19 +1,26 @@
 #!/bin/bash
 
-s6.02_m4
-s6.03_ncurses
-s6.04_bash
-s6.05_coreutils
-s6.06_diffutils
-s6.07_file
-s6.08_findutils
-s6.09_gawk
-s6.10_grep
-s6.11_gzip
-s6.12_make
-s6.13_patch
-s6.14_sed
-s6.15_tar
-s6.16_xz
-s6.17_binutils
-s6.18_gcc
+section="
+m4
+ncurses
+bash
+coreutils
+diffutils
+file
+findutils
+gawk
+grep
+gzip
+make
+patch
+sed
+tar
+xz
+binutils
+gcc          
+"
+
+IFS=$'\n'; for s in $section;do
+  # echo s6_$s
+  eval frame package_scope $s s6_$s
+done
