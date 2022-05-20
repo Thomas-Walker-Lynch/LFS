@@ -654,3 +654,12 @@
    wonder why s7.14 cleanup deletes the docs
    2022-05-20T00:53:01Z[LFS]
 
+2022-05-20T09:16:12Z[LFS]
+
+    made chapter
+
+    The as_su is misconceived.  sudo only works on stuff found in secure path.  if we add and LFS directory then
+    anything can be run sudo.  Gee, and I started the env discussion with the prompt bug report.  This only affects two
+    scripts in chapter 7 so will move sudo into them.  chroot script is still good because chroot is in the secure path.
+
+    2022-05-20T12:03:31Z[LFS]

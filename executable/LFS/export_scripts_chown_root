@@ -1,4 +1,5 @@
 #!/bin/bash
 
-sudo cp -r $PROJECT_HOME/executable/LFS $M2_ROOT/usr/sbin
-sudo chown root:root $M2_ROOT/usr/sbin/LFS/*
+sudo rm $M2_ROOT/usr/sbin/LFS/*
+sudo mkdir -p $M2_ROOT/usr/sbin/LFS
+sudo cp $PROJECT_HOME/executable/LFS/* $M2_ROOT/usr/sbin/LFS

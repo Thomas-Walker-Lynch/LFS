@@ -2,10 +2,6 @@
 echo \#--------------------------------------------------------------------------------
 echo \# $0
 
-# as root
-
-umask 0022
-
 cd /source/iana-etc*
 cp services protocols /etc
 

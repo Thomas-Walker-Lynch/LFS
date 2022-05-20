@@ -2,44 +2,29 @@
 echo \#--------------------------------------------------------------------------------
 echo \# $0
 
-# as root
+set -e
+set -x
 
-umask 0022
+source package_untar "glibc"
+  patch -Np1 -i /patch/glibc-2.35-fhs-1.patch
 
-cd /source/glibc*
-patch -Np1 -i /patch/glibc-2.35-fhs-1.patch
+  mkdir -v build
+  cd       build
 
-mkdir -v build
-cd       build
+  echo "rootsbindir=/usr/sbin" > configparms
 
-echo "rootsbindir=/usr/sbin" > configparms
+  ../configure --prefix=/usr                            \
+               --disable-werror                         \
+               --enable-kernel=3.2                      \
+               --enable-stack-protector=strong          \
+               --with-headers=/usr/include              \
+               libc_cv_slibdir=/usr/lib
 
-../configure --prefix=/usr                            \
-             --disable-werror                         \
-             --enable-kernel=3.2                      \
-             --enable-stack-protector=strong          \
-             --with-headers=/usr/include              \
-             libc_cv_slibdir=/usr/lib
+  make
+  make check
 
-#failed Python lib file too short error...
-# going back to reinstall Python
-# making again ..
-make
+if [[ ! -z "$SOURCE_DIR" ]]; then
+    rm -rf $M2_ROOT/source/$SOURCE_DIR
+fi
 
-#book: A few failures out of over 4200 tests can generally be ignored.
-#  io/tst-lchmod is known to fail in the LFS chroot environment.
-#  misc/tst-ttyname is known to fail in the LFS chroot environment.
-#  The nss/tst-nss-files-hosts-multi test is known to fail if the system has no non-loopback IP addresses.
-#
-make check
-# gave an error
-# scripts/evaluate-test.sh c++-types-check $? false false > /source/glibc-2.35/build/c++-types-check.test-result
-# cc1plus: fatal error: /dev/fd/63: No such file or directory
-# compilation terminated.
-# repeats many times:
-# cc1plus: fatal error: /dev/fd/63: No such file or directory
-# compilation terminated.
-#
-# tst-thread_local1.cc: In lambda function:
-# tst-thread_local1.cc:173:47: error: no matching function for call to 'std::thread::thread(<brace-enclosed initializer list>)'
-#   173 |       std::thread thr{[func] {func (nullptr);}};
+set +x

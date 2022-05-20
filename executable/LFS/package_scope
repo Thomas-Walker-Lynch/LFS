@@ -1,0 +1,21 @@
+#!/bin/bash
+package=$1
+script=${@:2}
+
+if [[ -z "$package" ]]; then
+   echo $0 "requires a package as a first argument"
+   exit
+fi
+if [[ -z "$script" ]]; then
+   echo $0 "requires a script and parameters after the package name"
+   exit
+fi
+
+source package_untar "$1"
+
+  $script
+
+if [[ ! -z "$SOURCE_DIR" ]]; then
+    rm -rf $M2_ROOT/source/$SOURCE_DIR
+fi
+

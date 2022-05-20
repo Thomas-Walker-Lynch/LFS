@@ -6,7 +6,7 @@
 # emacs tramp can get confused by the shell set stuff when getting the sudo password, so lets get this out of the way.
 sudo ls $M2_ROOT
 
-#set -x
+set -x
 set -e
 #export SHELLOPTS
 
@@ -16,64 +16,23 @@ wipe_m2
 # I don't know how this script would act with the set -e, if it would exit with a correct code, ir
 # if it would exit without a message.  It is a good idea to run it first, but it is not necessary
 # for the build.
-#
-# s2.2_check_script
+# c2
 
 # We already have the packages and patches, so don't need to run this
-#
-# s3.2_wget_all_packages
-# s3.2_wget_all_patches
+# c3
 
-# give some structure to the m2 directory tree
-s4.2_target_dir_tree
+c4
 
-# user space package installs on the m2 directory tree
-#
-s5.2_binutils
-s5.3_gcc
-s5.4_API_headers
-s5.5_glibc
-s5.6_libstdc++
+# installs basic tools on the m2 directory tree
+c5 
 
-s6.02_m4
-s6.03_ncurses
-s6.04_bash
-s6.05_coreutils
-s6.06_diffutils
-s6.07_file
-s6.08_findutils
-s6.09_gawk
-s6.10_grep
-s6.11_gzip
-s6.12_make
-s6.13_patch
-s6.14_sed
-s6.15_tar
-s6.16_xz
-s6.17_binutils
-s6.18_gcc
+c6
 
 # copy the build scripts into the m2 directory tree
 export_scripts
 
-# give ownership of the m2 directoy tree to root
-as_su s7.02_m2_directory_tree_chown_root
+# builds libstdc++ again
+c7
 
-# build device file in the m2 directory tree
-as_su s7.03_devices
 
-# contain further builds to the m2 directory tree
-
-as_su_chroot_m2 s7.05_mkdirs
-as_su_chroot_m2 s7.06_essential
-as_su_chroot_m2 s7.07_libstc++
-as_su_chroot_m2 s7.08_gettext
-as_su_chroot_m2 s7.09_Bison
-as_su_chroot_m2 s7.10_Perl
-as_su_chroot_m2 s7.11_Python
-as_su_chroot_m2 s7.12_Texinfo
-as_su_chroot_m2 s7.13_Util-linux
-as_su_chroot_m2 s7.14_cleanup_m2
-as_su s7.14_cleanup_m1
-
-#set +x
+set +x

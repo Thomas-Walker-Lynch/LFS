@@ -1,9 +1,10 @@
 #!/bin/bash
 # Make the top of the m2 tree the root of the file system, then run the script
+set -x
 
-script="$1"
+script=$@
 if [[ -z "$script" ]];then
-  echo $0 " requires a first argument as a script name"
+  echo $0 "requires script to call"
   exit
 fi
 
@@ -14,6 +15,6 @@ sudo chroot "$M2_ROOT" /usr/bin/env -i\
      TERM="$TERM"                \
      PS1='(lfs chroot) \u:\w\$ ' \
      PATH=/usr/bin:/usr/sbin:/usr/sbin/LFS\
-     "$script"
+     $script
 
-
+set +x
