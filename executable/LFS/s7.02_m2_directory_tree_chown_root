@@ -1,9 +1,20 @@
 #!/bin/bash
+echo \#
+echo \#
+echo \#
 echo \#--------------------------------------------------------------------------------
 echo \# $0
+echo \#
+echo \#
+echo \#
 
+set -e
+set -x
 
-chown -R root:root $M2_ROOT/{usr,lib,var,etc,bin,sbin,tools}
+# -h will change the owner of a symbolic link instead just changing the owner of the target
+chown -hR root:root $M2_ROOT/{usr,lib,var,etc,bin,sbin,tools}
 case $(uname -m) in
-  x86_64) chown -R root:root $M2_ROOT/lib64 ;;
+  x86_64) chown -hR root:root $M2_ROOT/lib64 ;;
 esac
+
+set +x

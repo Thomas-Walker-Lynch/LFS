@@ -2,34 +2,27 @@
 echo \#--------------------------------------------------------------------------------
 echo \# $0
 
-# as root
-#
-# book notes:
-# There are two package files whose name starts with “python”. The one to extract from is Python-3.10.2.tar.xz (notice the uppercase first letter). 
+source package_untar "util-linux"
 
-umask 0022
+  mkdir -pv /var/lib/hwclock
 
-# note the capital P and the 3
-cd /source/util-linux*
+  ./configure ADJTIME_PATH=/var/lib/hwclock/adjtime    \
+              --libdir=/usr/lib    \
+              --docdir=/usr/share/doc/util-linux-2.37.4 \
+              --disable-chfn-chsh  \
+              --disable-login      \
+              --disable-nologin    \
+              --disable-su         \
+              --disable-setpriv    \
+              --disable-runuser    \
+              --disable-pylibmount \
+              --disable-static     \
+              --without-python     \
+              runstatedir=/run
 
-mkdir -pv /var/lib/hwclock
+  make
+  make install
 
-./configure ADJTIME_PATH=/var/lib/hwclock/adjtime    \
-            --libdir=/usr/lib    \
-            --docdir=/usr/share/doc/util-linux-2.37.4 \
-            --disable-chfn-chsh  \
-            --disable-login      \
-            --disable-nologin    \
-            --disable-su         \
-            --disable-setpriv    \
-            --disable-runuser    \
-            --disable-pylibmount \
-            --disable-static     \
-            --without-python     \
-            runstatedir=/run
-
-# has warnings
-make
-
-make install
-
+if [[ ! -z "$SOURCE_DIR" ]]; then
+    rm -rf $M2_ROOT/source/$SOURCE_DIR
+fi

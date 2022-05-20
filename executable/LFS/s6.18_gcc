@@ -1,6 +1,14 @@
 #!/bin/bash
+echo \#
+echo \#
+echo \#
 echo \#--------------------------------------------------------------------------------
 echo \# $0
+echo \#
+echo \#
+echo \#
+
+set -e
 
 source package_untar "gcc"
 

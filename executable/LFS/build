@@ -54,19 +54,26 @@ s6.17_binutils
 s6.18_gcc
 
 # copy the build scripts into the m2 directory tree
-cp -r $PROJECT_HOME/executable/LFS $M2_ROOT/usr/sbin 
+export_scripts
 
 # give ownership of the m2 directoy tree to root
-sudo s7.02_m2_directory_tree_chown_root
+as_su s7.02_m2_directory_tree_chown_root
 
 # build device file in the m2 directory tree
-sudo s7.03_devices
+as_su s7.03_devices
 
 # contain further builds to the m2 directory tree
 
-# run the script up to this point and see if it works ..
-# chroot_m2 s7.05_mkdirs
-# chroot_m2 s7.06_essential
-
+as_su_chroot_m2 s7.05_mkdirs
+as_su_chroot_m2 s7.06_essential
+as_su_chroot_m2 s7.07_libstc++
+as_su_chroot_m2 s7.08_gettext
+as_su_chroot_m2 s7.09_Bison
+as_su_chroot_m2 s7.10_Perl
+as_su_chroot_m2 s7.11_Python
+as_su_chroot_m2 s7.12_Texinfo
+as_su_chroot_m2 s7.13_Util-linux
+as_su_chroot_m2 s7.14_cleanup_m2
+as_su s7.14_cleanup_m1
 
 #set +x

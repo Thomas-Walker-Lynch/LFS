@@ -1,8 +1,13 @@
 #!/bin/bash
+echo \#
+echo \#
+echo \#
 echo \#--------------------------------------------------------------------------------
 echo \# $0
+echo \#
+echo \#
+echo \#
 
-set -x
 set -e
 
 mkdir -pv $M2_ROOT/{dev,proc,sys,run}

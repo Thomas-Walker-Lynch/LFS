@@ -1,0 +1,25 @@
+#!/bin/bash
+# Make the top of the m2 tree the root of the file system, then run the script
+
+script="$1"
+if [[ -z "$script" ]];then
+  echo $0 " requires a first argument as a script name"
+  exit
+fi
+set -x  
+
+# we only need M2_ROOT for the current build script, but I will bring in everything currently in rep_env_initialize
+# the $PROJECT_HOME in the command line comes from the local envireonment
+sudo \
+    MAKEFLAGS='-j12'\
+    M2_ROOT=$M2_ROOT\
+    LFS_TGT=$LFS_TGT\
+    CONFIG_SITE=$CONFIG_SITE\
+    PROJECT_HOME=$PROJECT_HOME\
+    $PROJECT_HOME/executable/LFS/"$script"
+
+
+set +x
+
+
+

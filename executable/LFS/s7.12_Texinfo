@@ -1,24 +1,18 @@
 #!/bin/bash
-echo \#--------------------------------------------------------------------------------
-echo \# $0
 
-# as root
-#
-# book notes:
-# There are two package files whose name starts with “python”. The one to extract from is Python-3.10.2.tar.xz (notice the uppercase first letter). 
+set -x
+# note the capital P 
+source package_untar "texinfo"
 
-umask 0022
+  sed -e 's/__attribute_nonnull__/__nonnull/' \
+      -i gnulib/lib/malloc/dynarray-skeleton.c
 
-# note the capital P and the 3
-cd /source/texinfo*
+  ./configure --prefix=/usr
 
-sed -e 's/__attribute_nonnull__/__nonnull/' \
-    -i gnulib/lib/malloc/dynarray-skeleton.c
+  # has warnings
+  make
+  make install
 
-./configure --prefix=/usr
-
-# has warnings
-make
-
-make install
-
+if [[ ! -z "$SOURCE_DIR" ]]; then
+    rm -rf $M2_ROOT/source/$SOURCE_DIR
+fi

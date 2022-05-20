@@ -604,6 +604,53 @@
 
   clean_m2 -> wipe_m2 hopefully fixed. Issues with sudo, path, find -exec ..
 
+2022-05-12
 
+  /usr/bin/install -c -m 644 ../../gcc/wide-int-print.h /mnt/lfs/usr/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/plugin/include/wide-int-print.h
+  /usr/bin/install -c -m 644 ../../gcc/wide-int.h /mnt/lfs/usr/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/plugin/include/wide-int.h
+  /usr/bin/install -c -m 644 ../../gcc/xcoff.h /mnt/lfs/usr/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/plugin/include/xcoff.h
+  /usr/bin/install -c -m 644 ../../gcc/xcoffout.h /mnt/lfs/usr/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/plugin/include/xcoffout.h
+  /usr/bin/install -c -m 644 b-header-vars /mnt/lfs/usr/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/plugin/include/b-header-vars
+  make[2]: Leaving directory '/mnt/lfs/source/gcc-11.2.0/build/gcc'
+  make[1]: Leaving directory '/mnt/lfs/source/gcc-11.2.0/build'
+  '/mnt/lfs/usr/bin/cc' -> 'gcc'
+  [sudo] password for lfs: 
+  Sorry, try again.
+  [sudo] password for lfs: 
+  sudo: s7.02_m2_directory_tree_chown_root: command not found
 
-  
+  2022-05-12T17:31:39Z[LFS]
+  lfs@debian11§/home/lfs/repo/LFS/executable/LFS§
+  > 
+
+  long session
+
+2022-05-19
+
+   2022-05-19T15:57:12Z
+
+   Continuing the switch over from generated copied scripts using read, to just
+   copying all scripts to sbin/LFS
+
+   Talking with Mary, really where we lost folks is when the time changed due to
+   daylight savings time.  Daylight savings time was on different weeks in
+   Europe and US.  I'm not sure if mountain time has it.  We never seemed to
+   haver the whole group again after this.
+
+   Managed to mess up the permissions on the host system today by running
+       > sudo chown -hR root:root $M2_ROOT/{usr,lib,var,etc,bin,sbin,tools}
+    but root doesn't have $M2_ROOT defined so it expands to nothing then operates
+    on the root file system. Changed to:
+       > sudo M2_ROOT=$M2_ROOT chown -hR root:root $M2_ROOT/{usr,lib,var,etc,bin,sbin,tools}
+
+   debugging the as_su_chroot had a number of error for the new environment.  By setting
+   M2_ROOT to / in the as_su_chroot script, the called script will work in both the
+   host environment and the chroot environment. package_untar was an example script that
+   needed that.
+
+   2022-05-19T19:47:57Z[LFS] dinner ...
+   2022-05-19T23:27:59Z[LFS] .. fix the chapter 7 scripts ...
+
+   wonder why s7.14 cleanup deletes the docs
+   2022-05-20T00:53:01Z[LFS]
+

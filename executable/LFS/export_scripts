@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cp -r $PROJECT_HOME/executable/LFS $M2_ROOT/usr/sbin 

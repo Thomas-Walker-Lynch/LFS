@@ -1,0 +1,20 @@
+#!/bin/bash
+echo \#--------------------------------------------------------------------------------
+echo \# $0
+
+set -x
+umount $M2_ROOT/dev/pts
+umount $M2_ROOT/{sys,proc,run,div}
+df -h .
+
+
+# I guess they want to checkpoint the work thus far, but can we really continue after expanding such a tar file?
+# what about all the devices and mounted stuff?
+#tar -cJpf $HOME/lfs-temp-tools-11.1.tar.xz .
+#
+cd $M2_ROOT
+tar -cJpf /home/lfs/archive/lfs-temp-tools-11.1.tar.xz .
+chown lfs:lfs /home/lfs/archive/lfs-temp-tools-11.1.tar.xz
+df -h .
+
+set +x
