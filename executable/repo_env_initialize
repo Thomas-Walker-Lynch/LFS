@@ -8,19 +8,8 @@ export LC_ALL=POSIX
 # why? surely /bin is already in the path
 # if [ ! -L /bin ]; then PATH=/bin:$PATH; fi
 
-export MAKEFLAGS='-j12'
-export M2_ROOT="/mnt/m2_root"
-export LFS_TGT="$(uname -m)-lfs-linux-gnu"
-export CONFIG_SITE="$M2_ROOT/usr/share/config.site"
-
-# will just refer to these relative to $LFS
-# export PACKAGE=$LFS/package
-# export PATCH=$LFS/patch
-# export SOURCE=$LFS/source
-
 PATH=~/repo/resources/executable:"$PATH"
 PATH=~/repo/LFS/executable:"$PATH"
 PATH=~/repo/LFS/executable/LFS:"$PATH"
-PATH="$M2_ROOT"/tools/bin:$PATH
 export PATH
 

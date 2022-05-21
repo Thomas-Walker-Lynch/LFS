@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 # give some structure to the m2 directory tree
 frame s4.2_target_dir_tree
 

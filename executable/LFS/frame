@@ -1,7 +1,17 @@
 #!/bin/bash
 script=$@
 
-cat >> build.log <<EOF
+if [[ -z "$FRAME_LOG" ]];then
+  export FRAME_LOG="frame.log"
+fi
+if [[ -z "$BUILD_LOG" ]];then
+  export BUILD_LOG="build.log"
+fi
+    
+
+
+
+cat >> "$BUILD_LOG" <<EOF
 
 #--------------------------------------------------------------------------------
 # start of:" $script
@@ -9,16 +19,15 @@ cat >> build.log <<EOF
 #
 EOF
 
-echo "#--------------------------------------------------------------------------------" >> frame.log
-Z >> frame.log
-echo $script >> frame.log
-#/usr/bin/time -a -o frame.log $script 2>> frame.log >> build.log
-{ /usr/bin/time -a -o frame.log $script 2>&1 >&3 3>&- | tee -a frame.log 3>&-; } >> build.log 3>&1
+echo "#--------------------------------------------------------------------------------" >> "$FRAME_LOG"
+Z >> "$FRAME_LOG"
 
-Z >> frame.log
-sleep .01
+echo $script >> "$FRAME_LOG"
+{ /usr/bin/time -a -o "$FRAME_LOG" $script 2>&1 >&3 3>&- | tee -a "$FRAME_LOG" 3>&-; } >> "$BUILD_LOG" 3>&1
 
-cat >> build.log <<EOF
+Z >> "$FRAME_LOG"
+cat >> "$BUILD_LOG" <<EOF
+
 #
 #
 # end of:" $script

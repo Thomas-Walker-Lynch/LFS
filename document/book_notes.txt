@@ -53,6 +53,12 @@ Variations from the Book
        install on the QEMU virtual machine, m1, is already lfs.  Hence I did not need to add the lfs user, and nor did
        I have to fix permissions as described in s4.3.
 
+    *. Chapter 4 has us set the build environment in user lfs's .bashrc.  Instead I have a script for
+       running another script within a given environment.  This gives us the option of having different builds with
+       different environments.  Curiously, chapter4 sets the environment only after setting up the initial
+       m2_root directory tree. Dunno what environment, umask, etc. would apply to that, so these scripts
+       do it the other way around. 
+
     *. I changed $LFS to $M2_ROOT.  In the m1 file system, the m2 root mounts at /mnt/m2_root
 
     *. The book has us untar all the packages in a single step and put them in $M2_ROOT/source.  Instead these scripts

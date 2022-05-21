@@ -1,0 +1,40 @@
+#!/bin/bash
+# this must be sourced into the build
+
+# this comes from section 4.4
+
+script="$@"
+if [[ -z "$script" ]]; then
+  echo "$0 requires a script to call"
+  exit 1
+fi
+
+# wrapped script into a string, then 
+# env -i <(echo "$wrapped_script")
+# ah heck, this does not work
+
+wrapped=$(mktemp)
+if [ $? -ne 0 ]; then
+    echo "$0: couldn't create temp"
+    exit 2
+fi
+chmod u+x "$wrapped"
+
+cat >"$wrapped" <<-EOF
+	set +h
+	umask 022
+	M2_ROOT=/mnt/m2_root
+	LC_ALL=POSIX
+	LFS_TGT=$(uname -m)-lfs-linux-gnu
+	PATH=/usr/bin
+	if [ ! -L /bin ]; then PATH=/bin:$PATH; fi
+	PATH=$M2_ROOT/tools/bin:$PATH
+	CONFIG_SITE=$M2_ROOT/usr/share/config.site
+	export M2_ROOT LCT PATH CONFIG_SITE
+	export MAKEFLAGS='-j12'
+	export BUILD_LOG="build.log"
+	export FRAME_LOG="frame.log"
+	$script
+EOF
+
+env -i "$wrapped"

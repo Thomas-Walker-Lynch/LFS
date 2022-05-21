@@ -1,8 +1,18 @@
 #!/bin/bash
-#
-# This is the top level call to build LFS11 according to the Linux From Scratch, with only a couple of small
-# variations to make it work more easily in scripts.
-#
+
+
+# curiously chapter 4 has us build a directory hierarchy on m2_root, and only after
+# that it sets up the environment.  We will do it the otherway
+
+# this is from sections 4.4 and 4.5
+source build_environment_book
+c4
+
+# will just refer to these directly relative to $M2_ROOT,  i.e. packages are in $M2_ROOT/packages
+# export PACKAGE=$M2_ROOT/package
+# export PATCH=$M2_ROOT/patch
+# export SOURCE=$M2_ROOT/source
+
 
 # emacs tramp can get confused by the shell set stuff when getting the sudo password, so lets get this out of the way.
 sudo ls $M2_ROOT
