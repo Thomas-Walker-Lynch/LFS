@@ -1,4 +1,0 @@
-#!/bin/bash
-
-s3.2_wget_all_packages
-s3.2_wget_all_patches

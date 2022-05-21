@@ -1,5 +1,0 @@
-#!/bin/bash
-
-rm $M2_ROOT/usr/sbin/LFS/*
-mkdir -p $M2_ROOT/usr/sbin/LFS
-cp $PROJECT_HOME/executable/LFS/* $M2_ROOT/usr/sbin/LFS
