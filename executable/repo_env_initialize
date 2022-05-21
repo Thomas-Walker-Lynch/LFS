@@ -9,7 +9,7 @@ export LC_ALL=POSIX
 # if [ ! -L /bin ]; then PATH=/bin:$PATH; fi
 
 export MAKEFLAGS='-j12'
-export M2_ROOT="/mnt/lfs"
+export M2_ROOT="/mnt/m2_root"
 export LFS_TGT="$(uname -m)-lfs-linux-gnu"
 export CONFIG_SITE="$M2_ROOT/usr/share/config.site"
 

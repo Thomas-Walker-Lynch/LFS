@@ -36,10 +36,16 @@ Build Environment
        The point here is that, yes, it is possible to mess up m1.  The simplest way to do so just might be to
        give the environment variable M2_ROOT the wrong value.
 
+    *. Get my scripts from github.com/Thomas-Walker-Lynch/LFS
+
     *. I am using github.com/Thomas-Walker-Lynch/resources.  This includes the directory names 'executable library
        source document' instead of 'bin lib src docs'.  This is for my own home directory environment only, i.e.
-       /home/lfs on m1.  You will see this structure on the github repo.
+       /home/lfs on m1.  You will see this structure on the github repo.  Hence, after logging into m1, my first
+       command is:
 
+            > repo_env LFS
+
+        Then the scripts are in executable/LFS.
 
 Variations from the Book
 
