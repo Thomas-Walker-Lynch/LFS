@@ -8,7 +8,7 @@ sudo ls $M2_ROOT
 
 set -x
 set -e
-frame-0
+#export SHELLOPTS
 
 # start by cleaning the target media
 wipe_m2

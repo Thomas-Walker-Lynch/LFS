@@ -1,0 +1,29 @@
+#!/bin/bash
+echo \#--------------------------------------------------------------------------------
+echo \# $0
+
+
+set -x
+# note the capital P 
+source package_untar "Python"
+
+  cd /source/$SOURCE_DIR
+  echo "In directory: " $(pwd)
+
+
+
+  ./configure --prefix=/usr   \
+              --enable-shared \
+              --without-ensurepip
+
+  # to get Python to make had to build libffi way up in 8.49 hmmmm
+  # still give error that it can not find TCL header, but still seems to build
+  make
+
+  make install
+
+if [[ ! -z "$SOURCE_DIR" ]]; then
+    rm -rf $M2_ROOT/source/$SOURCE_DIR
+fi
+
+set +x

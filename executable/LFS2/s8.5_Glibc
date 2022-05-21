@@ -1,0 +1,30 @@
+#!/bin/bash
+echo \#--------------------------------------------------------------------------------
+echo \# $0
+
+set -e
+set -x
+
+source package_untar "glibc"
+  patch -Np1 -i /patch/glibc-2.35-fhs-1.patch
+
+  mkdir -v build
+  cd       build
+
+  echo "rootsbindir=/usr/sbin" > configparms
+
+  ../configure --prefix=/usr                            \
+               --disable-werror                         \
+               --enable-kernel=3.2                      \
+               --enable-stack-protector=strong          \
+               --with-headers=/usr/include              \
+               libc_cv_slibdir=/usr/lib
+
+  make
+  make check
+
+if [[ ! -z "$SOURCE_DIR" ]]; then
+    rm -rf $M2_ROOT/source/$SOURCE_DIR
+fi
+
+set +x

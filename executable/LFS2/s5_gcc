@@ -1,0 +1,51 @@
+#!/bin/bash
+
+tar -xf "$M2_ROOT"/package/mpfr-*.tar.*
+tar -xf "$M2_ROOT"/package/gmp-*.tar.*
+tar -xf "$M2_ROOT"/package/mpc-*.tar.*
+
+mv -v mpfr-* mpfr
+mv -v gmp-* gmp
+mv -v mpc-* mpc
+
+case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+ ;;
+esac
+
+mkdir -v build
+cd build
+
+../configure                  \
+    --target=$LFS_TGT         \
+    --prefix=$M2_ROOT/tools       \
+    --with-glibc-version=2.35 \
+    --with-sysroot=$M2_ROOT       \
+    --with-newlib             \
+    --without-headers         \
+    --enable-initfini-array   \
+    --disable-nls             \
+    --disable-shared          \
+    --disable-multilib        \
+    --disable-decimal-float   \
+    --disable-threads         \
+    --disable-libatomic       \
+    --disable-libgomp         \
+    --disable-libquadmath     \
+    --disable-libssp          \
+    --disable-libvtv          \
+    --disable-libstdcxx       \
+    --enable-languages=c,c++
+
+make
+make install
+
+cd ..
+cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
+  `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/install-tools/include/limits.h
+#fyi
+#  > dirname $($LFS_TGT-gcc -print-libgcc-file-name)
+#  /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/11.2.0
+

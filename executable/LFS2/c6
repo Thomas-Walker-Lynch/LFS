@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 section="
 m4
 ncurses

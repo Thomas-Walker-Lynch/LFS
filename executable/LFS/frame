@@ -1,15 +1,28 @@
 #!/bin/bash
 script=$@
 
-echo "#--------------------------------------------------------------------------------"
-echo "# start of:" $script
-echo "#"
-echo "#"
+cat >> build.log <<EOF
 
-$script
+#--------------------------------------------------------------------------------
+# start of:" $script
+#
+#
+EOF
 
-echo "#"
-echo "#"
-echo "# end of:" $script
-echo "#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-echo "#"
+echo "#--------------------------------------------------------------------------------" >> frame.log
+Z >> frame.log
+echo $script >> frame.log
+#/usr/bin/time -a -o frame.log $script 2>> frame.log >> build.log
+{ /usr/bin/time -a -o frame.log $script 2>&1 >&3 3>&- | tee -a frame.log 3>&-; } >> build.log 3>&1
+
+Z >> frame.log
+sleep .01
+
+cat >> build.log <<EOF
+#
+#
+# end of:" $script
+#--------------------------------------------------------------------------------
+
+EOF
+
