@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# this is the top level call to build LFS
+# This is the top level call to build LFS11 according to the Linux From Scratch, with only a couple of small
+# variations to make it work more easily in scripts.
 #
 
 # emacs tramp can get confused by the shell set stuff when getting the sudo password, so lets get this out of the way.

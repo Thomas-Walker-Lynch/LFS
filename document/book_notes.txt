@@ -1,7 +1,7 @@
 
 linuxfromscratch.org
 
-Linux from Scratch
+Getting the Linux from Scratch Book
 
     1. through menus:
 
@@ -10,3 +10,117 @@ Linux from Scratch
     2. jump to link: 
 
             https://www.linuxfromscratch.org/lfs/downloads/stable/
+
+General Comments
+
+    1. The book does not follow RFC2119, and this might cause some ambiguity.
+
+    2. My top level script is currently 'book', and then there are scripts for chapters,  c2, c3, ... and for
+       sections.
+
+
+Build Environment
+
+    *. The name of the computer where I do the build work described in the book is called 'm1', or machine 1.  When the
+       LFS we are building is successful booted, will run on the machine called 'm2', or machine 2.
+
+       Hence we are using m1 to build the root files sytem for m2.
+
+       My m1 machine is emulated.  The host machine running the emulator is called m0, strangely enough.  On m0 pretty
+       much the only thing I do is run virt-manager to start m1, and then run emacs and use tramp to ssh into m1 as the
+       lfs user.  My lfs user has sudo priveleges. I also setup sshd to allow me to ssh into m1 as root.
+
+    *. On two occasions I messed up the m1 machine while working on the LFS scripts.  Both times I was able to fix it
+       and did not have restore the OS from a snapshot, but it was close.  Actually, I suspect m1 is a bit messed up
+       now, but the only thing it is used for is building LFS, so until it no longer works for that I will leave it be.
+       The point here is that, yes, it is possible to mess up m1.  The simplest way to do so just might be to
+       give the environment variable M2_ROOT the wrong value.
+
+    *. I am using github.com/Thomas-Walker-Lynch/resources.  This includes the directory names 'executable library
+       source document' instead of 'bin lib src docs'.  This is for my own home directory environment only, i.e.
+       /home/lfs on m1.  You will see this structure on the github repo.
+
+
+Variations from the Book
+
+    *. In chapter 4 the book has us create a user called 'lfs'. However, the initial user I created with the Debian
+       install on the QEMU virtual machine, m1, is already lfs.  Hence I did not need to add the lfs user, and nor did
+       I have to fix permissions as described in s4.3.
+
+    *. I changed $LFS to $M2_ROOT.  In the m1 file system, the m2 root mounts at /mnt/m2_root
+
+    *. The book has us untar all the packages in a single step and put them in $M2_ROOT/source.  Instead these scripts
+       untar packages one at a time and clean up after each build.  The directory the package is untarred into will be
+       $M2_ROOT/source/$SOURCE_DIR.
+
+    *. The book has us chroot once and then work in the new environment.  Herein there is a chroot_m2 command which runs
+       a script in the chroot environment. It is applied to each script to be run there.
+
+       Initially I had scripts copy themselves over into the chroot environment and then run, but some scripts call
+       other scripts, so that did not work well.  So now there is an export_scripts command that copies all the
+       build scripts to /usr/sbin/LFS in the chroot environment.  This command must be run first or after script
+       changes.
+
+       $M2_ROOT is set to '/' (slash) in the chroot environment.  Hence a script can be written in a fashion
+       to work in either environment.  'package_untar' is such a script that works both before and after chroot
+       is called.
+
+    *. Most of the chapters seem to assume that we have untarred the package and are in the $SOURCE_DIR directory.
+       However, in opening of chapter 5 there is apparently some code to be run in /mnt/lfs/source rather than
+       inside $SOURCE_DIR.  I put that code in with a package build with a 'pushd ..'  and 'popd'  around it.
+
+
+--------------------------------------------------------------------------------------
+still neeed to apply patches s3.3
+
+s7.07_libstdc++
+  #the book has this, but gthr-posix.h is inside libgcc
+  #ln -s gthr-posix.h libgcc/gthr-default.h
+  ln -s libgcc/gthr-posix.h libgcc/gthr-default.h
+  ...
+    #this has to be done with sudo because the build process runs as root and it modifies the source tree
+    sudo rm -rf source/$SOURCE_DIR
+
+--------------------------------------------------------------------------------------
+1. disk format
+
+    -bash-5.1# fdisk /dev/vda
+    Command (m for help): p
+    Disk /dev/vda: 40 GiB, 42949672960 bytes, 83886080 sectors
+    Units: sectors of 1 * 512 = 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    I/O size (minimum/optimal): 512 bytes / 512 bytes
+    Disklabel type: dos
+    Disk identifier: 0x8326f0e6
+
+    Device     Boot    Start      End  Sectors  Size Id Type
+    /dev/vda1  *        2048 27342847 27340800   13G 83 Linux
+    /dev/vda2       27342848 42967039 15624192  7.5G 82 Linux swap / Solaris
+    /dev/vda3       42967040 83884031 40916992 19.5G 83 Linux
+
+    -bash-5.1# fdisk --bytes /dev/vda
+    Command (m for help): p
+    Disk /dev/vda: 40 GiB, 42949672960 bytes, 83886080 sectors
+    Units: sectors of 1 * 512 = 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    I/O size (minimum/optimal): 512 bytes / 512 bytes
+    Disklabel type: dos
+    Disk identifier: 0x8326f0e6
+
+    Device     Boot    Start      End  Sectors        Size Id Type
+    /dev/vda1  *        2048 27342847 27340800 13998489600 83 Linux
+    /dev/vda2       27342848 42967039 15624192  7999586304 82 Linux swap / Solaris
+    /dev/vda3       42967040 83884031 40916992 20949499904 83 Linux
+
+    -bash-5.1# mount | grep vda
+    /dev/vda1 on / type ext4 (rw,relatime,errors=remount-ro)
+    /dev/vda3 on /mnt/lfs type ext4 (rw,relatime)
+
+2. name the user 'lfs' -- the book has a person create a user by this name in chapter 4, probably
+   best to just set this to be the main user when setting up the emulator
+
+3. the book will build the system under /mnt/lfs,   I started with sources under /mnt/sources and
+   /mnt/packages.  
+
+
+
