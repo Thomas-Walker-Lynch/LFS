@@ -1,7 +1,6 @@
 #!/bin/bash
 # this must be sourced into the build
-
-# this comes from section 4.4
+# except for the log file variables this comes from section 4.4
 
 script="$@"
 if [[ -z "$script" ]]; then

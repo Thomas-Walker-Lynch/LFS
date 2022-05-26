@@ -1,0 +1,14 @@
+Sections must be run inside of an environment.  So for example to
+build libstdc++ from the gcc package:
+
+> environment_book gcc s5_libstdc++
+
+Framming will add timers and logging:
+
+> environment_book frame package_scope gcc s5_libstdc++
+
+'environment_book' tells framming to put the stdout and stderr into 'build.log' 
+and put framing and stderr into 'frame.log'
+
+
+

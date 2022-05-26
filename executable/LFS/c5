@@ -7,7 +7,6 @@ binutils
 gcc
 linux
 glibc
-libstdc++
 "
 
 IFS=$'\n'; for s in $section;do
@@ -15,4 +14,6 @@ IFS=$'\n'; for s in $section;do
   eval frame package_scope $s s5_$s
 done
 
+# libstdc++ is found in the gcc package:
+frame package_scope gcc s5_libstdc++
 

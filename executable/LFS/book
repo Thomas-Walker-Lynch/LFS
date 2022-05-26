@@ -1,46 +1,32 @@
 #!/bin/bash
-
-
-# curiously chapter 4 has us build a directory hierarchy on m2_root, and only after
-# that it sets up the environment.  We will do it the otherway
-
-# this is from sections 4.4 and 4.5
-source build_environment_book
-c4
-
-# will just refer to these directly relative to $M2_ROOT,  i.e. packages are in $M2_ROOT/packages
-# export PACKAGE=$M2_ROOT/package
-# export PATCH=$M2_ROOT/patch
-# export SOURCE=$M2_ROOT/source
-
-
-# emacs tramp can get confused by the shell set stuff when getting the sudo password, so lets get this out of the way.
-sudo ls $M2_ROOT
-
 set -x
 set -e
-frame-0
 
-# start by cleaning the target media
+# reset the log files and timers
+frame-0
+# clean the target media
 wipe_m2
 
-# I don't know how this script would act with the set -e, if it would exit with a correct code, ir
-# if it would exit without a message.  It is a good idea to run it first, but it is not necessary
-# for the build.
+# book starts from here:
+
+# does this script return a true or false result??  Can't tell. 
 # c2
 
 # We already have the packages and patches, so don't need to run this
 # c3
 
+# note the environment stuff described in s4.4 and s4.5 is set by calling through an environment wrapper such as
+# 'evironment_book'
 c4
 
 # installs basic tools on the m2 directory tree
 c5 
 
+# user space build stuff
 c6
 
-# copy the build scripts into the m2 directory tree
-# export_scripts
+# copy the build scripts into the m2 directory tree so that chroot calls will work
+export_scripts
 
 # builds libstdc++ again
 # c7

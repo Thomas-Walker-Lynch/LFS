@@ -1,13 +1,6 @@
 #!/bin/bash
 # this is sourced into the environment with the repo_env command
 
-set +h
-umask 0022
-export LC_ALL=POSIX
-
-# why? surely /bin is already in the path
-# if [ ! -L /bin ]; then PATH=/bin:$PATH; fi
-
 PATH=~/repo/resources/executable:"$PATH"
 PATH=~/repo/LFS/executable:"$PATH"
 PATH=~/repo/LFS/executable/LFS:"$PATH"

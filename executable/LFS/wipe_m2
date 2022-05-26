@@ -32,5 +32,4 @@ sudo find $M2_ROOT -maxdepth 1 -mindepth 1 ! -name 'package' ! -name 'patch' -pr
 sudo chown lfs:lfs $M2_ROOT
 sudo chmod 0755 $M2_ROOT
 
-
 set +x
