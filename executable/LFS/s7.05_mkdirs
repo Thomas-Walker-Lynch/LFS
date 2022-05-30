@@ -24,7 +24,7 @@ mkdir -pv /usr/{,local/}share/man/man{1..8}
 mkdir -pv /var/{cache,local,log,mail,opt,spool}
 mkdir -pv /var/lib/{color,misc,locate}
 
-# because of these absolute links, this script must be run in the chroot_m2 environment
+# because of these absolute links, this script must be run in the m2_chroot environment
 ln -sfv /run /var/run
 ln -sfv /run/lock /var/lock
 

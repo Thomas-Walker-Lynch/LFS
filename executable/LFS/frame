@@ -1,4 +1,6 @@
 #!/bin/bash
+# adds timing information and logging
+#
 script=$@
 
 if [[ -z "$FRAME_LOG" ]];then
@@ -8,9 +10,6 @@ if [[ -z "$BUILD_LOG" ]];then
   export BUILD_LOG="build.log"
 fi
     
-
-
-
 cat >> "$BUILD_LOG" <<EOF
 
 #--------------------------------------------------------------------------------

@@ -5,7 +5,7 @@ set -e
 # reset the log files and timers
 frame-0
 # clean the target media
-wipe_m2
+m2_wipe
 
 # book starts from here:
 
@@ -28,7 +28,7 @@ c6
 # copy the build scripts into the m2 directory tree so that chroot calls will work
 export_scripts
 
-# builds libstdc++ again
+# chroot environment builds
 # c7
 
 

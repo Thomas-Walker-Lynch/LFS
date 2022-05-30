@@ -29,7 +29,7 @@ cat >"$wrapped" <<-EOF
 	if [ ! -L /bin ]; then PATH=/bin:$PATH; fi
 	PATH=$M2_ROOT/tools/bin:$PATH
 	CONFIG_SITE=$M2_ROOT/usr/share/config.site
-	export M2_ROOT LCT PATH CONFIG_SITE
+	export M2_ROOT LC_ALL LFS_TGT PATH CONFIG_SITE
 	export MAKEFLAGS='-j12'
 	export BUILD_LOG="build.log"
 	export FRAME_LOG="frame.log"

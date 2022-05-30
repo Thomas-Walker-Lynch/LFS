@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 # kind of interesting, making the build directory inside the source directory
 mkdir -v build
@@ -18,5 +19,4 @@ cd       build
 make
 make install
 
-
-
+set +x

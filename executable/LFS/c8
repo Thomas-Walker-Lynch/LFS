@@ -2,8 +2,8 @@
 
 
 # contain further builds to the m2 directory tree
-chroot_m2 s8.3_man-pages
-chroot_m2 s8.4_Iana-Etc
-chroot_m2 s8.5_Glibc
+m2_chroot s8.3_man-pages
+m2_chroot s8.4_Iana-Etc
+m2_chroot s8.5_Glibc
 
 
