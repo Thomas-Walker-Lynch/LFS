@@ -10,6 +10,10 @@ Framming will add timers and logging:
 'environment_book' tells framming to put the stdout and stderr into 'build.log' 
 and put framing and stderr into 'frame.log'
 
+-----
+use auto-revert-tail-mode in emacs for watching frame.log and build.log .. but does not work in tramp.
+tail -f in shell works of course
+
 ----------
 
 ---

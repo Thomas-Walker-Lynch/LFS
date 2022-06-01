@@ -1,16 +1,6 @@
 #!/bin/bash
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
 
-set -e
 set -x 
-
 #the book has this, 
 #ln -s gthr-posix.h libgcc/gthr-default.h
 #but gthr-posix.h is inside libgcc

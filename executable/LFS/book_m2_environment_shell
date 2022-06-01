@@ -1,5 +1,5 @@
 #!/bin/bash
 
-sudo rm $M2_ROOT/usr/sbin/LFS/*
+sudo rm -f $M2_ROOT/usr/sbin/LFS/*
 sudo mkdir -p $M2_ROOT/usr/sbin/LFS
 sudo cp $PROJECT_HOME/executable/LFS/* $M2_ROOT/usr/sbin/LFS

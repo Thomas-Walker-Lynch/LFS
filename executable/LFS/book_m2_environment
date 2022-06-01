@@ -1,0 +1,59 @@
+#!/bin/bash
+# Make the top of the m2 tree the root of the file system, then run the script
+set -x
+
+script=$@
+if [[ -z "$script" ]];then
+  echo $0 "requires script to call"
+  exit
+fi
+
+echo "setting root of file system to:" "$M2_ROOT"
+
+wrapped=$(mktemp)
+if [ $? -ne 0 ]; then
+    echo "$0: couldn't create temp"
+    exit 2
+fi
+chmod u+x "$wrapped"
+
+# Variables with the $ expand now.  Those with \$ remain as part of the document.
+cat >"$wrapped" <<-EOF
+
+	# according to the book	   
+	HOME=/root		    
+	TERM="$TERM"		    
+	# set PS below ...  PS1='(lfs chroot) u:w$ ' 
+	PATH=/usr/bin:/usr/sbin
+	export HOME TERM PATH
+
+        # other stuff it seems we might need
+	umask 022
+	M2_ROOT=/		    
+	LC_ALL=POSIX
+	PATH=/usr/sbin/LFS:"\$PATH"
+	MAKEFLAGS='-j12'  # this might cause problems for some builds
+	export M2_ROOT LC_ALL PATH MAKEFLAGS 
+
+        # repo environment
+	PROJECT="lfs-m2"
+	export PROJECT
+
+	# for our build scripts
+	BUILD_LOG="build.log"
+	FRAME_LOG="frame.log"
+	export BUILD_LOG FRAME_LOG        
+
+	# prompt so that dirtrack works in emacs, timezone
+	PS1=$PS1
+	PS2=$PS2
+	TZ=UTC
+	TIME_STYLE=long-iso
+        export PS1 PS2 TZ TIME_STYLE
+
+	$script
+EOF
+
+sudo chroot "$M2_ROOT" /usr/bin/env -i "$wrapped"
+
+set +x

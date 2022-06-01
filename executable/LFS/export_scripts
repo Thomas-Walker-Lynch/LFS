@@ -3,3 +3,5 @@
 rm $M2_ROOT/usr/sbin/LFS/*
 mkdir -p $M2_ROOT/usr/sbin/LFS
 cp $PROJECT_HOME/executable/LFS/* $M2_ROOT/usr/sbin/LFS
+# the time stamp script:
+cp /usr/local/bin/Z $M2_ROOT/usr/sbin/LFS

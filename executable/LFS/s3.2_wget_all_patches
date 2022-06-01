@@ -1,19 +1,11 @@
 #!/bin/bash
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
 
 #seem to have lost my unpack and check the MD5sums script
 
-if [[ ! -d "$M2_ROOT/patch" ]]; then
-    mkdir "$M2_ROOT/patch"
-fi
-pushd "$M2_ROOT/patch"
+# if [[ ! -d "$M2_ROOT/patch" ]]; then
+#     mkdir "$M2_ROOT/patch"
+# fi
+# pushd "$M2_ROOT/patch"
 
 wget https://www.linuxfromscratch.org/patches/lfs/11.1/binutils-2.38-lto_fix-1.patch
 wget https://www.linuxfromscratch.org/patches/lfs/11.1/bzip2-1.0.8-install_docs-1.patch

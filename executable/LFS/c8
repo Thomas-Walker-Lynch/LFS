@@ -1,9 +1,93 @@
 #!/bin/bash
 
+built="
+man-pages
+iana-etc
+glibc
+zlib
+bzip2
+"
 
-# contain further builds to the m2 directory tree
-m2_chroot s8.3_man-pages
-m2_chroot s8.4_Iana-Etc
-m2_chroot s8.5_Glibc
+section="
+xz
+zstd
+file
+readline
+m4
+bc
+flex
+tcl
+expect
+dejagnu
+binutils
+"
 
+prevenir="
+gmp
+mpfr
+mpc
+attr
+acl
+libcap
+shadow
+gcc
+pkg-config
+ncurses
+sed
+psmisc
+gettext
+bison
+grep
+bash
+libtool
+gdbm
+gperf
+expat
+inetutils
+less
+perl
+xml
+intltool
+autoconf
+automake
+openssl
+kmod
+libelf
+libffi
+Python
+ninja
+meson
+coreutils
+check
+diffutils
+gawk
+findutils
+groff
+grub
+gzip
+iproute2
+kbd
+libpipeline
+make
+patch
+tar
+texinfo
+vim
+eudev
+man-db
+procps-ng
+util-linux
+e2fsprogs
+sysklogd
+sysvinit
+"
+
+IFS=$'\n'; for s in $section;do
+  # echo s7_$s
+  frame m2_chroot package_scope $s s8_$s
+done
+
+#strip debug info (if desired)
+#cleanup
+# s8.78_cleanup
 
