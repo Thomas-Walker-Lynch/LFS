@@ -1,5 +1,4 @@
 #!/bin/bash
 
-sudo rm -f $M2_ROOT/usr/sbin/LFS/*
-sudo mkdir -p $M2_ROOT/usr/sbin/LFS
-sudo cp $PROJECT_HOME/executable/LFS/* $M2_ROOT/usr/sbin/LFS
+book_m2_environment bash --norc $@
+

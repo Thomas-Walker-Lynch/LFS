@@ -8,7 +8,9 @@ if [[ -z "$script" ]];then
   exit
 fi
 
-echo "setting root of file system to:" "$M2_ROOT"
+if [[ -d "$PROJECT_HOME/executable/LFS" ]]; then
+  export_scripts
+fi
 
 wrapped=$(mktemp)
 if [ $? -ne 0 ]; then

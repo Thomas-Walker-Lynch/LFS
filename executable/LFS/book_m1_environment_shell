@@ -1,4 +1,4 @@
 #!/bin/bash
 
-environment_book bash --norc $@
+book_m1_environment bash --norc $@
 
