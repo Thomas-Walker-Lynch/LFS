@@ -1,0 +1,4 @@
+#!/bin/bash
+#
+
+tar -tzf ~/user/archive/book_m1_checkpoint.tgz $M2_ROOT

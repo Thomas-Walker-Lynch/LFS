@@ -12,7 +12,7 @@ esac
 
 mkdir -pv "$M2_ROOT"/tools
 
-# might need to add this if we need the tmp directory sooner
-# install -dv -m 1777 /tmp 
+# book calls for creating this directory later, but we need it earlier for our scripts
+install -dv -m 1777 "$M2_ROOT"/tmp 
 
 

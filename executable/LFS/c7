@@ -1,17 +1,12 @@
 #!/bin/bash
 
-# The book does not do s7.02 or s7.03 in the ch_root space, but I don't see why that can't be done that way This way I
-# can keep chapter 7 together in one script.
-
-frame s7.02_m2_chown_root
-# build device files in the m2 directory tree
-frame s7.03_devices
+# s7.02 or s7.03 are part of book_transition
 
 # contain further builds to the m2 directory tree
-frame m2_chroot s7.05_mkdirs
-frame m2_chroot s7.06_essential
+frame s7.05_mkdirs
+frame s7.06_essential
 
-frame m2_chroot package_scope "gcc" s7.07_libstdc++
+frame package_scope "gcc" s7.07_libstdc++
 
 section="
 gettext
@@ -24,10 +19,9 @@ util-linux
 
 IFS=$'\n'; for s in $section;do
   # echo s7_$s
-  frame m2_chroot package_scope $s s7_$s
+  frame package_scope $s s7_$s
 done
 
+s7.14_cleanup
 
-m2_chroot s7.14_m2_cleanup
-s7.14_m1_cleanup
 

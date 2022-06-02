@@ -1,4 +1,10 @@
 #!/bin/bash
 
-book_m2_environment bash --norc $@
+if [[ -z "M2_ROOT" ]]; then
+  book_m1_environment book_m2_environment bash --norc $@
+else
+  book_m2_environment bash --norc $@
+fi
+
+
 

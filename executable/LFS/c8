@@ -84,7 +84,7 @@ sysvinit
 
 IFS=$'\n'; for s in $section;do
   # echo s7_$s
-  frame m2_chroot package_scope $s s8_$s
+  frame package_scope $s s8_$s
 done
 
 #strip debug info (if desired)

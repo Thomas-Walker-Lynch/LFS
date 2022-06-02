@@ -1,14 +1,4 @@
 #!/bin/bash
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
-
-set -e
 
 # many of these directories already exist, seems mkdir -pv doesn't mind
 mkdir -pv /{boot,home,mnt,opt,srv}

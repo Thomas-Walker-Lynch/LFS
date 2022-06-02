@@ -1,5 +1,5 @@
 #!/bin/bash
-# this must be sourced into the build
+# bash without -i resets PS1
 # except for the log file variables this comes from section 4.4
 
 script="$@"
@@ -42,8 +42,8 @@ cat >"$wrapped" <<-EOF
 	# repo environment
 	REPO_HOME=$REPO_HOME
 	PROJECT_HOME=$PROJECT_HOME
-	PROJECT=$PROJECT
-	PATH="\$REPO_HOME"/executable/LFS/:"\$PATH" # chroot has a different path for finding the build scripts
+	PROJECT="$PROJECT-book-m1"
+	PATH="\$PROJECT_HOME"/executable/LFS/:"\$PATH" # chroot has a different path for finding the build scripts
 	export REPO_HOME PROJECT_HOME PROJECT PATH
 
 	# for our build scripts
@@ -52,11 +52,11 @@ cat >"$wrapped" <<-EOF
 	export BUILD_LOG FRAME_LOG	  
 
 	# prompt so that dirtrack works in emacs, timezone
-	PS1="$PPS1"
-	PS2="$PPS2"
+        PS1='\n\$(/usr/local/bin/Z)[\$PROJECT]\n\u@\h§\$PWD§\n> '
+        PS2='>> '
 	TZ=UTC
 	TIME_STYLE=long-iso
-	export PS1 PS2 TZ TIME_STYLE
+        export PPS1 PPS2 PS1 PS2 TZ TIME_STYLE
 
 	$script
 EOF

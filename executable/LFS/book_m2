@@ -1,35 +1,8 @@
 #!/bin/bash
 set -x
-set -e
 
-# reset the log files and timers
 frame-0
-# clean the target media
-m2_wipe
-
-# book starts from here:
-
-# does this script return a true or false result??  Can't tell. 
-# c2
-
-# We already have the packages and patches, so don't need to run this
-# c3
-
-# note the environment stuff described in s4.4 and s4.5 is set by calling through an environment wrapper such as
-# 'evironment_book'
-c4
-
-# installs basic tools on the m2 directory tree
-c5 
-
-# user space build stuff
-c6
-
-# copy the build scripts into the m2 directory tree so that chroot calls will work
-export_scripts
-
-# chroot environment builds
-# c7
-
+frame c7
+#frame c8
 
 set +x
