@@ -1,0 +1,37 @@
+#!/bin/bash
+rm test_2_work/*.out
+
+# this is an intersting test, because commands are linked by ';'  the fds all go to the same places as the corresponding
+# fds for the list.
+# 0.out has the stderr from all three gen commands, in order
+# 1.out has the stdout from all three gen commands, in order
+(./gen; ./gen2; ./gen3) 2>test_2_work/0.out  1>test_2_work/1.out
+
+# fd 1 for a list come from the last command in the pipe for that list.
+# fd 2 for all commands in the list goes to the same place that fd 2 for the list goes
+# higher number fds work the same way
+# 2.out has stderr from all three commands in the pipe, though strangely from gen3 first
+# 3.out has only the stdout from gen3
+(./gen |./gen2 | ./gen3) 2>test_2_work/2.out  1>test_2_work/3.out
+
+# this swaps stdout and stderr
+# fd 3 destination smae as fd1 (stdout fifo)
+# fd 1 destination smae as that for fd 2 (stderr fifo)
+# fd 2 destination same as that for fd 3 (stdout fifo)
+# so 4.out says "stdout" although it comes from fd 2
+# and 5.out says "stderr" although it comes from fd 1
+(./gen 3>&1 1>&2 2>&3 | cat | cat ) 2>test_2_work/4.out  1>test_2_work/5.out
+
+# what if we swap twice?
+# surprisingly, this works as expected, and this is the same as no swap, 8.out has "stderr", while 8.out has "stdout"
+(./gen 3>&1 1>&2 2>&3 3>&1 1>&2 2>&3 | cat | cat ) 2>test_2_work/8.out  1>test_2_work/9.out
+
+# data sent to fd 1 for gen goes to the pipe fifo and appears as stdin for the middle cat
+# destination fd 1 for the middle cat is the same as fd 2 for the middle dat
+# nothing appears on stdin for the last cat, so 7.out will be empty
+# 6.out will have both "stderr3" and "stdout3" written in it
+(./gen3 | cat 1>&2 | cat ) 2>test_2_work/6.out  1>test_2_work/7.out
+
+#terminal
+# nothing
+diff -qr test_2_work test_2_reference

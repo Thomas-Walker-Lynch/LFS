@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for d in test_*_work; do
+  pushd $d
+  rm -f *.out
+  popd
+done

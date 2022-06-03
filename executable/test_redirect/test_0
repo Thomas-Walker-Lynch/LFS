@@ -1,0 +1,27 @@
+#!/bin/bash
+# test the generator
+
+# fd 1 is stdout
+# fd 2 is stderr
+
+# fd 1 destination: 0.out
+# fd 2 destination: terminal
+./gen 1>test_0_work/0.out
+
+# fd 1 destination: terminal
+# fd 2 destination: 1.out
+./gen 2>test_0_work/1.out
+
+#both fd 1 and fd 2 goes into test_0_work/2.out
+# fd 1 destination: 2.out
+# fd 2 destination: same as current destination of fd1, which is 2.out
+./gen 1>test_0_work/2.out 2>&1
+
+# terminal:
+# > ./test_0
+# stderr
+# stdout
+# >
+
+diff -qr test_0_work test_0_reference
+

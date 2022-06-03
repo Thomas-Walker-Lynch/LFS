@@ -1,0 +1,3 @@
+
+echo "stderr3" 1>&2
+echo "stdout3"
