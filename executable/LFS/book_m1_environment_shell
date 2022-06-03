@@ -1,4 +1,0 @@
-#!/bin/bash
-
-book_m1_environment bash --norc $@
-
