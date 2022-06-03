@@ -1,7 +1,0 @@
-#!/bin/bash
-#
-
-archive_file=$(mktemp --tmpdir="~/user/archive/" m2_before_chroot.XXXXX.tgz)
-
-
-tar -tzf book_m1_checkpoint.tgz $M2_ROOT

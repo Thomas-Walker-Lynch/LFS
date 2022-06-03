@@ -1,4 +1,12 @@
 #!/bin/bash
+# Control-C does not work to stop this script.  Not sure why.  Suggest running it in the background then kill the job,
+# or using pstree -p, and then to be careful to kill the parent.  Good to check pstree -p so as to see if other builds
+# are running, particularly if ther ehave been problems.
 
-frame book
+# Don't put m2_wipe in a frame or the y|n prompt only goes to the logs, and it will be unobvious that it is waiting for
+# input
+environment_book_m1 environment_root m2_wipe
+
+frame-0
+frame environment_book_m1 book
 

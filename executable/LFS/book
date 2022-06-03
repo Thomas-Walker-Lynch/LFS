@@ -1,26 +1,13 @@
 #!/bin/bash
 #
-# Control-C does not work to stop this script.  Not sure why.  Suggest running it in the background then kill the job,
-# or using pstree -p, and then to be careful to kill the parent.  Good to check pstree -p so as to see if other builds
-# are running, particularly if ther ehave been problems.
-
-frame-0
-frame environment_book_m1 environment_root m2_wipe
-frame environment_book_m1 book_m1
+frame book_m1
 
 # s7_14_checkpoint is suggested after chapter 7, but I prefer to do the archive here after the m1 phase is finished
-frame environment_book_m1 archive_m1
+frame archive_m2_root_after_book_m1
 
-# Find the scripts export and first couple of sections of chapter 7 in book_transition.
-#
-frame environment_book_m1 environment_root book_m1_to_m2
+# exports a copy of the scripts to m2_root and runs the pre-chroot portion of chapter 7
+frame environment_root book_m1_to_m2
 
-# In a prior version I ran environment_book_m2 on each inner build call. Here it is called only once on the outer
-# book_m2 call instead.  This inner call approach has the advantage that it makes only one local build.log and
-# frame.log; however it has the disadvantage that the sudo timer can run out between builds.  I believe that sudo also
-# times out when no password is provided for a long time, so it can make quite a mess. With this outer call approach the
-# sudo password is asked for only once.
-
-# In m1, the frame log will show this call, but once in the environment_book_m2, the frames called in the book_m2
-# script will be on m2.
-frame book_m1_evironment environment_root environment_book_m2 book_m2
+# This will be the last command that shows in the logs of the m1 build directory. After this the scripts start
+# writing the logs in the m2_root/sbin/LFS directory.
+frame environment_root environment_book_m2 book_m2
