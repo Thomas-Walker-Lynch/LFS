@@ -11,6 +11,14 @@
 #
 #  strange, on m1 I had to edit /etc/hosts or sudo would take a long time and (not work?)
 #  https://www.linuxquestions.org/questions/linux-newbie-8/fedora-11-sudo-has-a-20-second-start-delay-732291/#post3575840
+#
+#  bash resets PS1 unless called with a -i option, so setting driectly here in case someone calls bash itself as $1
+#
 
-
-sudo -E env "PATH=$PATH"  $@
+sudo -E \
+  env \
+    "PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"\
+    "PROJECT=$PROJECT-root"\
+    "PS1=\n$(/usr/local/bin/Z)[\$PROJECT]\n\u@\h§$PWD§\n> "\
+    "PS2=>> "\
+  $@

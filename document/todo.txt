@@ -50,3 +50,9 @@
 
    install time package so we can time m2 builds
    
+2022-06-04T00:40:17Z
+
+    bash resets PS1 unless it is called with a -i.  Otherwise it inherits the evironment.
+    probably should set another variable, like PS1_string and use that to set PS1, right
+    now I set it all over the place.
+
