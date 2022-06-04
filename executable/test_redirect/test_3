@@ -1,19 +1,29 @@
 #!/bin/bash
 rm test_3_work/*.out
 
+# pipe fd1 destination is file 1.out
+# pipe fd2 destination is the terminal
+# pipe fd3 destination is the same as pipe fd1 destination
+#
 # gen2 fd1 destination is tee stdin
-# gen2 fd2 destination same as gen2 fd1 destination (thus tee stdin receives gen2 stderr)
-# gen2 fd1 destination same as fd3  (this changes fd1, so it now points to same place fd3 points, but fd2 still points to tee stdin)
-# datra sent to tee stdin is copied to file 0.out, by definition of tee
+# gen2 fd2 destination is the same as destination fd2 for the pipe
+# 2>&1 gen2 fd2 destination same as gen2 fd1 destination (thus tee stdin receives gen2 stderr)
+# 1>&3 gen2 fd1 destination same as destination of fd3  
+#   (this changes fd1, so it now points to same place fd3 points, but fd2 still points to tee stdin)
+#
+# data sent to tee stdin is copied to file 0.out, by definition of tee
 # data sent to tee fd1 is the data from tee stdin, by definition of tee
-# tee fd 1 destination same as the fd1 destination for the list, as it is the last command in the pipe
-# pipe fd 1 destination is file 1.out
+# tee fd1 destination same as the fd1 destination for the list, as it is the last command in the pipe
 # fd3 destination is the same as pipe fd1 destination, which is file 1.out
 # so ..
 # 0.out will have gen2 stderr and say "stderr2"
 # 1.out will have both gen2 stderr via tee, and gen2 stdout via fd3
+#
 { ./gen2 2>&1 1>&3 | tee test_3_work/0.out ; } 1>test_3_work/1.out 3>&1
 
+
+(( time ./gen2 ) 2>&1 1>&3 | tee test_3_work/2.out) 1>test_3_work/3.out 3>&1
+{ { time ./gen2 ; } 2>&1 1>&3 | tee test_3_work/4.out ; } 1>test_3_work/5.out 3>&1
 
 #terminal
 # nothing
