@@ -1,8 +1,8 @@
 #!/bin/bash
 
-tar -xf "$M2_ROOT"/package/mpfr-*.tar.*
-tar -xf "$M2_ROOT"/package/gmp-*.tar.*
-tar -xf "$M2_ROOT"/package/mpc-*.tar.*
+tar -xf "$LFS_BUILD_DIR"/package/mpfr-*.tar.*
+tar -xf "$LFS_BUILD_DIR"/package/gmp-*.tar.*
+tar -xf "$LFS_BUILD_DIR"/package/mpc-*.tar.*
 
 mv -v mpfr-* mpfr
 mv -v gmp-* gmp

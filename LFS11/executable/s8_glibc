@@ -2,7 +2,7 @@
 # this appears to be the most complex install in the whole book
 
 set -x
-patch -Np1 -i $M2_ROOT/patch/glibc-2.35-fhs-1.patch
+patch -Np1 -i "$LFS_BUILD_DIR/patch/glibc-2.35-fhs-1.patch"
 
 mkdir -v build
 cd       build
@@ -50,7 +50,7 @@ rpc: files
 # End /etc/nsswitch.conf
 EOF
 
-tar -xf "$M2_ROOT"/package/tzdata2021e.tar.gz
+tar -xf "$LFS_BUILD_DIR/package/tzdata2021e.tar.gz"
 #tar -xf ../../tzdata2021e.tar.gz
 
 ZONEINFO=/usr/share/zoneinfo

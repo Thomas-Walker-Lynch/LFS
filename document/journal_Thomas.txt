@@ -687,3 +687,18 @@
     for applications.  Instead work one layer above, and launch the shell as a job, or use C-z to put it in
     the background.  Now it can be killed kill %1 etc.  Otherwise pstree -p is a good way to find them.
 
+    heck of a time deleting the /mnt/m2_root directories.  Found an article from the LFS folks that suggested cat
+    /proc/mounts . which appears to be the same as /mnt/proc/mounts.  At the bottom there were m2_root things.  I
+    unmounted them with the absolute path instead of the relative path, and they unumounted this time.  It was suggested
+    that things mounted after the chroot have to be unmounted from the chroot.  Really? anyway I did not need to do
+    that, but it might be related to why the absolute path was needed.  That conversation was from 16 years
+    ago!  Peter is one of the posters!  LFS has a long history ...
+
+        Also this, will try next time:
+        Just to add, another useful command to determine what's holding on to
+        the mount point is to use the fuser command. E.g.
+
+        $ fuser -m /mnt/lfs
+   
+           # fuser -m /mnt/m2_root
+           /mnt/m2_root:         1471c

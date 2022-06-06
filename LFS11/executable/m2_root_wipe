@@ -25,7 +25,10 @@ umount /mnt/LFS11 ..  now we don't need to exclude the package and patches dirs 
 miss this step and watch everything else get deleted, probably want to exclude it also just
 in case the umount does not work ..
 
-
+# some mention of having to umount things from the chroot environment while in the chroot environment
+ umount $M2_ROOT/dev{/pts,}
+ umount $M2_ROOT/{sys,proc,run}
+  umount /mnt/m2_root/run
 
 # Rumor is that 'find' does a depth first scan, so it should unmount things in the correct order even
 # when mounts are nested.

@@ -14,6 +14,6 @@ if [[ ! -d source ]]; then
 fi
 cd source
 
-tar -xf "$M2_ROOT"/package/"$package"-*.tar*
+tar -xf "$LFS_BUILD_DIR"/package/"$package"-*.tar*
 export SOURCE_DIR=$(ls -d "$package"-*)
 cd "$SOURCE_DIR"
