@@ -683,5 +683,7 @@
     scripts we had two sets of logs due to chroot forcing them m1 and m2 to be separate, now we have
     the mount so this is not necessary ...
 
-
+    as a symptom of the environment problems,  from with a shell C-C wil not stop the shell - that only works
+    for applications.  Instead work one layer above, and launch the shell as a job, or use C-z to put it in
+    the background.  Now it can be killed kill %1 etc.  Otherwise pstree -p is a good way to find them.
 

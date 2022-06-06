@@ -39,6 +39,7 @@ export REPO_HOME PROJECT_HOME PROJECT
 # for our build scripts
 LFS_BUILD_DIR="$lfs_build_dir"
 PATH="$LFS_BUILD_DIR/executable:$PATH"
+LFS_LOG_DIR="$LFS_BUILD_DIR/log"
 FRAME_LOG="$frame_log"
 BUILD_LOG="$build_log"
 

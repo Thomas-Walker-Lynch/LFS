@@ -18,8 +18,6 @@ fi
 
 frame_log_path="$LFS_LOG_DIR/$FRAME_LOG"
 build_log_path="$LFS_LOG_DIR/$BUILD_LOG"
-
-    
 stamp=$(Z)
 cat <<EOF | tee -a "$frame_log_path" >> "$build_log_path"
 

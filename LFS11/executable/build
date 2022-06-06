@@ -1,18 +1,5 @@
 #!/bin/bash
-# Control-C does not work to stop this script.  Not sure why.  Suggest running it in the background then kill the job,
-# or using pstree -p, and then to be careful to kill the parent.  Good to check pstree -p so as to see if other builds
-# are running, particularly if ther ehave been problems.
-set -x
 
-# manually do wipe, some problem with things that can not be deleted, put it back
-# after we figure that out
-# Don't put m2_wipe in a frame or the y|n prompt only goes to the logs, and it will be unobvious that it is waiting for
-# input
-# environment_book_m1 environment_root m2_wipe  || ( echo "wipe failed"; exit 1 )
+# if already in the book_m1 environment, build-1 may be called directly
+./environment_book_m1 build-1
 
-# initializes the logs
-source frame-0
-
-frame environment_book_m1 book
-
-set +x
