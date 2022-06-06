@@ -4,9 +4,11 @@
 # are running, particularly if ther ehave been problems.
 set -x
 
+# manually do wipe, some problem with things that can not be deleted, put it back
+# after we figure that out
 # Don't put m2_wipe in a frame or the y|n prompt only goes to the logs, and it will be unobvious that it is waiting for
 # input
-environment_book_m1 environment_root m2_wipe  || ( echo "wipe failed"; exit 1 )
+# environment_book_m1 environment_root m2_wipe  || ( echo "wipe failed"; exit 1 )
 
 frame-0
 frame environment_book_m1 book
