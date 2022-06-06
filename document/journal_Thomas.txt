@@ -663,3 +663,25 @@
     scripts in chapter 7 so will move sudo into them.  chroot script is still good because chroot is in the secure path.
 
     2022-05-20T12:03:31Z[LFS]
+
+2022-06-06T20:13:27Z
+
+    truly a pain that bash erases PS1 unless -i is specified.  All the shebang scripts reset it.  had to
+    create PPS1 and PPS2
+
+    also truly a pain that sudo prompts for a password - and then times out if one is not typed for a long
+    time, as scripts that take more than 5 minutes then halt and catch fire.
+
+    the cat into a mktemp script, then env the script in the same file turns out to be really obnoxious
+    due to the quoting issues.  made separate _0 verison scripts and passed operands.  perhaps if I were
+    a better bash programmer I would have made functions.
+
+    each environment wants to be independent, but we want to share some things between environments.
+    environment variables can not be passed up, so should be created environment commands or things
+    sourced into them.  Perhaps frame-0 should be sourced in and create the frame logs.  Right
+    not environment_m1 creates them, but environment_m1 is called multiple times.  Before when exporting
+    scripts we had two sets of logs due to chroot forcing them m1 and m2 to be separate, now we have
+    the mount so this is not necessary ...
+
+
+

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#seem to have lost my unpack and check the MD5sums script
+# need to add the checksum test
 
-# if [[ ! -d "$M2_ROOT/patch" ]]; then
-#     mkdir "$M2_ROOT/patch"
-# fi
-# pushd "$M2_ROOT/patch"
+if [[ ! -d "$LFS_BUILD_DIR/patch" ]]; then
+  mkdir "$LFS_BUILD_DIR/patch"
+fi
+pushd "$LFS_BUILD_DIR/patch"
 
 wget https://www.linuxfromscratch.org/patches/lfs/11.1/binutils-2.38-lto_fix-1.patch
 wget https://www.linuxfromscratch.org/patches/lfs/11.1/bzip2-1.0.8-install_docs-1.patch

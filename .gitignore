@@ -1,6 +1,5 @@
-
 temporary/
-frame.log
-build.log
-
+log/
+patch/
+package/
 

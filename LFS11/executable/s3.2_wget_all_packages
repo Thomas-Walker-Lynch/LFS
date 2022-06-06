@@ -1,19 +1,11 @@
 #!/bin/bash
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
 
-#seem to have lost my unpack and check the MD5sums script
+# needs the checksum check script added
 
-if [[ ! -d "$M2_ROOT/package" ]]; then
-    mkdir "$M2_ROOT/package"
+if [[ ! -d "$LFS_BUILD_DIR/package" ]]; then
+  mkdir "$LFS_BUILD_DIR/package"
 fi
-pushd "$M2_ROOT/package"
+pushd "$LFS_BUILD_DIR/package"
 
 wget https://download.savannah.gnu.org/releases/acl/acl-2.3.1.tar.xz
 wget https://download.savannah.gnu.org/releases/attr/attr-2.5.1.tar.gz

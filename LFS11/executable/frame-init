@@ -1,0 +1,27 @@
+#!/bin/bash
+# source this because it exports the FRAME_LOG and BUILT_LOG environment variables
+
+if [[ -z "$LFS_BUILD_DIR" ]];then
+  echo "frame-0 needs \$LFS_BUILD_DIR but it is not here.  Usually this comes from environment_book_m1"
+  exit 1
+fi
+
+LFS_LOG_DIR="$LFS_BUILD_DIR/log"
+FRAME_LOG=$(basename $(mktemp --tmpdir="$LFS_LOG_DIR" "$(Z)"'_frame-XXXXXXXXXX' --suffix=".log"))
+BUILD_LOG=$(basename $(mktemp --tmpdir="$LFS_LOG_DIR" "$(Z)"'_build-XXXXXXXXXX' --suffix=".log"))
+
+if [[ -z "$FRAME_LOG" ]];then
+  export FRAME_LOG="frame.log"
+fi
+if [[ -z "$BUILD_LOG" ]];then
+  export BUILD_LOG="build.log"
+fi
+
+stamp=$(Z)
+cat <<EOF | tee "$FRAME_LOG" | tee "$BUILD_LOG"
+#--------------------------------------------------------------------------------
+# $stamp
+# resetting frame log: "$FRAME_LOG"
+# resetting build log: "$BUILD_LOG"
+#--------------------------------------------------------------------------------
+EOF

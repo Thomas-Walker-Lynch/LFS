@@ -3,15 +3,21 @@
 #
 script=$@
 
+if [[ -z "$LFS_LOG_DIR" ]];then
+  echo "$0 no \$LFS_LOG_DIR"
+  exit 1
+fi
 if [[ -z "$FRAME_LOG" ]];then
-  export FRAME_LOG="frame.log"
+  echo "$0 no \$FRAME_LOG"
+  exit 2
 fi
 if [[ -z "$BUILD_LOG" ]];then
-  export BUILD_LOG="build.log"
+  echo "$0 no \$BUILD_LOG"
+  exit 4
 fi
 
 frame_log_path="$LFS_LOG_DIR/$FRAME_LOG"
-build_lob_path="$LFS_LOG_DIR/$BUILD_LOG"
+build_log_path="$LFS_LOG_DIR/$BUILD_LOG"
 
     
 stamp=$(Z)

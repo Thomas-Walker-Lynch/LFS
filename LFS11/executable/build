@@ -10,7 +10,9 @@ set -x
 # input
 # environment_book_m1 environment_root m2_wipe  || ( echo "wipe failed"; exit 1 )
 
-frame-0
+# initializes the logs
+source frame-0
+
 frame environment_book_m1 book
 
 set +x

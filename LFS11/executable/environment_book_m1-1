@@ -1,0 +1,56 @@
+#!/bin/bash
+# bash without -i resets PS1
+# except for the log file variables this comes from section 4.4
+
+pps1="$1"
+pps2="$2"
+repo_home="$3"
+project_home="$4"
+project="$5"
+lfs_build_dir="$6"
+m2_root="$7"
+frame_log="$8"
+build_log="$9"
+script="${@:10}"
+
+# according to the book	   
+umask 022
+M2_ROOT="$m2_root"
+LC_ALL=POSIX
+LFS_TGT="$(uname -m)-lfs-linux-gnu"
+PATH="/usr/bin"
+if [ ! -L /bin ]; then 
+  export PATH="/bin:$PATH"
+fi	 
+CONFIG_SITE="$m2_root/usr/share/config.site"
+MAKEFLAGS="-j12" 
+export M2_ROOT LC_ALL LFS_TGT PATH CONFIG_SITE MAKEFLAGS 
+
+# our local systems programs, eg. Z
+PATH="/usr/local/bin:$PATH"
+export PATH
+
+# repo environment
+REPO_HOME="$repo_home"
+PROJECT_HOME="$project_home"
+PROJECT="$project-book-m1"
+export REPO_HOME PROJECT_HOME PROJECT
+
+# for our build scripts
+LFS_BUILD_DIR="$lfs_build_dir"
+PATH="$LFS_BUILD_DIR/executable:$PATH"
+FRAME_LOG="$frame_log"
+BUILD_LOG="$build_log"
+
+export LFS_BUILD_DIR LFS_LOG_DIR LFS_ARCHIVE_DIR PATH FRAME_LOG	BUILD_LOG 
+
+# without -i bash clears PS1, just because
+PPS1="$pps1"
+PPS2="pps2"
+PS1="$pps1"
+PS2="$pps2"
+TZ=UTC
+TIME_STYLE=long-iso
+export PPS1 PPS2 PS1 PS2 TZ TIME_STYLE
+
+$script

@@ -18,58 +18,15 @@ if [[ -z "$TERM" ]];then
   exit
 fi
 
-wrapped=$(mktemp --tmpdir="$M2_ROOT/tmp")
-if [ $? -ne 0 ]; then
-  echo "$0: couldn't create temp"
-  exit 2
-fi
-wrapped_basename=$(basename "$wrapped")
-chmod u+x "$wrapped"
-
-
-# Variables with the $ expand inside the cat.  Those with \$ or in single quotes remain as part of the document.
-cat >"$wrapped" <<-EOF
-
-        # stuff from the m1 environment we would like to keep
-	M2_ROOT="/"
-	LC_ALL=POSIX
-	MAKEFLAGS='-j12'  # this might cause problems for some builds
-
-	# according to the book for m2
-	HOME=/root		    
-	TERM="$TERM"		    
-	# set PS below ...  PS1='(lfs chroot) u:w$ ' 
-	PATH=/usr/bin:/usr/sbin
-	export HOME TERM PATH
-
-        # repo environment
-	PROJECT="LFS-book-m2"
-	export PROJECT
-
-	# for our build scripts
-	LFS_BUILD_DIR='$M2_ROOT/LFS11' # LFS 11 will be mounted here
-	LFS_LOG_DIR='$LFS_BUILD_DIR/log'
-	LFS_ARCHIVE_DIR='$LFS_BUILD_DIR/archive'
-	PATH='$LFS_BUILD_DIR/executable/$PATH'
-	BUILD_LOG="$BUILD_LOG"
-	FRAME_LOG="$BUILD_LOG"
-	umask 022
-	export LFS_BUILD_DIR LFS_LOG_DIR LFS_ARCHIVE_DIR PATH BUILD_LOG FRAME_LOG M2_ROOT LC_ALL MAKEFLAGS 
-
-	# prompt so that dirtrack works in emacs, timezone
-        PPS1='$PPS1'
-        PPS2='$PPS2'
-	PS1='$PPS1'
-	PS2='$PPS2'
-	TZ=UTC
-	TIME_STYLE=long-iso
-        export PPS1 PPS2 PS1 PS2 TZ TIME_STYLE
-
-	cd "\$LFS_BUILD_DIR"
-
-	$script
-EOF
-
-chroot "$M2_ROOT" /usr/bin/env -i "/tmp/$wrapped_basename"
+LFS_BUILD_DIR='$M2_ROOT/LFS11' # LFS 11 has been mounted here, see book_m1_to_m2
+chroot "$M2_ROOT" /usr/bin/env -i "$LFS_BUILD_DIR/executable/environment_book_m2-1"\
+  "$TERM"\
+  "$PPS1"\
+  "$PPS2"\
+  "$PROJECT"\
+  "$LFS_BUILD_DIR"\
+  "$FRAME_LOG"\
+  "$BUILD_LOG"\
+  $script
 
 #set +x

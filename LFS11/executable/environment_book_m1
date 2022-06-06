@@ -7,62 +7,16 @@ if [[ -z "$script" ]]; then
   script="/bin/bash --norc"
 fi
 
-# wrapped script into a string, then 
-# env -i <(echo "$wrapped_script")
-# ah heck, this does not work
-
-wrapped=$(mktemp)
-if [ $? -ne 0 ]; then
-    echo "$0: couldn't create temp"
-    exit 2
-fi
-chmod u+x "$wrapped"
-
-# Variables with the $ expand inside the cat.  Those with \$ or in single quotes remain as part of the document.
-cat >"$wrapped" <<-EOF
-
-	# according to the book	   
-	umask 022
-	M2_ROOT="/mnt/m2_root"
-	LC_ALL=POSIX
-	LFS_TGT=$(uname -m)-lfs-linux-gnu
-	PATH=/usr/bin
-	if [ ! -L /bin ]; then 
-	  export PATH=/bin:"\$PATH"
-	 fi
-	PATH="\$M2_ROOT"/tools/bin:"\$PATH"  # local build tools capable of targetting the m2 directory tree
-	CONFIG_SITE="\$M2_ROOT"/usr/share/config.site
-	MAKEFLAGS='-j12'  # this might cause problems for some builds
-	export M2_ROOT LC_ALL LFS_TGT PATH CONFIG_SITE MAKEFLAGS 
-
-	# our local systems programs, eg. Z
-	PATH=/usr/local/bin:"\$PATH"
-
-	# repo environment
-	REPO_HOME=$REPO_HOME
-	PROJECT_HOME=$PROJECT_HOME
-	PROJECT="$PROJECT-book-m1"
-	export REPO_HOME PROJECT_HOME PROJECT
-
-	# for our build scripts
-	LFS_BUILD_DIR="$REPO_HOME/LFS11"
-	LFS_LOG_DIR="\$LFS_BUILD_DIR/log"
-	LFS_ARCHIVE_DIR="\$LFS_BUILD_DIR/archive"
-	PATH='$LFS_BUILD_DIR/executable/$PATH'
-	BUILD_LOG=\$(basename \$(mktemp --tmpdir="\$LFS_LOG_DIR" $Z_build_XXXXXXXXXX --suffix=".log"))
-	FRAME_LOG=\$(basename \$(mktemp --tmpdir="\$LFS_LOG_DIR" $Z_frame_XXXXXXXXXX --suffix=".log"))
-	export LFS_BUILD_DIR LFS_LOG_DIR LFS_ARCHIVE_DIR PATH BUILD_LOG FRAME_LOG	  
-
-	# without -i bash clears PS1, just because
-        PPS1='$PPS1'
-        PPS2='$PPS2'
-	PS1='$PPS1'
-	PS2='$PPS2'
-	TZ=UTC
-	TIME_STYLE=long-iso
-	export PPS1 PPS2 PS1 PS2 TZ TIME_STYLE
-
-	$script
-EOF
-
-env -i "$wrapped"
+M2_ROOT="/mnt/m2_root"
+LFS_BUILD_DIR="$REPO_HOME/LFS/LFS11"
+env -i "$LFS_BUILD_DIR/executable/environment_book_m1-1"\
+  "$PPS1"\
+  "$PPS2"\
+  "$REPO_HOME"\
+  "$PROJECT_HOME"\
+  "$PROJECT"\
+  "$LFS_BUILD_DIR"\
+  "$M2_ROOT"\
+  "$FRAME_LOG"\
+  "$BUILD_LOG"\
+  $script
