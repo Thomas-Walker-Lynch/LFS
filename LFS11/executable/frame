@@ -9,9 +9,13 @@ fi
 if [[ -z "$BUILD_LOG" ]];then
   export BUILD_LOG="build.log"
 fi
+
+frame_log_path="$LFS_LOG_DIR/$FRAME_LOG"
+build_lob_path="$LFS_LOG_DIR/$BUILD_LOG"
+
     
 stamp=$(Z)
-cat <<EOF | tee -a "$FRAME_LOG" >> "$BUILD_LOG"
+cat <<EOF | tee -a "$frame_log_path" >> "$build_log_path"
 
 #--------------------------------------------------------------------------------
 # $stamp
@@ -21,13 +25,13 @@ cat <<EOF | tee -a "$FRAME_LOG" >> "$BUILD_LOG"
 EOF
 
 #m2 does not have 'time'
-# { /usr/bin/time -a -o "$FRAME_LOG" $script 2>&1 >&3 3>&- | tee -a "$FRAME_LOG" 3>&-; } >> "$BUILD_LOG" 3>&1
-#{ $script 2>&1 >&3 3>&- | tee -a "$FRAME_LOG" ; } >> "$BUILD_LOG" 3>&1
+# { /usr/bin/time -a -o "$frame_log_path" $script 2>&1 >&3 3>&- | tee -a "$frame_log_path" 3>&-; } >> "$build_log_path" 3>&1
+#{ $script 2>&1 >&3 3>&- | tee -a "$frame_log_path" ; } >> "$build_log_path" 3>&1
 
-{ { time $script ; } 2>&1 1>&3 | tee -a "$FRAME_LOG" ; } 1>> "$BUILD_LOG" 3>&1
+{ { time $script ; } 2>&1 1>&3 | tee -a "$frame_log_path" ; } 1>> "$build_log_path" 3>&1
 
 stamp=$(Z)
-cat <<EOF | tee -a "$FRAME_LOG" >> "$BUILD_LOG"
+cat <<EOF | tee -a "$frame_log_path" >> "$build_log_path"
 
 #
 #

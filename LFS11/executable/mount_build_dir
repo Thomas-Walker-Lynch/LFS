@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mount --bind "$M2_ROOT/LFS11" "$LFS_BUILD_DIR"

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-frame export_scripts
 frame ./s7.02_m2_chown_root
 frame ./s7.03_devices
+frame ./mount_build_dir

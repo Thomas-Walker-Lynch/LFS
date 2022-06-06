@@ -14,11 +14,17 @@
 #
 #  bash resets PS1 unless called with a -i option, so setting driectly here in case someone calls bash itself as $1
 #
+script="$@"
+if [[ -z "$script" ]]; then
+  script="/bin/bash --norc"
+fi
 
 sudo -E \
   env \
     "PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"\
     "PROJECT=$PROJECT-root"\
-    "PS1=\n$(/usr/local/bin/Z)[\$PROJECT]\n\u@\h§$PWD§\n> "\
-    "PS2=>> "\
-  $@
+    PPS1="$PPS1"\
+    PPS2="$PPS2"\
+    PS1="$PPS1"\
+    PS2="$PPS2"\
+    $script

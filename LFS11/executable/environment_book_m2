@@ -3,10 +3,9 @@
 # Make the top of the m2 tree the root of the file system, then run the script
 #set -x
 
-script=$@
-if [[ -z "$script" ]];then
-  echo $0 "requires script to call"
-  exit
+script="$@"
+if [[ -z "$script" ]]; then
+  script="/bin/bash --norc"
 fi
 
 if [[ -z "$M2_ROOT" ]];then
@@ -28,42 +27,45 @@ wrapped_basename=$(basename "$wrapped")
 chmod u+x "$wrapped"
 
 
-# Variables with the $ expand now.  Those with \$ remain as part of the document.
+# Variables with the $ expand inside the cat.  Those with \$ or in single quotes remain as part of the document.
 cat >"$wrapped" <<-EOF
 
-	# according to the book	   
+        # stuff from the m1 environment we would like to keep
+	M2_ROOT="/"
+	LC_ALL=POSIX
+	MAKEFLAGS='-j12'  # this might cause problems for some builds
+
+	# according to the book for m2
 	HOME=/root		    
 	TERM="$TERM"		    
 	# set PS below ...  PS1='(lfs chroot) u:w$ ' 
 	PATH=/usr/bin:/usr/sbin
 	export HOME TERM PATH
 
-        # other stuff it seems we might need
-	umask 022
-	M2_ROOT=/		    
-	LC_ALL=POSIX
-	PATH=/usr/sbin/LFS:"\$PATH"
-	MAKEFLAGS='-j12'  # this might cause problems for some builds
-	export LFS_ENVIRONMENT M2_ROOT LC_ALL PATH MAKEFLAGS 
-
         # repo environment
 	PROJECT="LFS-book-m2"
 	export PROJECT
 
 	# for our build scripts
-	BUILD_LOG="build.log"
-	FRAME_LOG="frame.log"
-	export BUILD_LOG FRAME_LOG        
+	LFS_BUILD_DIR='$M2_ROOT/LFS11' # LFS 11 will be mounted here
+	LFS_LOG_DIR='$LFS_BUILD_DIR/log'
+	LFS_ARCHIVE_DIR='$LFS_BUILD_DIR/archive'
+	PATH='$LFS_BUILD_DIR/executable/$PATH'
+	BUILD_LOG="$BUILD_LOG"
+	FRAME_LOG="$BUILD_LOG"
+	umask 022
+	export LFS_BUILD_DIR LFS_LOG_DIR LFS_ARCHIVE_DIR PATH BUILD_LOG FRAME_LOG M2_ROOT LC_ALL MAKEFLAGS 
 
 	# prompt so that dirtrack works in emacs, timezone
-        PS1='\n\$(/usr/sbin/LFS/Z)[\$PROJECT]\n\u@\h§\$PWD§\n> '
-        PS2='>> '
+        PPS1='$PPS1'
+        PPS2='$PPS2'
+	PS1='$PPS1'
+	PS2='$PPS2'
 	TZ=UTC
 	TIME_STYLE=long-iso
         export PPS1 PPS2 PS1 PS2 TZ TIME_STYLE
 
-        # a little funny, might be that we should have a build directory under root or some such
-	cd /sbin/LFS
+	cd "\$LFS_BUILD_DIR"
 
 	$script
 EOF
