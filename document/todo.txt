@@ -56,3 +56,9 @@
     probably should set another variable, like PS1_string and use that to set PS1, right
     now I set it all over the place.
 
+2022-06-07T19:34:11Z[LFS]
+
+    Package and patch download scripts should avoid the download if the package is already
+    present.  There should be a signature check to keep things grounded.
+
+    update the bashrc and emacs files in library - there have been a lot of changes

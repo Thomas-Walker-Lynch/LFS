@@ -21,39 +21,21 @@ if [[ ! "$REPLY" =~ ^[y]$ ]];then
   exit 1
 fi
 
-umount /mnt/LFS11 ..  now we don't need to exclude the package and patches dirs though, man
-miss this step and watch everything else get deleted, probably want to exclude it also just
-in case the umount does not work ..
+# found that the absolute pathname is necessary, independent of the current pwd
+umount /mnt/m2_root/LFS11
+umount /mnt/m2_root/run
+umount /mnt/m2_root/sys
+umount /mnt/m2_root/proc
+umount /mnt/m2_root/dev/pts devpts
+umount /mnt/m2_root/dev/pts 
+umount /mnt/m2_root/dev
 
-# some mention of having to umount things from the chroot environment while in the chroot environment
- umount $M2_ROOT/dev{/pts,}
- umount $M2_ROOT/{sys,proc,run}
-  umount /mnt/m2_root/run
+rmdir LFS11 || { echo "failed to delete directory LFS11"; exit 1 }
 
-# Rumor is that 'find' does a depth first scan, so it should unmount things in the correct order even
-# when mounts are nested.
-test "$EUID" -eq 0 && \
-  find "$M2_ROOT" \
-    -mindepth 1 \
-    ! -name 'package' ! -name 'patch' \
-    -type d \
-    -exec umount {} >& /dev/null '&&' echo "on final scan unmounted:" {} \;
-
-
-# Find just bludgons forward causing hundreds of rm {} 'can't delete due to permission' errors when m2_wipe
-# is invoked after the m2 directory tree has been chown to root.  So to instead make it stop on the first error:
-#
-# set -e did not cause find to bail on the first rm permisison error.
-# Terminating with a '+' instead of '\;' did not stop find, though this was a Stack Exchange solution.
-# Piping into  xargs instead of using -exec did not stop find and rm from spewing hundreds of no permission errors,
-# though this solution was suggested by many people.
-# The following syntax causes it to stop on the first error, but apparently not all versions of unix find have a -quit.
-# for testing:
-#
 echo "rm -rf the following:"
 find "$M2_ROOT" \
   -maxdepth 1 -mindepth 1 \
-  ! -name 'package' ! -name 'patch' \
+  ! -name LFS11 \ 
   -print \
   \( -exec rm -rf {} \; -o -quit \)
 

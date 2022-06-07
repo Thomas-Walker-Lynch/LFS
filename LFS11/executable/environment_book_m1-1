@@ -22,6 +22,7 @@ PATH="/usr/bin"
 if [ ! -L /bin ]; then 
   export PATH="/bin:$PATH"
 fi	 
+PATH=$M2_ROOT/tools/bin:$PATH
 CONFIG_SITE="$m2_root/usr/share/config.site"
 MAKEFLAGS="-j12" 
 export M2_ROOT LC_ALL LFS_TGT PATH CONFIG_SITE MAKEFLAGS 
