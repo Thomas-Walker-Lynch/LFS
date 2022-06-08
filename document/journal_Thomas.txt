@@ -702,3 +702,11 @@
    
            # fuser -m /mnt/m2_root
            /mnt/m2_root:         1471c
+
+     There can be very long test-debug-fix-test cycles.  It might help to create more checkpoints.  hmmm.
+
+     Interesting that we have so many problems because user 'lfs' has some random uid, and the only reliable
+     uid then becomes that for root, zero.  I see the same when doing archives.  Too bad ther is no concept
+     of namespace framing for uids.  Otherwise we could just do m2 in user lfs.  though there is another
+     difference, as root can ignore other permissions, but if everything is in lfs there are no other permissions.
+     hmmm.  Other systems have roles, we could then give adminitrator role to lfs ... but not unix.

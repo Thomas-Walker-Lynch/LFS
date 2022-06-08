@@ -18,7 +18,8 @@ if [[ -z "$TERM" ]];then
   exit
 fi
 
-LFS_BUILD_DIR="$M2_ROOT/LFS11" # LFS 11 has been mounted here, see book_m1_to_m2
+# LFS_BUILD_DIR _after_ the chroot
+LFS_BUILD_DIR="/LFS11" # LFS 11 has been mounted here, see book_m1_to_m2
 chroot "$M2_ROOT" /usr/bin/env -i "$LFS_BUILD_DIR/executable/environment_book_m2-1"\
   "$TERM"\
   "$PPS1"\

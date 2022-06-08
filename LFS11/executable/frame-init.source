@@ -7,12 +7,12 @@ if [[ -z "$LFS_BUILD_DIR" ]];then
 fi
 
 # We keep the path and basename separate because in the m2 environment the path will change
-export FRAME_LOG=$(basename $(mktemp --tmpdir="$LFS_LOG_DIR" "$(Z)"'_frame-XXXXXXXXXX' --suffix=".log"))
-export BUILD_LOG=$(basename $(mktemp --tmpdir="$LFS_LOG_DIR" "$(Z)"'_build-XXXXXXXXXX' --suffix=".log"))
+stamp="$(Z)"
+export FRAME_LOG=$(basename $(mktemp --tmpdir="$LFS_LOG_DIR" "$stamp"'_frame-XXXXXXXXXX' --suffix=".log"))
+export BUILD_LOG=$(basename $(mktemp --tmpdir="$LFS_LOG_DIR" "$stamp"'_build-XXXXXXXXXX' --suffix=".log"))
 
 frame_log_path="$LFS_BUILD_DIR/log/$FRAME_LOG"
 build_log_path="$LFS_BUILD_DIR/log/$BUILD_LOG"
-stamp=$(Z)
 cat <<EOF | tee "$frame_log_path" | tee "$build_log_path"
 #--------------------------------------------------------------------------------
 # $stamp
