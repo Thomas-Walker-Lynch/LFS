@@ -1,14 +1,15 @@
 #!/bin/bash
+# think I should break this up ... checkpoint before it?
+#
+# section 8.25.3 has us set root password, but I don't want to stop the script, so skipped it for now
+# passwd root
 
-built="
+section="
 man-pages
 iana-etc
 glibc
 zlib
 bzip2
-"
-
-section="
 xz
 zstd
 file
@@ -20,9 +21,6 @@ tcl
 expect
 dejagnu
 binutils
-"
-
-prevenir="
 gmp
 mpfr
 mpc
@@ -46,7 +44,7 @@ expat
 inetutils
 less
 perl
-xml
+XML-Parser
 intltool
 autoconf
 automake

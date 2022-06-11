@@ -710,3 +710,61 @@
      of namespace framing for uids.  Otherwise we could just do m2 in user lfs.  though there is another
      difference, as root can ignore other permissions, but if everything is in lfs there are no other permissions.
      hmmm.  Other systems have roles, we could then give adminitrator role to lfs ... but not unix.
+
+2022-06-09T11:58:52Z
+
+    Getting these, perhaps this is what Robert and Marty were referring to:
+      ‘warning: -jN forced in submake: disabling jobserver mode.’
+
+        according to https://www.gnu.org/software/make/manual/html_node/Error-Messages.html 
+          This warning and the next are generated if make detects error conditions related to parallel processing on systems where sub-makes can communicate (see Communicating Options to a Sub-make). This warning is generated if a recursive invocation of a make process is forced to have ‘-jN’ in its argument list (where N is greater than one). This could happen, for example, if you set the MAKE environment variable to ‘make -j2’. In this case, the sub-make doesn’t communicate with other make processes and will simply pretend it has two jobs of its own.
+
+        There is a lot of discussion about it on the Internet.  However noone says if it is harmful or
+        not.  It does say it is a 'warning' so I will ignore it.
+
+
+    /source/Python-3.10.2/Modules/_ctypes/_ctypes.c:107:10: fatal error: ffi.h: No such file or directory
+      107 | #include <ffi.h>
+          |          ^~~~~~~
+    compilation terminated.
+
+      Roberts log has this same error, with the same compilation terminated message.  I see nothing done to
+      fix this.
+
+      On a prior build I pulled 8.49 libffi back to get s7_Python to run  (in c8 libffi is built just before python)
+
+    zlibc1.2.11 has gone missing, looked at the website, there is now a version 12, and I downloaded it
+    #wget https://zlib.net/zlib-1.2.11.tar.xz
+    wget https://zlib.net/zlib-1.2.12.tar.xz
+    find it here: https://ftp.osuosl.org/pub/lfs/lfs-packages/ [gratis Marty]
+
+    in s8_zstd frame, also in Robert's log:
+    error: numeric value overflows 32-bit unsigned int 
+    s8_zstd spews a stupid amount of stuff to stdout
+
+    s8_tcl
+    added package link, see the s3 that does the wget
+    for the docs
+    tar -xf "$(ls -d $LFS_BUILD_DIR/package/tcl*-html.tar*)" --strip-components=1  # why strip-components=1 ??
+    seems doc packages should have their own directory, tcl tar files are missing a dash before the version
+    number so I added a symbolic link of the correct form. Ack but that did not work because when we
+    untar it makes the tcl8.. directory and the script tries to cd to tcl-8....  also note that tcl uses
+    'src'  and 'html'  .. the html doc package should go into a different directory ...
+
+    emacs dirtack is confused by chroot. Sees it stops working in all shells, not just the chroot shell. In
+    a non chroot shell, to get it back do pwd, then cd to the resulting pwd string.  If it is too work after
+    the chroot, we must modify the prompt to show the path relative to root rather than the new chroot.
+
+    LFS11 -> build_dir,   add $LFS_BUILD_DIR to bashrc, update build script     
+
+    m2_root -> m2_filesystem
+
+    note, 8.25.3. Setting the root password 
+    
+2022-06-10T13:51:36Z
+
+    started potential next steps list
+
+2022-06-11T14:24:59Z
+
+    move the next steps list to its own file

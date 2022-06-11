@@ -1,5 +1,5 @@
 #!/bin/bash
 # frames requires that some enverionment variables be set.  Note the code in frame-0
 
-source frame-init
+source frame-init.source
 frame book

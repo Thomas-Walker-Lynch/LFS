@@ -17,8 +17,9 @@ cd       build
              --disable-werror  
 
 make
-# Robert has a -j1, Marty also said there was an issue with parallel make in this step
-# make install
-make install -j1
+# Robert has 
+# make install -j1
+# wonder if there is a reason for that
+make install
 
 set +x

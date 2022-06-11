@@ -1,0 +1,34 @@
+
+
+    potential next steps .. hmmm
+
+    some of these things it would be good to have an evolution path towards reaching them, instead
+    of trying to do it all in one step
+
+    - 'my experience' and how to use these scripts doc
+    - replace these bash scripts for building LFS11 with Python
+    - upfront expand misnamed and to-be-patched tar files and patch them, and then
+      re-tar them.  Then during the run we do not need exceptions for incorrectly named stuff,
+      and we do not need to run patches.
+    - check sums of package verification
+    - make check and other checks print error if they fail
+    - two pass, first a micro usable system, then a second more stuff system, then an application laiden system
+      .. separate docs install
+    - get a usable system, need gdm and a window manager
+    - all executables read only
+    - each package in its own subu
+    - replace C program et al with smaller simpler alternatives
+    - various checks correctly returning true false, if possible an error code returned to the frame
+    - program that reads the unpacked source and finds library calls so as to
+      detect static dependencies
+    - object oriented like encapsulation around packages, with a build() method so
+      that all packages build with that one call, etc.
+    - all main calls just parse text and call an executable, thus all 'linux' programs
+      may directly call other 'linux' programs without going through the command text step.
+      i.e. a linux 'api'
+    - tagged file system
+    - hardware characterization step, and version database
+    - there is a standard linux directory structure, but would like to update that
+      to handle more object like packages
+    - go find all the perl and replace it with python, ditch perl, etc.  actually
+      best to replace all source with 'wave' code.

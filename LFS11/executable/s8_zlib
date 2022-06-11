@@ -3,6 +3,6 @@
 ./configure --prefix=/usr
 make
 make check
-make isntall
+make install
 rm -fv /usr/lib/libz.a
 

@@ -48,7 +48,7 @@ export LFS_BUILD_DIR LFS_LOG_DIR LFS_ARCHIVE_DIR PATH FRAME_LOG	BUILD_LOG
 
 # without -i bash clears PS1, just because
 PPS1="$pps1"
-PPS2="pps2"
+PPS2="$pps2"
 PS1="$pps1"
 PS2="$pps2"
 TZ=UTC

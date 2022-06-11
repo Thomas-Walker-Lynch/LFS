@@ -1,6 +1,0 @@
-#!/bin/bash
-#
-
-archive_file=$(mktemp --tmpdir="~/user/archive/" archive_m2_root_after_book_m1.XXXXX.tgz)
-
-tar -tzf $archive_file $M2_ROOT

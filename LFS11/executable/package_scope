@@ -11,7 +11,7 @@ if [[ -z "$script" ]]; then
    exit
 fi
 
-source package_untar "$1"
+source package_untar.source "$1"
 
   $script
 

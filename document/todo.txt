@@ -62,3 +62,26 @@
     present.  There should be a signature check to keep things grounded.
 
     update the bashrc and emacs files in library - there have been a lot of changes
+
+    LFS11 -> build_dir,   add $LFS_BUILD_DIR to bashrc, update build script     
+
+    m2_root -> m2_filesystem
+
+2022-06-10T13:51:36Z
+
+     mv /LFS (after chroot)  to /mnt/LFS (after chroot).  I think the /mnt has already
+     been created at the time the mount --bind is done
+
+     rename the repo to LFS11 or LFS11_with_build_scripts or some such
+
+     pull wipe out of build, have build first check that m2_filesystem is empty
+
+2022-06-11T14:24:59Z
+
+     variable for installing docs, or a separate docs install
+
+     debugging symbols included or not environment variable
+
+     add a third log, has the frames and times like the frame log, but the content goes through grep
+     and is filtered for error indicator tags .. perhaps grep -iE 'error|not found'
+     

@@ -1,7 +1,7 @@
 #!/bin/bash
 # bash without -i resets PS1
 # Make the top of the m2 tree the root of the file system, then run the script
-#set -x
+set -x
 
 term="$1"
 pps1="$2"
@@ -26,31 +26,32 @@ TERM="$term"
 PATH=/usr/bin:/usr/sbin
 export HOME TERM PATH
 
+# seems we should do this here ..
+mkdir $HOME
+cd "$HOME"
+
 # repo environment
 PROJECT="$project-book-m2"
 export PROJECT
 
 # for our build scripts
 LFS_BUILD_DIR="$lfs_build_dir"
-LFS_LOG_DIR="$LFS_BUILD_DIR/log"
 LFS_ARCHIVE_DIR="$LFS_BUILD_DIR/archive"
-PATH="$LFS_BUILD_DIR/executable/$PATH"
-LFS_LOG_DIR="$LFS_BUILD_DIR/log"
+PATH="$LFS_BUILD_DIR/executable:$PATH"
 FRAME_LOG="$frame_log"
 BUILD_LOG="$build_log"
 export LFS_BUILD_DIR LFS_LOG_DIR LFS_ARCHIVE_DIR PATH FRAME_LOG BUILD_LOG  
 
 # prompt so that dirtrack works in emacs, timezone
-PPS1="$PPS1"
-PPS2="$PPS2"
-PS1="$PPS1"
-PS2="$PPS2"
+# without -i bash clears PS1, just because
+PPS1="$pps1"
+PPS2="$pps2"
+PS1="$pps1"
+PS2="$pps2"
 TZ=UTC
 TIME_STYLE=long-iso
 export PPS1 PPS2 PS1 PS2 TZ TIME_STYLE
 
-cd "$LFS_BUILD_DIR"
-
 $script
 
-#set +x
+set +x

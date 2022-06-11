@@ -7,6 +7,12 @@ if [[ -z "$script" ]]; then
   script="/bin/bash --norc"
 fi
 
+# we will use our local version of Z so that it will be found after the chroot
+# copied from .bashrc /usr/bin/Z -> Z
+# might be better to include Z in the m1 build so it is still /usr/local/bin/Z on m2
+PPS1='\n$(Z)[$PROJECT]\n\u@\h§$(pwd)§\n> '
+PS1="$PPS1"
+
 M2_ROOT="/mnt/m2_root"
 LFS_BUILD_DIR="$REPO_HOME/LFS/LFS11"
 env -i "$LFS_BUILD_DIR/executable/environment_book_m1-1"\

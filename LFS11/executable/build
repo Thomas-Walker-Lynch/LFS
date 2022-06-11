@@ -1,4 +1,8 @@
 #!/bin/bash
+# need to use LFS_BUILD_DIR to find the executables .. that needs to be set somewhere above ...
+
+# can't frame this or the 'really?' prompt goes into the logs ...
+./environment_book_m1 environment_root m2_root_wipe
 
 # if already in the book_m1 environment, build-1 may be called directly
 ./environment_book_m1 build-1

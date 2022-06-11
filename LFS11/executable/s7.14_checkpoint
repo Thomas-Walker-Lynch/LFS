@@ -11,8 +11,8 @@ sudo df -h .
 #tar -cJpf $HOME/lfs-temp-tools-11.1.tar.xz .
 #
 sudo cd $M2_ROOT
-sudo tar -cJpf /home/lfs/archive/lfs-temp-tools-11.1.tar.xz .
-sudo chown lfs:lfs /home/lfs/archive/lfs-temp-tools-11.1.tar.xz
+sudo tar -cJpf $LFS_BUILD_DIR/checkpoint/lfs-temp-tools-11.1.tar.xz .
+sudo chown lfs:lfs $LFS_BUILD_DIR/checkpoint/lfs-temp-tools-11.1.tar.xz
 sudo df -h .
 
 set +x

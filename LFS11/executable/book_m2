@@ -1,8 +1,7 @@
 #!/bin/bash
 set -x
 
-frame-0
 frame c7
-#frame c8
+frame c8
 
 set +x

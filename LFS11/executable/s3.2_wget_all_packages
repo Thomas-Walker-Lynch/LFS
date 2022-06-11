@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # needs the checksum check script added
+# All of the packages have a dash between the name and version, except for tcl and expect.  So I took the
+# dash out of the file glob match for package_untar. Perhaps should add back a stronger regex match.
 
 if [[ ! -d "$LFS_BUILD_DIR/package" ]]; then
   mkdir "$LFS_BUILD_DIR/package"
@@ -84,8 +86,13 @@ wget https://www.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-2.37.4.t
 wget https://anduin.linuxfromscratch.org/LFS/vim-8.2.4383.tar.gz
 wget https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.46.tar.gz
 wget https://tukaani.org/xz/xz-5.2.5.tar.xz
-wget https://zlib.net/zlib-1.2.11.tar.xz
+#wget https://zlib.net/zlib-1.2.11.tar.xz
+wget https://zlib.net/zlib-1.2.12.tar.xz
 wget https://github.com/facebook/zstd/releases/download/v1.5.2/zstd-1.5.2.tar.gz
+
+# wonder if we can just dump the wget errors to stderr directly from the commands, or if it does already
+grep -iE 'error|warning|not found' wget-log* 1>&2
+
 
 popd
 

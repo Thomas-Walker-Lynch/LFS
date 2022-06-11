@@ -2,8 +2,8 @@
 #
 frame book_m1
 
-# s7_14_checkpoint is suggested after chapter 7, but I prefer to do the archive here after the m1 phase is finished
-frame archive_m2_root_after_book_m1
+# s7_14_checkpoint is suggested after chapter 7, but I prefer to checkpoint before the permissions changes
+frame checkpoint m2_root_after_book_m1
 
 # exports a copy of the scripts to m2_root and runs the pre-chroot portion of chapter 7
 frame environment_root book_m1_to_m2

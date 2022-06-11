@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Checkpointing might be less important with the automatic scripts than it is when building LFS manually, because
+# an admin can run the scripts again to get back to the same point as the checkpoint.
+
+if [[ -z "$LFS_BUILD_DIR" ]];then
+  echo $0 "requires variable \$LFS_BUILD_DIR to be set"
+  exit 1
+fi
+
+checkpoint="$1"
+if [[ -z "$checkpoint" ]];then
+  echo $0 "warning has no checkpoint name parameter - making generic 'checkpoint'"
+  checkpoint="checkpoint"
+fi
+
+checkpoint_dir="$LFS_BUILD_DIR/checkpoint"
+if [[ -d "$checkpoint_dir" ]];then
+  mkdir -p "$checkpoint_dir"  || { echo $0 "failed to make checkpoint_dir" || exit 1 ; }
+fi
+
+checkpoint_file=$(mktemp --tmpdir="$checkpoint_dir" "$checkpoint.XXXXX.tgz")
+
+tar -tzf $checkpoint_file $M2_ROOT
