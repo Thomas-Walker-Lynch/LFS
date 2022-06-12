@@ -775,3 +775,5 @@
 
     in doc when discussing bash:  spaces and quotes, redirect, inside $() quoting is reset, ${ } regex match
     
+    in doc be sure to mention about using c-c c-z and background and not using c-c to kill a job,  also use pstree -p
+

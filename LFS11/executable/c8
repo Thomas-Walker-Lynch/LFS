@@ -50,7 +50,15 @@ autoconf
 automake
 openssl
 kmod
-libelf
+"
+
+IFS=$'\n'; for s in $section;do
+  frame package_scope $s s8_$s
+done
+
+frame package_scope elfutils s8_libelf
+
+section="
 libffi
 Python
 ninja
@@ -81,7 +89,6 @@ sysvinit
 "
 
 IFS=$'\n'; for s in $section;do
-  # echo s7_$s
   frame package_scope $s s8_$s
 done
 

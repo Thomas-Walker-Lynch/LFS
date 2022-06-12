@@ -113,4 +113,8 @@
           mkdir package/application  package/patch  package/document
           nah,  instead upstream/package  upstream/patch upstream/document
 
+          also log/build log/frame log/tell-tales
 
+          single data stamped log file directory files build frame error in it
+          
+                         
