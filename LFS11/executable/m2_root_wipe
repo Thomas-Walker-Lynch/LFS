@@ -23,7 +23,7 @@ fi
 
 # found that the absolute pathname is necessary, independent of the current pwd
 umount /mnt/m2_root/LFS11 || true
-rmdir LFS11 || true
+rmdir /mnt/m2_root/LFS11 || true
 
 umount /mnt/m2_root/run || true
 umount /mnt/m2_root/sys || true

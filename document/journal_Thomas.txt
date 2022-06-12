@@ -768,3 +768,10 @@
 2022-06-11T14:24:59Z
 
     move the next steps list to its own file
+
+2022-06-12T12:21:57Z
+
+    note in the 'experience' doc that tamp emacs could not auto update buffer, had to use tail -f in a shell
+
+    in doc when discussing bash:  spaces and quotes, redirect, inside $() quoting is reset, ${ } regex match
+    

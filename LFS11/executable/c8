@@ -73,7 +73,7 @@ texinfo
 vim
 eudev
 man-db
-procps-ng
+procps
 util-linux
 e2fsprogs
 sysklogd

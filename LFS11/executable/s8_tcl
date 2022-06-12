@@ -4,7 +4,7 @@ set -x
 # install the documentation
 pushd /usr/share/doc
 #tar -xf "$(ls -d $LFS_BUILD_DIR/package/tcl*-html.tar*)" --strip-components=1  # why strip-components=1 ??
-tar -xf "$(ls -d $LFS_BUILD_DIR/package/tcl*-html.tar*)"
+tar -xf "$(ls -d $LFS_BUILD_DIR/package/tcl*-html.tar* | head -1)"
 popd
 
 SRCDIR="$(pwd)"

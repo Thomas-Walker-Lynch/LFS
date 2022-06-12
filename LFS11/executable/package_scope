@@ -1,19 +1,20 @@
 #!/bin/bash
+set -e
 package=$1
 script=${@:2}
 
 if [[ -z "$package" ]]; then
    echo $0 "requires a package as a first argument"
-   exit
+   exit 1
 fi
 if [[ -z "$script" ]]; then
    echo $0 "requires a script and parameters after the package name"
-   exit
+   exit 2
 fi
 
-source package_untar.source "$1"
+source package_untar.source "$1"  
 
-  $script
+$script 
 
 if [[ ! -z "$SOURCE_DIR" ]]; then
     rm -rf $M2_ROOT/source/$SOURCE_DIR

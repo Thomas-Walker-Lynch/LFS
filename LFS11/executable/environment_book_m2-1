@@ -27,7 +27,7 @@ PATH=/usr/bin:/usr/sbin
 export HOME TERM PATH
 
 # seems we should do this here ..
-mkdir $HOME
+mkdir -p $HOME
 cd "$HOME"
 
 # repo environment

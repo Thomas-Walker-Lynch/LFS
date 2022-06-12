@@ -2,18 +2,21 @@
 # this should be sourced from the calling script, not executed directly
 # this returns the variables: package, SOURCE_DIR
 
-package="$1"
-if [ -z "$package" ]; then
-  echo $0 requires a first parameter for the package name
-  exit
+package_stem="$1"
+if [ -z "$package_stem" ]; then
+  echo $0 requires a first parameter for the package_stem name
+  exit 1
 fi
+
+
+export PACKAGE_PATH="$(ls -d "$LFS_BUILD_DIR"/package/"$package_stem"-*.tar* | head -1)"
+export PACKAGE="$(basename "$PACKAGE_PATH")"
+export SOURCE_DIR="${PACKAGE%\.tar*}"
+echo $0 $PACKAGE_PATH $PACKAGE $SOURCE_DIR
 
 cd $M2_ROOT
-if [[ ! -d source ]]; then
-    mkdir source
-fi
+! test -d source && mkdir source
 cd source
 
-tar -xf "$LFS_BUILD_DIR"/package/"$package"*.tar*
-export SOURCE_DIR=$(ls -d "$package"*)
+tar -xf "$PACKAGE_PATH"
 cd "$SOURCE_DIR"

@@ -1,0 +1,35 @@
+#!/bin/bash
+# should rewrite this to be less sensitive to version numbers ..
+# should just wget directly into package_doc instead of moving tcl afterwward, though this way versions can be seen to match
+# probably should remove the comment on the rum $tcl_09 and $expect_0 to save some space
+
+pushd $LFS_BUILD_DIR/package
+
+test -f procps-ng-3.3.17.tar.xz -a ! -L procps-3.3.17.tar.xz  &&\
+  ln -s procps-ng-3.3.17.tar.xz procps-3.3.17.tar.xz
+
+tcl_html=$(ls -d tcl*-html.tar*)
+if [[ ! -z "$tcl_html" ]];then
+  mkdir -p "$LFS_BUILD_DIR"/package_document
+  mv $tcl_html "$LFS_BUILD_DIR"/package_document
+fi
+
+tcl_0=tcl8.6.12-src.tar.gz
+tcl_1=tcl-8.6.12.tar.gz
+if [ -f $tcl_0  ] && [ ! -f $tcl_1 ];then
+  tar --transform s/tcl8.6.12/tcl-8.6.12/ -xf $tcl_0
+  tar  -cf $tcl_1 tcl-8.6.12
+  rm -r tcl-8.6.12
+#  rm $tcl_0
+fi
+
+expect_0=expect5.45.4.tar.gz
+expect_1=expect-5.45.4.tar.gz
+if [ -f $expect_0 ] && [ ! -f $expect_1 ];then
+  tar --transform s/expect5.45.4/expect-5.45.4/ -xf $expect_0
+  tar  -cf $expect_1 expect-5.45.4
+  rm -r expect-5.45.4
+#  rm $expect_0
+fi
+
+popd

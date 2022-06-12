@@ -85,3 +85,32 @@
      add a third log, has the frames and times like the frame log, but the content goes through grep
      and is filtered for error indicator tags .. perhaps grep -iE 'error|not found'
      
+2022-06-12T12:21:57Z
+
+     make sure all exported variables we make start with LFS_
+
+     The procps-ng package expands into a directory called, procps without the 'ng' .. gota love it
+
+          2022-06-12T12:44:58Z[LFS-book-m1-root-book-m2]
+          root@m1§/root§
+          > echo $PACKAGE_PATH
+          /LFS11/package/procps-ng-3.3.17.tar.xz
+
+          tar -tf 
+             ...
+          procps-3.3.17/watch.c
+
+          add this to the three packages to be fixed, two without the dashes before the version name,
+          and now this one
+
+          rename patch directory to package_patch  fitst with package_document - it is all package stuff
+          don't forget to update .gitignore
+
+          already mentioned pulling m2_wipe out as a manual step and having build check that m2_root (m2_filesystem) is
+          indeed empty before running -- should do the same with the package get, check the required packages are there
+          before building   check_m2_filesystem,  check_packages_present
+
+          mkdir package/application  package/patch  package/document
+          nah,  instead upstream/package  upstream/patch upstream/document
+
+
