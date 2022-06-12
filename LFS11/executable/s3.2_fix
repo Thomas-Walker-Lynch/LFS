@@ -32,7 +32,8 @@ if [ -f $expect_0 ] && [ ! -f $expect_1 ];then
 #  rm $expect_0
 fi
 
-# I think that the tools we install on m2_filesystem does not have bz2, so we have to uncompress this now
+# this should not be needed!  bzip2 is made before package_source on elfutils is called!
+# there is a bug in the scripts
 bunzip2 elfutils-0.186.tar.bz2 
 
 popd
