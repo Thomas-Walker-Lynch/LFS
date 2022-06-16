@@ -1,0 +1,9 @@
+#!/bin/bash
+
+section="
+lfs-bootscripts
+"
+
+IFS=$'\n'; for s in $section;do
+  frame package_scope $s s9_$s
+done

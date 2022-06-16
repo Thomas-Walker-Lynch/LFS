@@ -117,4 +117,10 @@
 
           single data stamped log file directory files build frame error in it
           
-                         
+2022-06-13T11:37:56Z
+
+           apply patches as part of up front work to get the upstream tar files in shape
+           after writing logs chmod ugo-w
+
+
+

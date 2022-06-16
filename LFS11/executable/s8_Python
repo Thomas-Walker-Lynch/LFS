@@ -17,4 +17,6 @@ make install
       --no-same-owner       \
       --no-same-permissions \
       -C /usr/share/doc/python-3.10.2/html \
-      -xvf ../python-3.10.2-docs-html.tar.bz2
+      -xvf "$LFS_BUILD_DIR"/package_document/python-3.10.2-docs-html.tar.bz2
+
+  

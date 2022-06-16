@@ -2,6 +2,7 @@
 #
 # Checkpointing might be less important with the automatic scripts than it is when building LFS manually, because
 # an admin can run the scripts again to get back to the same point as the checkpoint.
+set -x
 
 if [[ -z "$LFS_BUILD_DIR" ]];then
   echo $0 "requires variable \$LFS_BUILD_DIR to be set"
@@ -21,4 +22,7 @@ fi
 
 checkpoint_file=$(mktemp --tmpdir="$checkpoint_dir" "$checkpoint.XXXXX.tgz")
 
-tar -tzf $checkpoint_file $M2_ROOT
+echo $0 "$checkpoint_file" "$M2_ROOT" 
+tar -czf $checkpoint_file "$M2_ROOT"
+
+set +x

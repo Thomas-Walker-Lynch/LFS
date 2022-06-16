@@ -1,7 +1,7 @@
 #!/bin/bash
 # bash without -i resets PS1
 # Make the top of the m2 tree the root of the file system, then run the script
-set -x
+# set -x
 
 term="$1"
 pps1="$2"
@@ -54,4 +54,4 @@ export PPS1 PPS2 PS1 PS2 TZ TIME_STYLE
 
 $script
 
-set +x
+# set +x
