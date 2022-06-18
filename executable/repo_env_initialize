@@ -1,8 +1,0 @@
-#!/bin/bash
-# this is sourced into the environment with the repo_env command
-
-PATH=~/repo/resources/executable:"$PATH"
-PATH=~/repo/LFS/executable:"$PATH"
-PATH=~/repo/LFS/executable/LFS:"$PATH"
-export PATH
-
