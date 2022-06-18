@@ -31,5 +31,5 @@ make
 # many more warnings ...
 
 
-make DESTDIR=$M2_ROOT install
+make DESTDIR=$LFS_M2_FILESYSTEM install
 

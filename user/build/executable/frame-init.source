@@ -1,5 +1,5 @@
 #!/bin/bash
-# source this because it exports the FRAME_LOG and BUILT_LOG environment variables
+# source this because it exports the LFS_FRAME_LOG and BUILT_LOG environment variables
 
 if [[ -z "$LFS_BUILD_DIR" ]];then
   echo "frame-0 needs \$LFS_BUILD_DIR but it is not here.  Usually this comes from environment_book_m1"
@@ -8,15 +8,15 @@ fi
 
 # We keep the path and basename separate because in the m2 environment the path will change
 stamp="$(Z)"
-export FRAME_LOG=$(basename $(mktemp --tmpdir="$LFS_LOG_DIR" "$stamp"'_frame-XXXXXXXXXX' --suffix=".log"))
-export BUILD_LOG=$(basename $(mktemp --tmpdir="$LFS_LOG_DIR" "$stamp"'_build-XXXXXXXXXX' --suffix=".log"))
+export LFS_FRAME_LOG=$(basename $(mktemp --tmpdir="$LFS_LOG_DIR" "$stamp"'_frame-XXXXXXXXXX' --suffix=".log"))
+export LFS_BUILD_LOG=$(basename $(mktemp --tmpdir="$LFS_LOG_DIR" "$stamp"'_build-XXXXXXXXXX' --suffix=".log"))
 
-frame_log_path="$LFS_BUILD_DIR/log/$FRAME_LOG"
-build_log_path="$LFS_BUILD_DIR/log/$BUILD_LOG"
+frame_log_path="$LFS_BUILD_DIR/log/$LFS_FRAME_LOG"
+build_log_path="$LFS_BUILD_DIR/log/$LFS_BUILD_LOG"
 cat <<EOF | tee "$frame_log_path" | tee "$build_log_path"
 #--------------------------------------------------------------------------------
 # $stamp
-# resetting frame log: "$FRAME_LOG"
-# resetting build log: "$BUILD_LOG"
+# resetting frame log: "$LFS_FRAME_LOG"
+# resetting build log: "$LFS_BUILD_LOG"
 #--------------------------------------------------------------------------------
 EOF

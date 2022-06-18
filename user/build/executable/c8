@@ -53,10 +53,10 @@ kmod
 "
 
 IFS=$'\n'; for s in $section;do
-  frame package_scope $s s8_$s
+  frame environment_package $s s8_$s
 done
 
-frame package_scope elfutils s8_libelf
+frame environment_package elfutils s8_libelf
 
 section="
 libffi
@@ -89,7 +89,7 @@ sysvinit
 "
 
 IFS=$'\n'; for s in $section;do
-  frame package_scope $s s8_$s
+  frame environment_package $s s8_$s
 done
 
 #strip debug info (if desired)

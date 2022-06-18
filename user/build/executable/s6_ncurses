@@ -22,6 +22,6 @@ popd
             --enable-widec
 
 make
-make DESTDIR=$M2_ROOT TIC_PATH=$(pwd)/build/progs/tic install
-echo "INPUT(-lncursesw)" > $M2_ROOT/usr/lib/libncurses.so
+make DESTDIR=$LFS_M2_FILESYSTEM TIC_PATH=$(pwd)/build/progs/tic install
+echo "INPUT(-lncursesw)" > $LFS_M2_FILESYSTEM/usr/lib/libncurses.so
 

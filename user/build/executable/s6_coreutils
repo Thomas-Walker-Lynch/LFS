@@ -7,9 +7,9 @@
             --enable-no-install-program=kill,uptime
 
 make
-make DESTDIR=$M2_ROOT install
-mv -v $M2_ROOT/usr/bin/chroot              $M2_ROOT/usr/sbin
-mkdir -pv $M2_ROOT/usr/share/man/man8
-mv -v $M2_ROOT/usr/share/man/man1/chroot.1 $M2_ROOT/usr/share/man/man8/chroot.8
-sed -i 's/"1"/"8"/'                    $M2_ROOT/usr/share/man/man8/chroot.8
+make DESTDIR=$LFS_M2_FILESYSTEM install
+mv -v $LFS_M2_FILESYSTEM/usr/bin/chroot              $LFS_M2_FILESYSTEM/usr/sbin
+mkdir -pv $LFS_M2_FILESYSTEM/usr/share/man/man8
+mv -v $LFS_M2_FILESYSTEM/usr/share/man/man1/chroot.1 $LFS_M2_FILESYSTEM/usr/share/man/man8/chroot.8
+sed -i 's/"1"/"8"/'                    $LFS_M2_FILESYSTEM/usr/share/man/man8/chroot.8
 

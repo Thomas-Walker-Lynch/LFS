@@ -638,13 +638,13 @@
    haver the whole group again after this.
 
    Managed to mess up the permissions on the host system today by running
-       > sudo chown -hR root:root $M2_ROOT/{usr,lib,var,etc,bin,sbin,tools}
-    but root doesn't have $M2_ROOT defined so it expands to nothing then operates
+       > sudo chown -hR root:root $M2_FILESYSTEM/{usr,lib,var,etc,bin,sbin,tools}
+    but root doesn't have $M2_FILESYSTEM defined so it expands to nothing then operates
     on the root file system. Changed to:
-       > sudo M2_ROOT=$M2_ROOT chown -hR root:root $M2_ROOT/{usr,lib,var,etc,bin,sbin,tools}
+       > sudo M2_FILESYSTEM=$M2_FILESYSTEM chown -hR root:root $M2_FILESYSTEM/{usr,lib,var,etc,bin,sbin,tools}
 
    debugging the as_su_chroot had a number of error for the new environment.  By setting
-   M2_ROOT to / in the as_su_chroot script, the called script will work in both the
+   M2_FILESYSTEM to / in the as_su_chroot script, the called script will work in both the
    host environment and the chroot environment. package_untar was an example script that
    needed that.
 

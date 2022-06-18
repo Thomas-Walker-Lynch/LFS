@@ -8,24 +8,24 @@ repo_home="$3"
 project_home="$4"
 project="$5"
 lfs_build_dir="$6"
-m2_root="$7"
+lfs_m2_filesystem="$7"
 frame_log="$8"
 build_log="$9"
 script="${@:10}"
 
 # according to the book	   
 umask 022
-M2_ROOT="$m2_root"
+LFS_M2_FILESYSTEM="$lfs_m2_filesystem"
 LC_ALL=POSIX
 LFS_TGT="$(uname -m)-lfs-linux-gnu"
 PATH="/usr/bin"
 if [ ! -L /bin ]; then 
   export PATH="/bin:$PATH"
 fi	 
-PATH=$M2_ROOT/tools/bin:$PATH
-CONFIG_SITE="$m2_root/usr/share/config.site"
+PATH=$LFS_M2_FILESYSTEM/tools/bin:$PATH
+CONFIG_SITE="$lfs_m2_filesystem/usr/share/config.site"
 MAKEFLAGS="-j12" 
-export M2_ROOT LC_ALL LFS_TGT PATH CONFIG_SITE MAKEFLAGS 
+export LFS_M2_FILESYSTEM LC_ALL LFS_TGT PATH CONFIG_SITE MAKEFLAGS 
 
 # our local systems programs, eg. Z
 PATH="/usr/local/bin:$PATH"
@@ -33,18 +33,17 @@ export PATH
 
 # repo environment
 REPO_HOME="$repo_home"
-PROJECT_HOME="$project_home"
-PROJECT="$project-book-m1"
+PROJECT="$project:book-m1"
 export REPO_HOME PROJECT_HOME PROJECT
 
 # for our build scripts
 LFS_BUILD_DIR="$lfs_build_dir"
 PATH="$LFS_BUILD_DIR/executable:$PATH"
 LFS_LOG_DIR="$LFS_BUILD_DIR/log"
-FRAME_LOG="$frame_log"
-BUILD_LOG="$build_log"
+LFS_FRAME_LOG="$frame_log"
+LFS_BUILD_LOG="$build_log"
 
-export LFS_BUILD_DIR LFS_LOG_DIR LFS_ARCHIVE_DIR PATH FRAME_LOG	BUILD_LOG 
+export LFS_BUILD_DIR LFS_LOG_DIR LFS_ARCHIVE_DIR PATH LFS_FRAME_LOG	LFS_BUILD_LOG 
 
 # without -i bash clears PS1, just because
 PPS1="$pps1"

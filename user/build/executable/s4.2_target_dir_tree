@@ -1,18 +1,18 @@
 #!/bin/bash
 
-mkdir -pv "$M2_ROOT"/{etc,var} "$M2_ROOT"/usr/{bin,lib,sbin,include}
+mkdir -pv "$LFS_M2_FILESYSTEM"/{etc,var} "$LFS_M2_FILESYSTEM"/usr/{bin,lib,sbin,include}
 
 for i in bin lib sbin; do
-    ln -sv usr/$i "$M2_ROOT"/$i
+    ln -sv usr/$i "$LFS_M2_FILESYSTEM"/$i
 done
 
 case $(uname -m) in
-    x86_64) mkdir -pv "$M2_ROOT"/lib64 ;;
+    x86_64) mkdir -pv "$LFS_M2_FILESYSTEM"/lib64 ;;
 esac
 
-mkdir -pv "$M2_ROOT"/tools
+mkdir -pv "$LFS_M2_FILESYSTEM"/tools
 
 # book calls for creating this directory later, but we need it earlier for our scripts
-install -dv -m 1777 "$M2_ROOT"/tmp 
+install -dv -m 1777 "$LFS_M2_FILESYSTEM"/tmp 
 
 

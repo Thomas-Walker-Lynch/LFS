@@ -34,7 +34,7 @@ Build Environment
        and did not have restore the OS from a snapshot, but it was close.  Actually, I suspect m1 is a bit messed up
        now, but the only thing it is used for is building LFS, so until it no longer works for that I will leave it be.
        The point here is that, yes, it is possible to mess up m1.  The simplest way to do so just might be to
-       give the environment variable M2_ROOT the wrong value.
+       give the environment variable M2_FILESYSTEM the wrong value.
 
     *. Get my scripts from github.com/Thomas-Walker-Lynch/LFS
 
@@ -59,11 +59,11 @@ Variations from the Book
        m2_root directory tree. Dunno what environment, umask, etc. would apply to that, so these scripts
        do it the other way around. 
 
-    *. I changed $LFS to $M2_ROOT.  In the m1 file system, the m2 root mounts at /mnt/m2_root
+    *. I changed $LFS to $M2_FILESYSTEM.  In the m1 file system, the m2 root mounts at /mnt/m2_root
 
-    *. The book has us untar all the packages in a single step and put them in $M2_ROOT/source.  Instead these scripts
+    *. The book has us untar all the packages in a single step and put them in $M2_FILESYSTEM/source.  Instead these scripts
        untar packages one at a time and clean up after each build.  The directory the package is untarred into will be
-       $M2_ROOT/source/$SOURCE_DIR.
+       $M2_FILESYSTEM/source/$SOURCE_DIR.
 
     *. The book has us chroot once and then work in the new environment.  Herein there is a chroot_m2 command which runs
        a script in the chroot environment. It is applied to each script to be run there.
@@ -73,7 +73,7 @@ Variations from the Book
        build scripts to /usr/sbin/LFS in the chroot environment.  This command must be run first or after script
        changes.
 
-       $M2_ROOT is set to '/' (slash) in the chroot environment.  Hence a script can be written in a fashion
+       $M2_FILESYSTEM is set to '/' (slash) in the chroot environment.  Hence a script can be written in a fashion
        to work in either environment.  'package_untar' is such a script that works both before and after chroot
        is called.
 

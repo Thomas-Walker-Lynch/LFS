@@ -24,5 +24,5 @@ gcc
 
 IFS=$'\n'; for s in $section;do
   # echo s6_$s
-  eval frame package_scope $s s6_$s
+  eval frame environment_package $s s6_$s
 done

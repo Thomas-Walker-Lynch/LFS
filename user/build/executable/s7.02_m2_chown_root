@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # -h will change the owner of a symbolic link instead just changing the owner of the target
-chown -hR root:root $M2_ROOT/{usr,lib,var,etc,bin,sbin,tools}
+chown -hR root:root $LFS_M2_FILESYSTEM/{usr,lib,var,etc,bin,sbin,tools}
 case $(uname -m) in
-  x86_64) chown -hR root:root $M2_ROOT/lib64 ;;
+  x86_64) chown -hR root:root $LFS_M2_FILESYSTEM/lib64 ;;
 esac
 
 set +x

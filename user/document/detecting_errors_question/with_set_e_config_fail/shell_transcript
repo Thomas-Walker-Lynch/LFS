@@ -36,7 +36,7 @@ EDITOR=emacs
 PWD=/home/lfs/repo/LFS/executable/LFS
 LOGNAME=lfs
 PS_FORMAT=user:15,pid,%cpu,%mem,vsz,rss,tty,stat,start,time,command
-M2_ROOT=/mnt/lfs
+M2_FILESYSTEM=/mnt/lfs
 TZ=UTC
 HOME=/home/lfs
 USERNAME=lfs
@@ -3679,7 +3679,7 @@ gcc
 ++ ac_val=lfs
 + case $ac_val in
 + for ac_var in `(set) 2>&1 | sed -n 's/^\([a-zA-Z_][a-zA-Z0-9_]*\)=.*/\1/p'`
-+ eval 'ac_val=$M2_ROOT'
++ eval 'ac_val=$M2_FILESYSTEM'
 ++ ac_val=/mnt/lfs
 + case $ac_val in
 + for ac_var in `(set) 2>&1 | sed -n 's/^\([a-zA-Z_][a-zA-Z0-9_]*\)=.*/\1/p'`

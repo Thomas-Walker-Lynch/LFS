@@ -13,7 +13,7 @@ fi
 PPS1='\n$(Z)[$PROJECT]\n\u@\h§$(pwd)§\n> '
 PS1="$PPS1"
 
-M2_ROOT="/mnt/m2_root"
+LFS_M2_FILESYSTEM="/mnt/lfs_m2_filesystem"
 LFS_BUILD_DIR="$REPO_HOME/LFS/LFS11"
 env -i "$LFS_BUILD_DIR/executable/environment_book_m1-1"\
   "$PPS1"\
@@ -22,7 +22,7 @@ env -i "$LFS_BUILD_DIR/executable/environment_book_m1-1"\
   "$PROJECT_HOME"\
   "$PROJECT"\
   "$LFS_BUILD_DIR"\
-  "$M2_ROOT"\
-  "$FRAME_LOG"\
-  "$BUILD_LOG"\
+  "$LFS_M2_FILESYSTEM"\
+  "$LFS_FRAME_LOG"\
+  "$LFS_BUILD_LOG"\
   $script

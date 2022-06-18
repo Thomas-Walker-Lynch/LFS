@@ -2,4 +2,4 @@
 
 ./configure --prefix=/usr --host=$LFS_TGT
 make
-make DESTDIR=$M2_ROOT install
+make DESTDIR=$LFS_M2_FILESYSTEM install

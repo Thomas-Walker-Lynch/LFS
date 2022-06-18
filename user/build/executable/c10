@@ -8,6 +8,6 @@ lfs-bootscripts
 "
 
 IFS=$'\n'; for s in $section;do
-  frame package_scope $s s9_$s
+  frame environment_package $s s9_$s
 done
 

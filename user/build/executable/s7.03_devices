@@ -1,18 +1,18 @@
 #!/bin/bash
 
-mkdir -pv $M2_ROOT/{dev,proc,sys,run}
+mkdir -pv $LFS_M2_FILESYSTEM/{dev,proc,sys,run}
 
-mknod -m 600 $M2_ROOT/dev/console c 5 1
-mknod -m 666 $M2_ROOT/dev/null c 1 3
+mknod -m 600 $LFS_M2_FILESYSTEM/dev/console c 5 1
+mknod -m 666 $LFS_M2_FILESYSTEM/dev/null c 1 3
 
-mount -v --bind /dev $M2_ROOT/dev
+mount -v --bind /dev $LFS_M2_FILESYSTEM/dev
 
-mount -v --bind /dev/pts $M2_ROOT/dev/pts
-mount -vt proc proc $M2_ROOT/proc
-mount -vt sysfs sysfs $M2_ROOT/sys
-mount -vt tmpfs tmpfs $M2_ROOT/run
+mount -v --bind /dev/pts $LFS_M2_FILESYSTEM/dev/pts
+mount -vt proc proc $LFS_M2_FILESYSTEM/proc
+mount -vt sysfs sysfs $LFS_M2_FILESYSTEM/sys
+mount -vt tmpfs tmpfs $LFS_M2_FILESYSTEM/run
 
-if test -h $M2_ROOT/dev/shm; then
-   mkdir -pv $M2_ROOT/$(readlink $M2_ROOT/dev/shm)
+if test -h $LFS_M2_FILESYSTEM/dev/shm; then
+   mkdir -pv $LFS_M2_FILESYSTEM/$(readlink $LFS_M2_FILESYSTEM/dev/shm)
 fi
 

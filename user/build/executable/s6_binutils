@@ -14,5 +14,5 @@ cd build
     --disable-werror           \
     --enable-64-bit-bfd
 make
-make DESTDIR=$M2_ROOT install
+make DESTDIR=$LFS_M2_FILESYSTEM install
 

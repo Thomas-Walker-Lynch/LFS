@@ -10,17 +10,17 @@ fi
 if [[ ! -d "$LFS_BUILD_DIR/log" ]];then
   mkdir -p "$LFS_BUILD_DIR/log" || { echo $0 "can't make log dir" && exit 2 ; }
 fi
-if [[ -z "$FRAME_LOG" ]];then
-  echo "$0 no \$FRAME_LOG"
+if [[ -z "$LFS_FRAME_LOG" ]];then
+  echo "$0 no \$LFS_FRAME_LOG"
   exit 3
 fi
-if [[ -z "$BUILD_LOG" ]];then
-  echo "$0 no \$BUILD_LOG"
+if [[ -z "$LFS_BUILD_LOG" ]];then
+  echo "$0 no \$LFS_BUILD_LOG"
   exit 4
 fi
 
-frame_log_path="$LFS_BUILD_DIR/log/$FRAME_LOG"
-build_log_path="$LFS_BUILD_DIR/log/$BUILD_LOG"
+frame_log_path="$LFS_BUILD_DIR/log/$LFS_FRAME_LOG"
+build_log_path="$LFS_BUILD_DIR/log/$LFS_BUILD_LOG"
 stamp=$(Z)
 cat <<EOF | tee -a "$frame_log_path" >> "$build_log_path"
 

@@ -32,7 +32,7 @@ fi
 
 checkpoint_file=$(mktemp --tmpdir="$checkpoint_dir" "$checkpoint.XXXXX.tgz")
 
-echo $0 "$checkpoint_file" "$M2_ROOT" 
-tar -czf $checkpoint_file "$M2_ROOT"
+echo $0 "$checkpoint_file" "$LFS_M2_FILESYSTEM" 
+tar -czf $checkpoint_file "$LFS_M2_FILESYSTEM"
 
 set +x

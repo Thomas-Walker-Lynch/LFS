@@ -11,7 +11,7 @@ EDITOR=emacs
 PWD=/home/lfs/repo/LFS
 LOGNAME=lfs
 PS_FORMAT=user:15,pid,%cpu,%mem,vsz,rss,tty,stat,start,time,command
-M2_ROOT=/mnt/lfs
+M2_FILESYSTEM=/mnt/lfs
 TZ=UTC
 HOME=/home/lfs
 USERNAME=lfs
@@ -125,9 +125,9 @@ lfs@debian11§/mnt/lfs/source/binutils-2.38§
 
 2022-05-08T23:19:53Z[LFS]
 lfs@debian11§/mnt/lfs/source/binutils-2.38/build§
-> ../configure --prefix=$M2_ROOT/tools \
-             --with-sysroot=$M2_ROOT \
-             --target=$M2_ROOT_TGT   \
+> ../configure --prefix=$M2_FILESYSTEM/tools \
+             --with-sysroot=$M2_FILESYSTEM \
+             --target=$M2_FILESYSTEM_TGT   \
              --disable-nls       \
              --disable-werror  
 

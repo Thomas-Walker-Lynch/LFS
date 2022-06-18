@@ -1,8 +1,8 @@
 #!/bin/bash
 
 set -x
-sudo umount $M2_ROOT/dev/pts
-sudo umount $M2_ROOT/{sys,proc,run,div}
+sudo umount $LFS_M2_FILESYSTEM/dev/pts
+sudo umount $LFS_M2_FILESYSTEM/{sys,proc,run,div}
 sudo df -h .
 
 
@@ -10,7 +10,7 @@ sudo df -h .
 # what about all the devices and mounted stuff?
 #tar -cJpf $HOME/lfs-temp-tools-11.1.tar.xz .
 #
-sudo cd $M2_ROOT
+sudo cd $LFS_M2_FILESYSTEM
 sudo tar -cJpf $LFS_BUILD_DIR/checkpoint/lfs-temp-tools-11.1.tar.xz .
 sudo chown lfs:lfs $LFS_BUILD_DIR/checkpoint/lfs-temp-tools-11.1.tar.xz
 sudo df -h .

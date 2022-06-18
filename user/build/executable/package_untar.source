@@ -14,7 +14,7 @@ export PACKAGE="$(basename "$PACKAGE_PATH")"
 export SOURCE_DIR="${PACKAGE%\.tar*}"
 echo $0 $PACKAGE_PATH $PACKAGE $SOURCE_DIR
 
-cd $M2_ROOT
+cd $LFS_M2_FILESYSTEM
 ! test -d source && mkdir source
 cd source
 

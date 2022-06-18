@@ -16,6 +16,6 @@ source package_untar.source "$1"
 $script 
 
 if [[ ! -z "$SOURCE_DIR" ]]; then
-  rm -rf $M2_ROOT/source/$SOURCE_DIR
+  rm -rf $LFS_M2_FILESYSTEM/source/$SOURCE_DIR
 fi
 

@@ -4,8 +4,8 @@
 set -x
 set -e
 
-if [[ -z "$M2_ROOT" ]];then
-  echo $0 " requires that \$M2_ROOT has a value"
+if [[ -z "$LFS_M2_FILESYSTEM" ]];then
+  echo $0 " requires that \$LFS_M2_FILESYSTEM has a value"
   exit 1
 fi
 
@@ -15,30 +15,30 @@ if [ "$EUID" -ne 0 ]; then
   echo $0 "not being run as root, so can't do unounts, we stop scanning upon reaching the first error"
 fi
 
-read -p "Remove all files except package/ on $M2_ROOT? [y|n]:" -n 1 -r
+read -p "Remove all files except package/ on $LFS_M2_FILESYSTEM? [y|n]:" -n 1 -r
 echo    # (optional) move to a new line
 if [[ ! "$REPLY" =~ ^[y]$ ]];then
   exit 1
 fi
 
 # found that the absolute pathname is necessary, independent of the current pwd
-umount /mnt/m2_root/LFS11 || true
-rmdir /mnt/m2_root/LFS11 || true
+umount /mnt/lfs_m2_filesystem/LFS11 || true
+rmdir /mnt/lfs_m2_filesystem/LFS11 || true
 
-umount /mnt/m2_root/dev || true
-umount /mnt/m2_root/dev/pts  || true
-umount /mnt/m2_root/proc || true
-umount /mnt/m2_root/sys || true
-umount /mnt/m2_root/run || true
+umount /mnt/lfs_m2_filesystem/dev || true
+umount /mnt/lfs_m2_filesystem/dev/pts  || true
+umount /mnt/lfs_m2_filesystem/proc || true
+umount /mnt/lfs_m2_filesystem/sys || true
+umount /mnt/lfs_m2_filesystem/run || true
 
 echo "rm -rf the following:"
-find "$M2_ROOT" \
+find "$LFS_M2_FILESYSTEM" \
   -maxdepth 1 -mindepth 1 \
   ! -name "LFS11" \
   -print \
   \( -exec rm -rf {} \; -o -quit \)
 
-chown "$USERNAME":"$USERNAME" "$M2_ROOT"
-chmod 0755 "$M2_ROOT"
+chown "$USERNAME":"$USERNAME" "$LFS_M2_FILESYSTEM"
+chmod 0755 "$LFS_M2_FILESYSTEM"
 
 set +x

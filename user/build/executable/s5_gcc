@@ -20,9 +20,9 @@ cd build
 
 ../configure                  \
     --target=$LFS_TGT         \
-    --prefix=$M2_ROOT/tools       \
+    --prefix=$LFS_M2_FILESYSTEM/tools       \
     --with-glibc-version=2.35 \
-    --with-sysroot=$M2_ROOT       \
+    --with-sysroot=$LFS_M2_FILESYSTEM       \
     --with-newlib             \
     --without-headers         \
     --enable-initfini-array   \

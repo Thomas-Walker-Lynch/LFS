@@ -28,7 +28,7 @@ sudo -E \
   env \
     "TERM=$TERM"\
     "PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"\
-    "PROJECT=$PROJECT-root"\
+    "PROJECT=$PROJECT:root"\
     PPS1="$PPS1"\
     PPS2="$PPS2"\
     PS1="$PPS1"\
