@@ -7,3 +7,12 @@ lfs-bootscripts
 IFS=$'\n'; for s in $section;do
   frame package_scope $s s9_$s
 done
+
+s9.5.1_eth0_exmaple
+s9.5.2_resolv.conf
+s9.5.3_hostname
+s9.5.4_etc_hosts
+s9.6.2_sysvinit
+s9.6.4_clock
+s9.8_inputrc
+s9.9_shells

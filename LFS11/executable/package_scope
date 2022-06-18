@@ -4,12 +4,11 @@ package=$1
 script=${@:2}
 
 if [[ -z "$package" ]]; then
-   echo $0 "requires a package as a first argument"
-   exit 1
+  echo $0 "requires a package as a first argument"
+  exit 1
 fi
 if [[ -z "$script" ]]; then
-   echo $0 "requires a script and parameters after the package name"
-   exit 2
+  script="/bin/bash --norc"
 fi
 
 source package_untar.source "$1"  
@@ -17,6 +16,6 @@ source package_untar.source "$1"
 $script 
 
 if [[ ! -z "$SOURCE_DIR" ]]; then
-    rm -rf $M2_ROOT/source/$SOURCE_DIR
+  rm -rf $M2_ROOT/source/$SOURCE_DIR
 fi
 

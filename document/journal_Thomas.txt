@@ -777,3 +777,14 @@
     
     in doc be sure to mention about using c-c c-z and background and not using c-c to kill a job,  also use pstree -p
 
+2022-06-16T14:55:12Z
+
+    lfs-bootscripts is advertised as installing checkfs, but as far as I can tell
+    it doesn't do this.
+
+    LFS really starts wtih chapter 9, up to this point is has been a pile of
+    esoteric knowledge about which switches to give config before calling make.  In
+    Chapter 9 we start hearing how linux works, specifically how it boots.
+    
+    Robert left type as <fff> in his /etc/fstab initial configuration
+

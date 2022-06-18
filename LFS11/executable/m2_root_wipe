@@ -25,12 +25,11 @@ fi
 umount /mnt/m2_root/LFS11 || true
 rmdir /mnt/m2_root/LFS11 || true
 
-umount /mnt/m2_root/run || true
-umount /mnt/m2_root/sys || true
-umount /mnt/m2_root/proc || true
-umount /mnt/m2_root/dev/pts devpts || true
-umount /mnt/m2_root/dev/pts  || true
 umount /mnt/m2_root/dev || true
+umount /mnt/m2_root/dev/pts  || true
+umount /mnt/m2_root/proc || true
+umount /mnt/m2_root/sys || true
+umount /mnt/m2_root/run || true
 
 echo "rm -rf the following:"
 find "$M2_ROOT" \

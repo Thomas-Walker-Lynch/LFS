@@ -1,7 +1,7 @@
 #!/bin/bash
 # bash without -i resets PS1
 # Make the top of the m2 tree the root of the file system, then run the script
-#set -x
+set -x
 
 script="$@"
 if [[ -z "$script" ]]; then
@@ -30,4 +30,4 @@ chroot "$M2_ROOT" /usr/bin/env -i "$LFS_BUILD_DIR/executable/environment_book_m2
   "$BUILD_LOG"\
   $script
 
-#set +x
+set +x

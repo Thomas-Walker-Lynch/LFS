@@ -124,3 +124,16 @@
 
 
 
+2022-06-16T14:10:30Z
+
+            package_scope and environment_X are both scoping commands, both environment
+            command should rename one or the other
+
+            package_scrope runs bash if not script is given, but is not setting the
+            prompt
+
+2022-06-16T17:37:28Z
+
+            LFS uses sysvinit is the alternative systemctl?  apparently there is also
+            another alternative
+

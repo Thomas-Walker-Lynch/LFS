@@ -1,7 +1,17 @@
 #!/bin/bash
 #
-# Checkpointing might be less important with the automatic scripts than it is when building LFS manually, because
-# an admin can run the scripts again to get back to the same point as the checkpoint.
+# A checkpoint is just an tar file made from the m2 filesystem placed into the $LFS_BUILD_DIR/checkpoint directory.
+#
+# Tar does not take into mounts or special file systems, so checkpointing doesn't make much sense after those steps.
+#
+# Checkpoints take a lot of disk space. Keeping them around can lead to 'out of disk space' errors pretty quickly. These
+# can be subtles.  Typically just a bunch of "can't make/save file" without much explanation.
+#
+# On a modern high performance system it is just about as fast to run the install again instead of checkpointing,
+# and this is also a more effective use of diskspace.
+#
+# This is here mainly because the book suggests at one point to do an archive, i.e. to check point the install thus far
+#
 set -x
 
 if [[ -z "$LFS_BUILD_DIR" ]];then

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+# set -x
 
 # kind of interesting, making the build directory inside the source directory
 mkdir -v build
@@ -22,4 +22,4 @@ make
 # wonder if there is a reason for that
 make install
 
-set +x
+# set +x
