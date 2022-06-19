@@ -1,6 +1,6 @@
 #!/bin/bash
 # this is sourced into the environment with the repo_env command
 
-export BUILD_DIR=~"$REPO_HOME/Lustucru/user/build"
-export PATH="$BUILD_DIR/executable:$PATH"
+export LFS_BUILD_DIR="$REPO_HOME/Lustucru/user/build"
+export PATH="$LFS_BUILD_DIR/executable:$PATH"
 

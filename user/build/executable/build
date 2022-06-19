@@ -1,5 +1,7 @@
 #!/bin/bash
-# need to use LFS_BUILD_DIR to find the executables .. that needs to be set somewhere above ...
+
+# probably should be a parameeter, a custom config file to source?
+export LFS_M2_FILESYSTEM="/mnt/m2_filesystem"
 
 # can't frame this or the 'really?' prompt goes into the logs ...
 ./environment_book_m1 environment_root lfs_m2_filesystem_wipe

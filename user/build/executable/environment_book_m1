@@ -1,6 +1,11 @@
 #!/bin/bash
 # bash without -i resets PS1
 # except for the log file variables this comes from section 4.4
+# set -x
+
+if [[ -z "$LFS_M2_FILESYSTEM" ]]; then
+  export LFS_M2_FILESYSTEM="/mnt/m2_filesystem"
+fi
 
 script="$@"
 if [[ -z "$script" ]]; then
@@ -13,8 +18,6 @@ fi
 PPS1='\n$(Z)[$PROJECT]\n\u@\h§$(pwd)§\n> '
 PS1="$PPS1"
 
-LFS_M2_FILESYSTEM="/mnt/lfs_m2_filesystem"
-LFS_BUILD_DIR="$REPO_HOME/LFS/LFS11"
 env -i "$LFS_BUILD_DIR/executable/environment_book_m1-1"\
   "$PPS1"\
   "$PPS2"\
@@ -26,3 +29,5 @@ env -i "$LFS_BUILD_DIR/executable/environment_book_m1-1"\
   "$LFS_FRAME_LOG"\
   "$LFS_BUILD_LOG"\
   $script
+
+# set +x

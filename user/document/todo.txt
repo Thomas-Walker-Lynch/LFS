@@ -1,82 +1,4 @@
-2022-05-06T15:06:00Z
-
-  [x] should break up the long s6 script into a script per package, then if desired, make
-  s6 call each of the smaller scripts
-
-  Need to check the md5 sums after the wget
-
-2022-05-07T16:59:01Z
-
-   [x] $LFS should be $M2_DIRECTORY_TREE [actually M2_FILESYSTEM]
-
-2022-05-20T00:11:42Z
-
-   [x] mv the current build environment in repo initialize into an initial script in executable/LFS
-   [x] time wrappers
-   [x] error search wrappes into a build log separate from the transcript [instead caught stderr]
-   
-2022-05-30T21:17:32Z[LFS]
-
-   [x] The packages and patch directory should be on m1 during the build:
-       1. if we are building a truly small system we won't want them all on m2, ever
-       2. initially they are owned by lfs:lfs, but m2 might not have such a user.  If
-          we put them m2, then we will have to change their ownership to root, but
-          if we start an install over again, they will have to be changed back to
-          lfs:lfs
-       [still have the user issue, add new todo item]
-
-   [x] generally we need some concept of a build directory on m1, as we might
-       do multiple builds with different environments etc.  seems m1 also need, then,
-       a package and patch directory. and probably the source directory.
-
-   [x] [build them one at a time] what about source?  I don't know if anything expects that it is located
-        on m2, or if it can be anywhere.  Again, it doesn't seem reasonable that
-        the m2 disk be forced to have enough space for it.  Though we do now
-        build them one at a time, still.
-
-        perhaps semething like this:
-
-        build-linux
-        build-linux/executable
-        build-linux/package
-        build-linux/patch
-        build-linux/LFS11-book
-        build-linux/LFS11-book/executable
-        build-linux/LFS11-book/source
-        build-linux/Turbine
-        build-linux/Turbine/executable
-        build-linux/Turbine/source
-
-2022-06-02T16:10:16Z
-
-   [x] [caught bash builtin time from stderr] install time package so we can time m2 builds
-   
-2022-06-04T00:40:17Z
-
-   [x] [what a mess] bash resets PS1 unless it is called with a -i.  Otherwise it inherits the evironment.
-       probably should set another variable, like PS1_string and use that to set PS1, right
-       now I set it all over the place.
-
-
------- ^^^^ all done above this line -------
-
-2022-06-07T19:34:11Z[LFS]
-
-    Package and patch download scripts should avoid the download if the package is already
-    present.  There should be a signature check to keep things grounded.
-
-    [x] [just linked to them, not ideal but .. ] update the bashrc and emacs files in library - there have been a lot of changes
-
-    [x] LFS11 -> build_dir,   add $LFS_BUILD_DIR to bashrc, update build script     
-
-    [x] m2_root -> m2_filesystem
-
 2022-06-10T13:51:36Z
-
-     [x] mv /LFS (after chroot)  to /mnt/LFS (after chroot).  I think the /mnt has already
-         been created at the time the mount --bind is done
-
-     [x] [Lustucru] rename the repo to LFS11 or LFS11_with_build_scripts or some such
 
      pull wipe out of build, have build first check that m2_filesystem is empty
 
@@ -91,29 +13,6 @@
      
 2022-06-12T12:21:57Z
 
-     [x] [think I got them] make sure all exported variables we make start with LFS_
-
-     [x] [fixed these manually, need an autostep still] The procps-ng package expands into a directory called, procps without the 'ng' .. gota love it
-
-          2022-06-12T12:44:58Z[LFS-book-m1-root-book-m2]
-          root@m1§/root§
-          > echo $PACKAGE_PATH
-          /LFS11/package/procps-ng-3.3.17.tar.xz
-
-          tar -tf 
-             ...
-          procps-3.3.17/watch.c
-
-          add this to the three packages to be fixed, two without the dashes before the version name,
-          and now this one
-
-          rename patch directory to package_patch  fitst with package_document - it is all package stuff
-          don't forget to update .gitignore
-
-          already mentioned pulling m2_wipe out as a manual step and having build check that m2_root (m2_filesystem) is
-          indeed empty before running -- should do the same with the package get, check the required packages are there
-          before building   check_m2_filesystem,  check_packages_present
-
       mkdir package/application  package/patch  package/document
       nah,  instead upstream/package  upstream/patch upstream/document
 
@@ -126,16 +25,6 @@
        apply patches as part of up front work to get the upstream tar files in shape
        after writing logs chmod ugo-w
 
-
-
-2022-06-16T14:10:30Z
-
-       [x] [made scope an environment] package_scope and environment_X are both scoping commands, both environment
-       command should rename one or the other
-
-       [x] [cool] package_scrope runs bash if not script is given, but is not setting the
-       prompt
-
 2022-06-16T17:37:28Z
 
        LFS uses sysvinit is the alternative systemctl?  apparently there is also
@@ -144,3 +33,7 @@
 2022-06-18T23:27:51Z
 
        LFS user after the chroot picks up /etc/passwd has not lfs entry
+       LFS_M2_FILESYSTEM needs to be a parameter somewhere, currently hard set in 'build'
+
+       M2_FILESYSTEM is currently mounted at boot in fstab - we should manually set
+       LFS_M2_FILESYSTEM variable and manually mount the target of the build device.

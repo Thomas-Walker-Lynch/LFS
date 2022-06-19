@@ -1,7 +1,7 @@
 #!/bin/bash
 # bash without -i resets PS1
 # Make the top of the m2 tree the root of the file system, then run the script
-set -x
+# set -x
 
 script="$@"
 if [[ -z "$script" ]]; then
@@ -18,17 +18,18 @@ if [[ -z "$TERM" ]];then
   exit 2
 fi
 
-# LFS_BUILD_DIR _after_ the chroot
 LFS_BUILD_DIR_M2="$LFS_M2_FILESYSTEM/mnt/build"
+mkdir -p "$LFS_BUILD_DIR_M2"
 mount --bind "$LFS_BUILD_DIR" "$LFS_BUILD_DIR_M2"
-chroot "$LFS_M2_FILESYSTEM" /usr/bin/env -i "$LFS_BUILD_DIR_M2/executable/environment_book_m2-1"\
+
+chroot "$LFS_M2_FILESYSTEM" /usr/bin/env -i "/mnt/build/executable/environment_book_m2-1"\
   "$TERM"\
   "$PPS1"\
   "$PPS2"\
   "$PROJECT"\
-  "$LFS_BUILD_DIR_M2"\
+  "/mnt/build"\
   "$LFS_FRAME_LOG"\
   "$LFS_BUILD_LOG"\
   $script
 
-set +x
+# set +x
