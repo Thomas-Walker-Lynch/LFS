@@ -4,7 +4,7 @@ package=$1
 script=${@:2}
 
 if [[ -z "$package" ]]; then
-  echo $0 "requires a package as a first argument"
+  echo $(basename "$0") "requires a package as a first argument"
   exit 1
 fi
 if [[ -z "$script" ]]; then

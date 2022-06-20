@@ -4,18 +4,18 @@
 script=$@
 
 if [[ -z "$LFS_BUILD_DIR" ]];then
-  echo "$0 no \$LFS_BILD_DIR"
+  echo "$(basename "$0") no \$LFS_BILD_DIR"
   exit 1
 fi
 if [[ ! -d "$LFS_BUILD_DIR/log" ]];then
-  mkdir -p "$LFS_BUILD_DIR/log" || { echo $0 "can't make log dir" && exit 2 ; }
+  mkdir -p "$LFS_BUILD_DIR/log" || { echo $(basename $(basename "$0")) "can't make log dir" && exit 2 ; }
 fi
 if [[ -z "$LFS_FRAME_LOG" ]];then
-  echo "$0 no \$LFS_FRAME_LOG"
+  echo "$(basename "$0") no \$LFS_FRAME_LOG"
   exit 3
 fi
 if [[ -z "$LFS_BUILD_LOG" ]];then
-  echo "$0 no \$LFS_BUILD_LOG"
+  echo "$(basename "$0") no \$LFS_BUILD_LOG"
   exit 4
 fi
 

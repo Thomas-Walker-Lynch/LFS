@@ -1,27 +1,33 @@
 #!/bin/bash
-set -x
+# set -x
 
 script="$@"
-if [[ -z "$script" ]]; then
-  script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/library/bashrc_lfs
-fi
-
-if [[ -z "$LFS_M2_FILESYSTEM" ]];then
-  echo $0 "requires variable LFS_M2_FILESYSTEM to be set"
-  exit 1
-fi
-
-if [[ -z "$TERM" ]];then
-  echo $0 "requires variable TERM to be set"
-  exit 2
-fi
 
 # this is what the repo variables will look like after the chroot, i.e. within the m2 filesystem
 m2fs_repo_home="/mnt"
 m2fs_repo_dir="$m2fs_repo_home"/"$REPO"
 m2fs_repo_user_dir="$m2fs_repo_dir"/user
 
-repo_dir_target="$LFS_M2_FILESYSTEM"/"$m2fs_repo_dir"
+if [[ -z "$script" ]]; then
+  script=/bin/bash\ --init-file\ "$m2fs_repo_user_dir"/library/bashrc_lfs
+fi
+
+if [[ -z "$LFS_M2_FILESYSTEM" ]];then
+  echo $(basename "$0") "requires variable LFS_M2_FILESYSTEM to be set"
+  exit 1
+fi
+
+if [[ -z "$TERM" ]];then
+  echo $(basename "$0") "requires variable TERM to be set"
+  exit 2
+fi
+
+if [[ !  -x "$LFS_M2_FILESYSTEM"/usr/local/bin/Z ]]; then
+  echo $(basename "$0") "no \$LFS_M2_FILESYSTEM/usr/loca/bin/Z, did you run 'book_m1_to_m2' ?"
+  exit 1
+fi
+
+repo_dir_target="$LFS_M2_FILESYSTEM""$m2fs_repo_dir"
 mkdir -p "$repo_dir_target"
 mount --bind "$REPO_DIR" "$repo_dir_target"
 
@@ -44,4 +50,4 @@ chroot "$LFS_M2_FILESYSTEM" /usr/bin/env --ignore-environment \
   LFS_M2_FILESYSTEM="/"\
   "$m2fs_repo_user_dir"/executable/environment_book_m2-1  $script
 
-set +x
+#set +x

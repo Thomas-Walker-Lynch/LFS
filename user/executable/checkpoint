@@ -15,24 +15,24 @@
 set -x
 
 if [[ -z "$LFS_BUILD_DIR" ]];then
-  echo $0 "requires variable \$LFS_BUILD_DIR to be set"
+  echo $(basename "$0") "requires variable \$LFS_BUILD_DIR to be set"
   exit 1
 fi
 
 checkpoint="$1"
 if [[ -z "$checkpoint" ]];then
-  echo $0 "warning has no checkpoint name parameter - making generic 'checkpoint'"
+  echo $(basename "$0") "warning has no checkpoint name parameter - making generic 'checkpoint'"
   checkpoint="checkpoint"
 fi
 
 checkpoint_dir="$LFS_BUILD_DIR/checkpoint"
 if [[ -d "$checkpoint_dir" ]];then
-  mkdir -p "$checkpoint_dir"  || { echo $0 "failed to make checkpoint_dir" || exit 1 ; }
+  mkdir -p "$checkpoint_dir"  || { echo $(basename "$0") "failed to make checkpoint_dir" || exit 1 ; }
 fi
 
 checkpoint_file=$(mktemp --tmpdir="$checkpoint_dir" "$checkpoint.XXXXX.tgz")
 
-echo $0 "$checkpoint_file" "$LFS_M2_FILESYSTEM" 
+echo $(basename "$0") "$checkpoint_file" "$LFS_M2_FILESYSTEM" 
 tar -czf $checkpoint_file "$LFS_M2_FILESYSTEM"
 
 set +x

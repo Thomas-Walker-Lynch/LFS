@@ -1,7 +1,17 @@
 #!/bin/bash
 
+if [[ -z "$LFS_M2_FILESYSTEM" ]];then
+  echo $(basename "$0") "requires variable LFS_M2_FILESYSTEM to be set"
+  exit 1
+fi
+
+if [[ "$EUID" -ne 0 ]];then
+   echo $(basename "$0") "must run as root"
+  exit 2
+fi
+
 frame ./s7.02_m2_chown_root
 frame ./s7.03_devices
 
-make -p "$LFS_M2_FILESYSTEM"/usr/local/bin
+mkdir -p "$LFS_M2_FILESYSTEM"/usr/local/bin
 cp "$REPO_USER_DIR"/executable/Z  "$LFS_M2_FILESYSTEM"/usr/local/bin

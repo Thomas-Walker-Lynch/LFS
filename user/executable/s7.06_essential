@@ -1,13 +1,4 @@
 #!/bin/bash
-echo \#
-echo \#
-echo \#
-echo \#--------------------------------------------------------------------------------
-echo \# $0
-echo \#
-echo \#
-echo \#
-
 set -e
 
 ln -sfv /proc/self/mounts /etc/mtab
@@ -18,9 +9,7 @@ cat > /etc/hosts <<-EOF
 	::1        localhost
 	EOF
 
-# EOF with quotes causes dollar signs in the heredoc to be taken literally, i.e. does not
-# expand variables.
-cat > /etc/passwd <<-"EOF"
+cat > /etc/passwd <<-EOF
 	root:x:0:0:root:/root:/bin/bash
 	bin:x:1:1:bin:/dev/null:/usr/bin/false
 	daemon:x:6:6:Daemon User:/dev/null:/usr/bin/false

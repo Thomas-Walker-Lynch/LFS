@@ -43,3 +43,5 @@
        # shoud be parameters
        LFS_M2_FILESYSTEM="/mnt/m2_filesystem"
        MAKEFLAGS="-j12" 
+
+       s7.06 add user and group lfs for the install 
