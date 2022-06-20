@@ -19,18 +19,14 @@ if [[ -z "$script" ]]; then
   script="/bin/bash --norc"
 fi
 
-#echo "TERM:" $TERM
-
 # bash removes PS1 so we need to reset those
 # either sudo -E or env is clear TERM
 # sudo -E still clears the PATH
 sudo -E \
   env \
-    "TERM=$TERM"\
-    "PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"\
-    "PROJECT=$PROJECT:root"\
-    PPS1="$PPS1"\
-    PPS2="$PPS2"\
+    TERM="$TERM"\
     PS1="$PPS1"\
     PS2="$PPS2"\
+    PROJECT="$PROJECT:root"\
+    PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"\
     $script

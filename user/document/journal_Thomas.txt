@@ -788,3 +788,10 @@
     
     Robert left type as <fff> in his /etc/fstab initial configuration
 
+2022-06-20T16:45:17
+
+     Interesting pattern that keeps comging up.  Really what want is that if a bash variable
+     is udpated, that those derived from it also update.  I.e. lazy evaluation.  The exception
+     then being when a variable value is explictly 'sampled'.  Intersting argument for
+     lazy evaluation being the default, and other types of evaluation being optimizations.
+

@@ -37,3 +37,9 @@
 
        M2_FILESYSTEM is currently mounted at boot in fstab - we should manually set
        LFS_M2_FILESYSTEM variable and manually mount the target of the build device.
+
+2022-06-20T11:25:00Z
+       currently in environment_book_m1-1:
+       # shoud be parameters
+       LFS_M2_FILESYSTEM="/mnt/m2_filesystem"
+       MAKEFLAGS="-j12" 

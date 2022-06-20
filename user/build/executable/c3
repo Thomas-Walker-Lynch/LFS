@@ -1,5 +1,0 @@
-#!/bin/bash
-
-frame s3.2_wget_all_packages
-frame s3.2_wget_all_patches
-frame s3.2_fix

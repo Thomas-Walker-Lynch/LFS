@@ -1,0 +1,32 @@
+#!/bin/bash
+# bash without -i resets PS1
+# except for the log file variables this comes from section 4.4
+#set -x
+
+script="$@"
+
+# requires custom configuration:
+MAKEFLAGS="-j12" 
+
+# according to the book	   
+umask 022
+LC_ALL=POSIX
+LFS_TGT="$(uname -m)-lfs-linux-gnu"
+PATH="/usr/bin"
+if [ ! -L /bin ]; then 
+  export PATH="/bin:$PATH"
+fi	 
+PATH="$LFS_M2_FILESYSTEM/tools/bin:$PATH"
+CONFIG_SITE="$LFS_M2_FILESYSTEM/usr/share/config.site"
+export LC_ALL LFS_TGT PATH CONFIG_SITE
+
+# if there are programs we use from /usr/local/bin, eg. Z
+export PATH="/usr/local/bin:$PATH"
+
+# for our build scripts
+source "$REPO_DIR"/initialize
+mkdir -p "$REPO_USER_DIR"/build/log
+mkdir -p "$REPO_USER_DIR"/build/checkpoint
+
+$script
+#set +x

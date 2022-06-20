@@ -1,0 +1,9 @@
+# bash insists that PS1 come from the bashrc file. --norc otherwise no init file, then no PS1. Problem is that I don't
+# want to run ~/.bashrc when starting bash from within env --ignore-environment.  That defeats the whole purpose.
+# Hence I have writen this bashrc_lfs file to be called from scripts.  The pull it directly fron the library directory.
+
+export PS1="$PPS1"
+export PS2="$PPS2"
+
+
+

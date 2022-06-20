@@ -1,4 +1,0 @@
-#!/bin/bash
-
-frame ./s7.02_m2_chown_root
-frame ./s7.03_devices
