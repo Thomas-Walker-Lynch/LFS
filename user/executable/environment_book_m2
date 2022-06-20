@@ -3,13 +3,8 @@
 
 script="$@"
 
-# this is what the repo variables will look like after the chroot, i.e. within the m2 filesystem
-m2fs_repo_home="/mnt"
-m2fs_repo_dir="$m2fs_repo_home"/"$REPO"
-m2fs_repo_user_dir="$m2fs_repo_dir"/user
-
 if [[ -z "$script" ]]; then
-  script=/bin/bash\ --init-file\ "$m2fs_repo_user_dir"/library/bashrc_lfs
+  script=/bin/bash\ --init-file\ "$M2FS_REPO_USER_DIR"/library/bashrc_lfs
 fi
 
 if [[ -z "$LFS_M2_FILESYSTEM" ]];then
@@ -27,10 +22,6 @@ if [[ !  -x "$LFS_M2_FILESYSTEM"/usr/local/bin/Z ]]; then
   exit 1
 fi
 
-repo_dir_target="$LFS_M2_FILESYSTEM""$m2fs_repo_dir"
-mkdir -p "$repo_dir_target"
-mount --bind "$REPO_DIR" "$repo_dir_target"
-
 chroot "$LFS_M2_FILESYSTEM" /usr/bin/env --ignore-environment \
   HOSTNAME="$HOSTNAME"\
   USERNAME="$USERNAME"\
@@ -43,11 +34,11 @@ chroot "$LFS_M2_FILESYSTEM" /usr/bin/env --ignore-environment \
   EDITOR="$EDITOR" \
   PPS1="$PPS1"\
   PPS2="$PPS2"\
-  REPO_HOME="$m2fs_repo_home"\
+  REPO_HOME="$M2FS_REPO_HOME"\
   REPO="$REPO"\
-  REPO_DIR="$m2fs_repo_dir"\
+  REPO_DIR="$M2FS_REPO_DIR"\
   PROJECT="$PROJECT:book_after_chroot"\
   LFS_M2_FILESYSTEM="/"\
-  "$m2fs_repo_user_dir"/executable/environment_book_m2-1  $script
+  "$M2FS_REPO_USER_DIR"/executable/environment_book_m2-1  $script
 
 #set +x

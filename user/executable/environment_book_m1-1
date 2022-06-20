@@ -28,5 +28,12 @@ source "$REPO_DIR"/initialize
 mkdir -p "$REPO_USER_DIR"/build/log
 mkdir -p "$REPO_USER_DIR"/build/checkpoint
 
+# for the book_m1_to_m2 and environment_book_m2
+# this is what the repo variables will look like after the chroot, i.e. within the m2 filesystem
+M2FS_REPO_HOME="/mnt"
+M2FS_REPO_DIR="$m2fs_repo_home"/"$REPO"
+M2FS_REPO_USER_DIR="$m2fs_repo_dir"/user
+
+
 $script
 #set +x

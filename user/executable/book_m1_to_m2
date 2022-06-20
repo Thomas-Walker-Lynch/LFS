@@ -15,3 +15,8 @@ frame ./s7.03_devices
 
 mkdir -p "$LFS_M2_FILESYSTEM"/usr/local/bin
 cp "$REPO_USER_DIR"/executable/Z  "$LFS_M2_FILESYSTEM"/usr/local/bin
+
+repo_dir_target="$LFS_M2_FILESYSTEM""$M2FS_REPO_DIR"
+mkdir -p "$repo_dir_target"
+mount --bind "$REPO_DIR" "$repo_dir_target"
+
