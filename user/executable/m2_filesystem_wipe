@@ -5,14 +5,14 @@ set -x
 set -e
 
 if [[ -z "$LFS_M2_FILESYSTEM" ]];then
-  echo $(basename "$0") " requires that \$LFS_M2_FILESYSTEM has a value"
+  echo $(basename "$0") " requires that \$LFS_M2_FILESYSTEM has a value" > /dev/stderr
   exit 1
 fi
 
 # run m2_wipe as root so that umount will work and rm of files works even when the files are owned by root
 # this is an excellent script for wiping your host computer by accident!
 if [ "$EUID" -ne 0 ]; then
-  echo $(basename "$0") "not being run as root, so can't do unounts, we stop scanning upon reaching the first error"
+  echo $(basename "$0") "not being run as root, so can't do unounts, we stop scanning upon reaching the first error" > /dev/stderr
 fi
 
 read -p "Remove all files except package/ on $LFS_M2_FILESYSTEM? [y|n]:" -n 1 -r

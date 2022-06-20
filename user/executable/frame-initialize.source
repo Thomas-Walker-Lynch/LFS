@@ -1,0 +1,27 @@
+#!/bin/bash
+# source this because it exports the LFS_LOG_DIR
+# careful, $REPO_USER_DIR may be different in m1fs and m2fs
+
+if [[ -z "REPO_USER_DIR" ]];then
+  echo "$(basename "$0") no \$REPO_USER_DIR" > /dev/stderr
+  exit 1
+fi
+
+# crates a time stamped directory for this build's logs, this is collision free due to using mktemp, and race free
+log_dir="$REPO_USER_DIR/build/log"
+if [[ ! -d "$log_dir" ]];then
+  mkdir -p "$log_dir" || { echo $(basename "$0") "can't make log dir" > /dev/stderr && exit 2 ; }
+fi
+stamp="$(Z)"
+export LFS_LOG=$(basename $(mktemp -d --tmpdir="$log_dir" -t "$stamp"'-XXXXXXXXXX' ))
+
+
+frame="$log_dir/$LFS_LOG/frame"
+build="$log_dir/$LFS_LOG/build"
+telltale="$log_dir/$LFS_LOG/telltale"
+
+cat <<EOF | tee "$frame" | tee "$build" | tee "$telltale"
+#--------------------------------------------------------------------------------
+# $stamp
+#--------------------------------------------------------------------------------
+EOF

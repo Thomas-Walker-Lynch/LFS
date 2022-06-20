@@ -1,12 +1,12 @@
 #!/bin/bash
 
 if [[ -z "$LFS_M2_FILESYSTEM" ]];then
-  echo $(basename "$0") "requires variable LFS_M2_FILESYSTEM to be set"
+  echo $(basename "$0") "requires variable LFS_M2_FILESYSTEM to be set" > /dev/stderr
   exit 1
 fi
 
 if [[ "$EUID" -ne 0 ]];then
-   echo $(basename "$0") "must run as root"
+   echo $(basename "$0") "must run as root" > /dev/stderr
   exit 2
 fi
 

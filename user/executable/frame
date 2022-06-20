@@ -1,28 +1,25 @@
 #!/bin/bash
-# adds timing information and logging
+# wrapper adds timing information and logging to calling a script
 #
+# set -x
 script=$@
 
-if [[ -z "$LFS_BUILD_DIR" ]];then
-  echo "$(basename "$0") no \$LFS_BILD_DIR"
+if [[ -z "REPO_USER_DIR" ]];then
+  echo $(basename "$0") "no \$REPO_USER_DIR" > /dev/stderr
   exit 1
 fi
-if [[ ! -d "$LFS_BUILD_DIR/log" ]];then
-  mkdir -p "$LFS_BUILD_DIR/log" || { echo $(basename $(basename "$0")) "can't make log dir" && exit 2 ; }
-fi
-if [[ -z "$LFS_FRAME_LOG" ]];then
-  echo "$(basename "$0") no \$LFS_FRAME_LOG"
-  exit 3
-fi
-if [[ -z "$LFS_BUILD_LOG" ]];then
-  echo "$(basename "$0") no \$LFS_BUILD_LOG"
-  exit 4
+
+if [[ -z "LFS_LOG" ]];then
+  echo $(basename "$0") "no \$LFS_LOG"  > /dev/stderr
+  exit 1
 fi
 
-frame_log_path="$LFS_BUILD_DIR/log/$LFS_FRAME_LOG"
-build_log_path="$LFS_BUILD_DIR/log/$LFS_BUILD_LOG"
+log_dir="$REPO_USER_DIR/build/log"
+frame="$log_dir/$LFS_LOG/frame"
+build="$log_dir/$LFS_LOG/build"
+telltale="$log_dir/$LFS_LOG/telltale"
 stamp=$(Z)
-cat <<EOF | tee -a "$frame_log_path" >> "$build_log_path"
+cat <<EOF | tee -a "$frame" >> "$build"
 
 #--------------------------------------------------------------------------------
 # $stamp
@@ -31,11 +28,10 @@ cat <<EOF | tee -a "$frame_log_path" >> "$build_log_path"
 #
 EOF
 
-{ { time $script ; } 2>&1 1>&3 | tee -a "$frame_log_path" ; } 1>> "$build_log_path" 3>&1
+{ { time $script ; } 2>&1 1>&3 | tee -a "$frame" ; } 1>> "$build" 3>&1
 
 stamp=$(Z)
-cat <<EOF | tee -a "$frame_log_path" >> "$build_log_path"
-
+cat <<EOF | tee -a "$frame" >> "$build"
 #
 #
 # end of: $script
@@ -44,3 +40,4 @@ cat <<EOF | tee -a "$frame_log_path" >> "$build_log_path"
 
 EOF
 
+# set +x

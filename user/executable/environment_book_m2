@@ -8,17 +8,17 @@ if [[ -z "$script" ]]; then
 fi
 
 if [[ -z "$LFS_M2_FILESYSTEM" ]];then
-  echo $(basename "$0") "requires variable LFS_M2_FILESYSTEM to be set"
+  echo $(basename "$0") "requires variable LFS_M2_FILESYSTEM to be set" > /dev/stderr
   exit 1
 fi
 
 if [[ -z "$TERM" ]];then
-  echo $(basename "$0") "requires variable TERM to be set"
+  echo $(basename "$0") "requires variable TERM to be set"  > /dev/stderr
   exit 2
 fi
 
 if [[ !  -x "$LFS_M2_FILESYSTEM"/usr/local/bin/Z ]]; then
-  echo $(basename "$0") "no \$LFS_M2_FILESYSTEM/usr/loca/bin/Z, did you run 'book_m1_to_m2' ?"
+  echo $(basename "$0") "no \$LFS_M2_FILESYSTEM/usr/loca/bin/Z, did you run 'book_m1_to_m2' ?"  > /dev/stderr
   exit 1
 fi
 

@@ -4,7 +4,7 @@
 
 package_stem="$1"
 if [ -z "$package_stem" ]; then
-  echo $(basename "$0") requires a first parameter for the package_stem name
+  echo $(basename "$0") requires a first parameter for the package_stem name > /dev/stderr
   exit 1
 fi
 
