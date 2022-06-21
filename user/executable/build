@@ -4,8 +4,8 @@
 export LFS_M2_FILESYSTEM="/mnt/m2_filesystem"
 
 # can't frame this or the 'really?' prompt goes into the logs ...
-./environment_book_m1 environment_root m2_filesystem_wipe
+environment_book_m1 environment_root m2_filesystem_wipe
 
 # if already in the book_m1 environment, build-1 may be called directly
-./environment_book_m1 build-1
+environment_book_m1 build-1
 
