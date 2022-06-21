@@ -4,16 +4,16 @@ frame book_m1
 
 # this is unnecessary on this system, as it is about the same speed to rebuild up to this point
 # checkpointing also takes a lot of disk space which might become an issue
-# frame checkpoint lfs_m2_filesystem_after_book_m1
+# frame checkpoint m2_filesystem_after_book_m1
 
-# exports a copy of the scripts to lfs_m2_filesystem and runs the pre-chroot portion of chapter 7
+# exports a copy of the scripts to m2_filesystem and runs the pre-chroot portion of chapter 7
 frame environment_root book_m1_to_m2
 
 # This will be the last command that shows in the logs of the m1 build directory. After this the scripts start
-# writing the logs in the lfs_m2_filesystem/sbin/LFS directory.
+# writing the logs in the m2_filesystem/sbin/LFS directory.
 frame environment_root environment_book_m2 book_m2
 
 # this doesn't work, at this point there are things on the disk that tar does not like
 # checkpointing also takes a lot of disk space which might become an issue
-# frame environment_root checkpoint lfs_m2_filesystem_after_book_m2
+# frame environment_root checkpoint m2_filesystem_after_book_m2
 

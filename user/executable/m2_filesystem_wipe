@@ -22,14 +22,14 @@ if [[ ! "$REPLY" =~ ^[y]$ ]];then
 fi
 
 # found that the absolute pathname is necessary, independent of the current pwd
-umount /mnt/lfs_m2_filesystem/LFS11 || true
-rmdir /mnt/lfs_m2_filesystem/LFS11 || true
+umount /mnt/m2_filesystem/mnt/Lustucru || true
+rmdir /mnt/m2_filesystem/mnt/Lustucru || true
 
-umount /mnt/lfs_m2_filesystem/dev || true
-umount /mnt/lfs_m2_filesystem/dev/pts  || true
-umount /mnt/lfs_m2_filesystem/proc || true
-umount /mnt/lfs_m2_filesystem/sys || true
-umount /mnt/lfs_m2_filesystem/run || true
+umount /mnt/m2_filesystem/dev || true
+umount /mnt/m2_filesystem/dev/pts  || true
+umount /mnt/m2_filesystem/proc || true
+umount /mnt/m2_filesystem/sys || true
+umount /mnt/m2_filesystem/run || true
 
 echo "rm -rf the following:"
 find "$LFS_M2_FILESYSTEM" \
