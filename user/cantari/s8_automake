@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+./configure --prefix=/usr --docdir=/usr/share/doc/automake-1.16.5
+
+make
+
+# we already have MAKEFLAGS="-j12" 
+#make -j4 check
+make check
+
+make install

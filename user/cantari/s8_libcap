@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+sed -i '/install -m.*STA/d' libcap/Makefile
+make prefix=/usr lib=lib
+make test
+make prefix=/usr lib=lib install

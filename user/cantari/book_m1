@@ -1,0 +1,22 @@
+#!/bin/bash
+#set -x
+
+# nothing to build in chapter 1
+
+# does this script return a true or false result??  Can't tell. 
+frame c2
+
+# We already have the upstream incantatio and patches, so don't need to run this
+# frame c3
+
+# note the environment stuff described in s4.4 and s4.5 is set by calling through an environment wrapper such as
+# 'evironment_book'
+frame c4
+
+# installs basic tools on the m2 directory tree
+frame c5 
+
+# user space build stuff
+frame c6
+
+#set +x

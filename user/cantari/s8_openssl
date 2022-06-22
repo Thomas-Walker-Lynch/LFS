@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+./config --prefix=/usr         \
+         --openssldir=/etc/ssl \
+         --libdir=lib          \
+         shared                \
+         zlib-dynamic
+
+make
+make test
+sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
+make MANSUFFIX=ssl install
+
+mv -v /usr/share/doc/openssl /usr/share/doc/openssl-3.0.1
+cp -vfr doc/* /usr/share/doc/openssl-3.0.1

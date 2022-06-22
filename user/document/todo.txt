@@ -45,3 +45,9 @@
        MAKEFLAGS="-j12" 
 
        s7.06 add user and group lfs for the install 
+
+2022-06-21T15:03:25Z
+
+       need to get the correct wget options, perhaps better it does not create
+       a spearate log file as the output already goes into a log
+     

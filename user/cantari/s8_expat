@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/expat-2.4.6
+
+make
+make check
+make install
+# documentation
+install -v -m644 doc/*.{html,css} /usr/share/doc/expat-2.4.6

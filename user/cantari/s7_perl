@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+# wonder why not ./configure like the others
+sh Configure -des                                        \
+   -Dprefix=/usr                               \
+   -Dvendorprefix=/usr                         \
+   -Dprivlib=/usr/lib/perl5/5.34/core_perl     \
+   -Darchlib=/usr/lib/perl5/5.34/core_perl     \
+   -Dsitelib=/usr/lib/perl5/5.34/site_perl     \
+   -Dsitearch=/usr/lib/perl5/5.34/site_perl    \
+   -Dvendorlib=/usr/lib/perl5/5.34/vendor_perl \
+   -Dvendorarch=/usr/lib/perl5/5.34/vendor_perl
+
+make
+make install
+
+

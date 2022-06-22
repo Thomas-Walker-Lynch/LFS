@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m1" ]];then
+  echo $(basename "$0") "only intended to be run in env_m1"
+  exit 1
+fi
+
+if [[ -d build ]]; then
+    rm -rf build
+fi
+mkdir -v build
+cd build
+../configure                   \
+    --prefix=/usr              \
+    --build=$(../config.guess) \
+    --host=$LFS_TGT            \
+    --disable-nls              \
+    --enable-shared            \
+    --disable-werror           \
+    --enable-64-bit-bfd
+make
+make DESTDIR=$LFS_M2_FILESYSTEM install
+

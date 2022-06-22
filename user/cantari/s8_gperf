@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+./configure --prefix=/usr --docdir=/usr/share/doc/gperf-3.1
+
+make
+make -j1 check
+make install

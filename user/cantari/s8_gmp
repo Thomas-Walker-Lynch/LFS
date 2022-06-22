@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+
+#The default settings of GMP produce libraries optimized for the host processor. If libraries suitable for processors less capable than the host's CPU are desired, generic libraries can be created by running the following:
+#cp -v configfsf.guess config.guess
+#cp -v configfsf.sub   config.sub
+
+./configure --prefix=/usr    \
+            --enable-cxx     \
+            --disable-static \
+            --docdir=/usr/share/doc/gmp-6.2.1
+
+make
+make html
+
+#prefer to dump this into our frame log
+#make check 2>&1 | tee gmp-check-log
+make check
+
+# this will be checked in the frame log rather than the gmp-check-log
+#Ensure that all 197 tests in the test suite passed. Check the results by issuing the following command:
+#awk '/# PASS:/{total+=$3} ; END{print total}' gmp-check-log
+
+make install
+make install-html
+

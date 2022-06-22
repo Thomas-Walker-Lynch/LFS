@@ -1,4 +1,0 @@
-#!/bin/bash
-
-set -e
-frame s2.2_check_script

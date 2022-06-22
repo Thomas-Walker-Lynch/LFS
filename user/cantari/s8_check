@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+./configure --prefix=/usr --disable-static
+make
+make check
+make docdir=/usr/share/doc/check-0.15.2 install

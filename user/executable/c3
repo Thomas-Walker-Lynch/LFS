@@ -1,8 +1,0 @@
-#!/bin/bash
-
-frame s3.2_wget_all_source
-frame s3.2_wget_all_document
-frame s3.2_wget_all_patch
-
-# moved current fixes to script files
-# frame s3.2_fix

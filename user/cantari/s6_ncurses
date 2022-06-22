@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m1" ]];then
+  echo $(basename "$0") "only intended to be run in env_m1"
+  exit 1
+fi
+
+sed -i s/mawk// configure
+
+mkdir build
+pushd build
+  ../configure
+  make -C include
+  make -C progs tic
+popd
+
+./configure --prefix=/usr                \
+            --host=$LFS_TGT              \
+            --build=$(./config.guess)    \
+            --mandir=/usr/share/man      \
+            --with-manpage-format=normal \
+            --with-shared                \
+            --without-debug              \
+            --without-ada                \
+            --without-normal             \
+            --disable-stripping          \
+            --enable-widec
+
+make
+make DESTDIR=$LFS_M2_FILESYSTEM TIC_PATH=$(pwd)/build/progs/tic install
+echo "INPUT(-lncursesw)" > $LFS_M2_FILESYSTEM/usr/lib/libncurses.so
+

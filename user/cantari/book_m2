@@ -1,0 +1,13 @@
+#!/bin/bash
+#set -x
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+frame c7
+frame c8
+#frame c9
+
+#set +x

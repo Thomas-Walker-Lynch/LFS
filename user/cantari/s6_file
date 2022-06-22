@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m1" ]];then
+  echo $(basename "$0") "only intended to be run in env_m1"
+  exit 1
+fi
+
+mkdir build
+pushd build
+  ../configure --disable-bzlib      \
+               --disable-libseccomp \
+               --disable-xzlib      \
+               --disable-zlib
+  make
+popd
+./configure --prefix=/usr --host=$LFS_TGT --build=$(./config.guess)
+make FILE_COMPILE=$(pwd)/build/src/file
+make DESTDIR=$LFS_M2_FILESYSTEM install
+

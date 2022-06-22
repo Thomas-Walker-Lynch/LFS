@@ -1,0 +1,8 @@
+#!/bin/bash
+#set -x
+
+sudo df -h .
+checkpoint
+sudo df -h .
+
+#set +x

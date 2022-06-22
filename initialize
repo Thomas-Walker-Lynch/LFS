@@ -1,12 +1,12 @@
 #!/bin/bash
-# this is sourced into the environment with the repo_env command
+
+(return 0 2>/dev/null) && sourced=1 || sourced=0
+test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
 
 # set the time zone and format so prompts and logs are consistent
 export TZ=UTC
 export TIME_STYLE=long-iso
 
 export REPO_USER_DIR="$REPO_DIR/user"
-export PATH="$REPO_USER_DIR/executable:$PATH"
-
-# protect the system files
+export PATH="$REPO_USER_DIR/cantari:$PATH"
 cd "$REPO_USER_DIR"

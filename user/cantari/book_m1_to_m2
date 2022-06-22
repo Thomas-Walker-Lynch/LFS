@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m1_root" ]];then
+  echo $(basename "$0") "only intended to be run in env_m1_root"
+  exit 1
+fi
+
+frame s7.02_m2_chown_root
+frame s7.03_devices
+
+mkdir -p "$LFS_M2_FILESYSTEM"/usr/local/bin
+cp "$REPO_USER_DIR"/cantari/Z  "$LFS_M2_FILESYSTEM"/usr/local/bin
+
+repo_dir_target="$LFS_M2_FILESYSTEM""$M2FS_REPO_DIR"
+mkdir -p "$repo_dir_target"
+mount --bind "$REPO_DIR" "$repo_dir_target"
+

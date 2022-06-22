@@ -1,0 +1,39 @@
+#!/bin/bash
+#   This script uses sudo -E to prevent the environment from being erased. Sudo only appears here
+#   at the top level.
+#
+#   Be sure to modify the /etc/suders file so sudo does not ask for a password, otherwise a person will have to
+#   be present to type the sudo password before it times out. Emacs tramp also gets messed up by the
+#   sudo password prompts.
+#   https://www.cyberciti.biz/faq/linux-unix-running-sudo-command-without-a-password/
+#   https://thomas-cokelaer.info/blog/2011/05/fedora-how-to-add-a-sudo-user-and-avoid-password/
+#   lfs 	ALL=(ALL) NOPASSWD:ALL
+#
+#  strange, on m1 I had to edit /etc/hosts or sudo would take a long time and (not work?)
+#  https://www.linuxquestions.org/questions/linux-newbie-8/fedora-11-sudo-has-a-20-second-start-delay-732291/#post3575840
+#
+#  bash resets PS1 unless called with a -i option, so setting driectly here in case someone calls bash itself as $1
+#
+script="$@"
+if [[ -z "$script" ]]; then
+  script="/bin/bash --norc"
+fi
+
+if [[ "$LFS_ENV" != "m1" ]];then
+  echo $(basename "$0") "only intended to be run in env_m1"
+  exit 1
+fi
+LFS_ENV="m1_root"
+
+# sudo -E and env without the '-i' passes most environment variables to $script
+# bash removes PS1 so we need to reset it
+# either sudo -E or env is clearing the TERM variable
+# sudo -E still clears the PATH variable
+sudo -E \
+  env \
+    TERM="$TERM"\
+    PS1="$PPS1"\
+    PS2="$PPS2"\
+    PROJECT="$PROJECT:root"\
+    PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"\
+    $script

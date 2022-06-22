@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m1" ]];then
+  echo $(basename "$0") "only intended to be run in env_m1"
+  exit 1
+fi
+
+tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/mpfr-*.tar.*
+tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/gmp-*.tar.*
+tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/mpc-*.tar.*
+
+mv -v mpfr-* mpfr
+mv -v gmp-* gmp
+mv -v mpc-* mpc
+
+case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
+  ;;
+esac
+
+mkdir -v build
+cd       build
+
+mkdir -pv "$LFS_TGT"/libgcc
+ln -s ../../../libgcc/gthr-posix.h "$LFS_TGT"/libgcc/gthr-default.h
+
+../configure                                       \
+    --build=$(../config.guess)                     \
+    --host=$LFS_TGT                                \
+    --prefix=/usr                                  \
+    CC_FOR_TARGET="$LFS_TGT"-gcc                     \
+    --with-build-sysroot="$LFS_M2_FILESYSTEM"                \
+    --enable-initfini-array                        \
+    --disable-nls                                  \
+    --disable-multilib                             \
+    --disable-decimal-float                        \
+    --disable-libatomic                            \
+    --disable-libgomp                              \
+    --disable-libquadmath                          \
+    --disable-libssp                               \
+    --disable-libvtv                               \
+    --disable-libstdcxx                            \
+    --enable-languages=c,c++
+
+make
+make DESTDIR="$LFS_M2_FILESYSTEM" install
+ln -sv gcc "$LFS_M2_FILESYSTEM"/usr/bin/cc
+

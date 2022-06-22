@@ -795,3 +795,7 @@
      then being when a variable value is explictly 'sampled'.  Intersting argument for
      lazy evaluation being the default, and other types of evaluation being optimizations.
 
+2022-06-21T10:15:39Z
+
+     perhaps add to doc definitions for 'dir' 'home' ..  basename ...
+     

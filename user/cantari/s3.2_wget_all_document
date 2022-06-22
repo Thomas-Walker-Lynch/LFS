@@ -1,0 +1,42 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m1" ]];then
+  echo $(basename "$0") "only intended to be run in env_m1"
+  exit 1
+fi
+
+document_dir="$REPO_DIR/user/build/upstream/document"
+mkdir -p "$document_dir"
+pushd "$document_dir"
+
+link="
+https://www.kernel.org/pub/linux/docs/man-pages/man-pages-5.13.tar.xz
+https://www.python.org/ftp/python/doc/3.10.2/python-3.10.2-docs-html.tar.bz2
+https://downloads.sourceforge.net/tcl/tcl8.6.12-html.tar.gz
+"
+
+IFS=$'\n'; for l in $link;do
+   wget $l
+done
+
+# apply patches here?
+# do docs have patches?
+
+# wonder if we can just dump the wget errors to stderr directly from the commands, or if it does already
+grep -iE 'error|warning|not found' wget-log* 1>&2
+
+# version number should be prefixed by a dash
+tcl_0=tcl8.6.12-html.tar.gz
+tcl_1=tcl-8.6.12-html.tar.gz
+if [ -f $tcl_0  ] && [ ! -f $tcl_1 ];then
+  tar --transform s/tcl8.6.12/tcl-8.6.12/ -xf $tcl_0
+  tar  -cf $tcl_1 tcl-8.6.12
+  rm -r tcl-8.6.12
+#  rm $tcl_0
+fi
+
+
+popd
+
+
+

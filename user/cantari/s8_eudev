@@ -1,0 +1,24 @@
+#/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+./configure --prefix=/usr           \
+            --bindir=/usr/sbin      \
+            --sysconfdir=/etc       \
+            --enable-manpages       \
+            --disable-static
+
+
+make
+mkdir -pv /usr/lib/udev/rules.d
+mkdir -pv /etc/udev/rules.d
+
+make check
+make install
+tar -xvf "$REPO_USER_DIR"/build/upstream/incantatio/udev-lfs-20171102.tar.xz
+make -f udev-lfs-20171102/Makefile.lfs install
+
+udevadm hwdb --update

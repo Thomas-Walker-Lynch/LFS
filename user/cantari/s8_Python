@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+./configure --prefix=/usr        \
+            --enable-shared      \
+            --with-system-expat  \
+            --with-system-ffi    \
+            --with-ensurepip=yes \
+            --enable-optimizations
+
+make
+make install
+
+
+# the documentation
+  install -v -dm755 /usr/share/doc/python-3.10.2/html
+  tar --strip-components=1  \
+      --no-same-owner       \
+      --no-same-permissions \
+      -C /usr/share/doc/python-3.10.2/html \
+      -xvf "$REPO_USER_DIR"/build/upstream/incantatio_document/python-3.10.2-docs-html.tar.bz2
+
+  

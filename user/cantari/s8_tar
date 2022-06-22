@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "only intended to be run in env_m2"
+  exit 1
+fi
+
+FORCE_UNSAFE_CONFIGURE=1  \
+./configure --prefix=/usr
+
+make
+make check
+make install
+make -C doc install-html docdir=/usr/share/doc/tar-1.34
+

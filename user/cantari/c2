@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+if [[ "$LFS_ENV" != "m1" ]];then
+  echo $(basename "$0") "only intended to be run in env_m1"
+  exit 1
+fi
+
+frame s2.2_check_script

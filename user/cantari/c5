@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+
+if [[ "$LFS_ENV" != "m1" ]];then
+  echo $(basename "$0") "only intended to be run in env_m1"
+  exit 1
+fi
+
+section="
+binutils 
+gcc
+linux
+glibc
+"
+
+IFS=$'\n'; for s in $section;do
+  # echo s6_$s
+  eval frame env_incantatio $s s5_$s
+done
+
+# libstdc++ is found in the gcc incantatio:
+frame env_incantatio gcc s5_libstdc++
+

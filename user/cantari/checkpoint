@@ -1,0 +1,41 @@
+#!/bin/bash
+#
+# this latest version is untested
+#
+# based on s7.14 then generalized to work in any environment that has REPO_USER_DIR and LFS_M2_FILESYSTEM
+#
+# checkpoint tars $LFS_M2_FILESYSTEM and puts that tar file into build/checkpoint/
+#
+# checkpoint files may be large, and out of diskspace errors might be subtle, so perhaps rebuild instead? Rebuilding
+# might be fast enough on modern machine.
+#
+set -e
+set -x
+
+if [[ -z "$REPO_USER_DIR" ]];then
+  echo $(basename "$0") "requires variable \$REPO_USER_DIR to be set" > /dev/stderr
+  exit 1
+fi
+
+if [[ -z "$LFS_M2_FILESYSTEM" ]];then
+  echo $(basename "$0") "requires variable \$LFS_M2_FILESYSTEM to be set" > /dev/stderr
+  exit 1
+fi
+
+# crates a time stamped file, this is collision free due to using mktemp, and race free
+checkpoint_dir="$REPO_USER_DIR/build/checkpoint"
+if [[ ! -d "$checkpoint_dir" ]];then
+  mkdir -p "$checkpoint_dir" || { echo $(basename "$0") "can't make checkpoint_dir" > /dev/stderr ; exit 2 ; }
+  sudo chown lfs:lfs "$checkpoint_dir"
+fi
+stamp="$(Z)"
+export checkpoint_path=$(mktemp --tmpdir="$checkpoint_dir" -t "$stamp"'-XXXXXXXXXX' --suffix '.tar.xz)
+
+sudo umount -v $LFS_M2_FILESYSTEM/dev/pts || true
+sudo umount -v $LFS_M2_FILESYSTEM/{sys,proc,run,dev} || true
+
+checkpoint_file=$(mktemp --tmpdir="$checkpoint_dir" "$checkpoint.XXXXX.tgz")
+sudo tar -cJpf $checkpoint_file "$LFS_M2_FILESYSTEM"
+sudo chown lfs:lfs $checkpoint_file
+
+set +x

@@ -1,0 +1,35 @@
+#!/bin/bash
+# bash without -i resets PS1
+# except for the log file variables this comes from section 4.4
+#set -x
+
+script="$@"
+
+# requires custom configuration:
+export MAKEFLAGS="-j12" 
+
+# according to the book	   
+umask 022
+LC_ALL=POSIX
+LFS_TGT="$(uname -m)-lfs-linux-gnu"
+PATH="/usr/bin"
+if [ ! -L /bin ]; then 
+  export PATH="/bin:$PATH"
+fi	 
+PATH="$LFS_M2_FILESYSTEM/tools/bin:$PATH"
+CONFIG_SITE="$LFS_M2_FILESYSTEM/usr/share/config.site"
+export LC_ALL LFS_TGT PATH CONFIG_SITE
+
+# for our build scripts
+export PATH="/usr/local/bin:$PATH"
+source "$REPO_DIR"/initialize
+
+# These are the REPO variables within the m2fs
+# used by the scripts 'book_m1_to_m2' and 'env_m2', or anywhere else they are useful
+M2FS_REPO_HOME="/mnt"
+M2FS_REPO_DIR="$M2FS_REPO_HOME"/"$REPO"
+M2FS_REPO_USER_DIR="$M2FS_REPO_DIR"/user
+
+
+$script
+#set +x

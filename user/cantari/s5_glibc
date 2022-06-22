@@ -1,0 +1,71 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m1" ]];then
+  echo $(basename "$0") "only intended to be run in env_m1"
+  exit 1
+fi
+
+#--------------------------------------------------------------------------------
+# book is bad about telling us what working directory we should be in for running these commands...
+#
+# ../lib from $LFS_M2_FILESYSTEM/lib64 is the same as $LFS_M2_FILESYSTEM/lib, however after we do a changeroot a symlink to an absolute location
+# relative to the old root would be a bad thing.
+#
+# ../lib/ld-linux-x86-64.so.2 currently does not exist.  It is ok to have a symlink to nowhere, but at some point there
+# will have to be a library to find at that location.
+#
+# So there are two unsual things here.  First off we are not in source directory created by expanding the tar file, yet
+# the book says that is where builds are supposed to start.  Secondly the source file does not exist (the link target).
+# We assume it will exist in the future.
+#
+pushd $LFS_M2_FILESYSTEM/source
+case $(uname -m) in
+    i?86)   ln -sfv ld-linux.so.2 $LFS_M2_FILESYSTEM/lib/ld-lsb.so.3
+    ;;
+    x86_64) ln -sfv ../lib/ld-linux-x86-64.so.2 $LFS_M2_FILESYSTEM/lib64
+            ln -sfv ../lib/ld-linux-x86-64.so.2 $LFS_M2_FILESYSTEM/lib64/ld-lsb-x86-64.so.3
+    ;;
+esac
+popd
+
+#--------------------------------------------------------------------------------
+# now we build the cantari
+
+mkdir -v build
+cd build
+
+echo "rootsbindir=/usr/sbin" > configparms
+
+../configure                             \
+      --prefix=/usr                      \
+      --host=$LFS_TGT                    \
+      --build=$(../scripts/config.guess) \
+      --enable-kernel=3.2                \
+      --with-headers=$LFS_M2_FILESYSTEM/usr/include    \
+      libc_cv_slibdir=/usr/lib
+
+# book says this is normal:
+# configure: WARNING:
+# *** These auxiliary programs are missing or incompatible versions: msgfmt
+
+make
+make DESTDIR=$LFS_M2_FILESYSTEM install
+sed '/RTLDLIST=/s@/usr@@g' -i $LFS_M2_FILESYSTEM/usr/bin/ldd
+
+#--------------------------------------------------------------------------------
+# run a test compile
+
+echo 'int main(){}' > dummy.c
+$LFS_TGT-gcc dummy.c
+readelf -l a.out | grep '/ld-linux'
+
+# If everything is working correctly, there should be no errors, and the output of the last command will be of the form:
+# [Requesting program interpreter: /lib64/ld-linux-x86-64.so.2]
+
+rm -v dummy.c a.out
+
+#--------------------------------------------------------------------------------
+# not really sure what this is doing.  mkheaders is a program that reads C source and creates headers
+
+$LFS_M2_FILESYSTEM/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders
+
