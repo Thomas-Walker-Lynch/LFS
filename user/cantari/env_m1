@@ -22,6 +22,8 @@ if [[ -z "$script" ]]; then
   script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/library/bashrc_lfs
 fi
 
+source frame-initialize
+
 env --ignore-environment \
   HOSTNAME="$HOSTNAME"\
   TMP="$TMP"\
@@ -36,7 +38,7 @@ env --ignore-environment \
   REPO_HOME="$REPO_HOME"\
   REPO="$REPO"\
   REPO_DIR="$REPO_DIR"\
-  PROJECT="$PROJECT:book-m1"\
+  PROJECT="$PROJECT:env_m1"\
   LFS_ENV="m1"\
   LFS_LOG="$LFS_LOG"\
   LFS_M2_FILESYSTEM="$lfs_m2_filesystem"\

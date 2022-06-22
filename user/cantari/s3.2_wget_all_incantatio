@@ -92,7 +92,7 @@ https://github.com/facebook/zstd/releases/download/v1.5.2/zstd-1.5.2.tar.gz
 "
 
 IFS=$'\n'; for l in $link;do
-   wget $l
+   wget -nv $l
 done
 
 # wonder if we can just dump the wget errors to stderr directly from the commands, or if it does already

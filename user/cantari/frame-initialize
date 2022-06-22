@@ -1,6 +1,6 @@
 #!/bin/bash
-# source this because it exports the LFS_LOG_DIR
-# careful, $REPO_USER_DIR may be different in m1fs and m2fs
+# source this because it exports the LFS_LOG
+# careful, $REPO_USER_DIR may be different in m1fs and m2fs, which is why LFS_LOG is not a path
 
 if [[ -z "REPO_USER_DIR" ]];then
   echo "$(basename "$0") no \$REPO_USER_DIR" > /dev/stderr
@@ -27,6 +27,9 @@ telltale="$log_dir/$LFS_LOG/telltale"
 cat <<EOF | tee "$frame" | tee "$build" | tee "$telltale"
 #--------------------------------------------------------------------------------
 # $stamp
-#    frame-initialize sourced from: $0  
+#    frame-initialize from: $0  
+#       frame: $frame
+#       build: $build
+#    telltale: $telltale
 #--------------------------------------------------------------------------------
 EOF

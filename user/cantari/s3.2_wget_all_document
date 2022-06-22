@@ -16,7 +16,7 @@ https://downloads.sourceforge.net/tcl/tcl8.6.12-html.tar.gz
 "
 
 IFS=$'\n'; for l in $link;do
-   wget $l
+   wget -nv $l
 done
 
 # apply patches here?

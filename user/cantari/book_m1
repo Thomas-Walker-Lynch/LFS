@@ -7,7 +7,7 @@
 frame c2
 
 # We already have the upstream incantatio and patches, so don't need to run this
-# frame c3
+frame c3
 
 # note the environment stuff described in s4.4 and s4.5 is set by calling through an environment wrapper such as
 # 'evironment_book'

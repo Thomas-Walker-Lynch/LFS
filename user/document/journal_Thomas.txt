@@ -799,3 +799,14 @@
 
      perhaps add to doc definitions for 'dir' 'home' ..  basename ...
      
+2022-06-22T21:14:33Z
+
+      rm -r a directory rather than using a wild card (mkdir followed by rm if necessary)
+
+      due to using a repo for Lustucru and accidentally checking in the upstream, then
+      making a copy of the repo as backup while trying to fix it
+      > df -h .
+      Filesystem      Size  Used Avail Use% Mounted on
+      /dev/vda1        13G   12G  506M  96% /
+      
+      Also had disks space problems due to saving checkpoints

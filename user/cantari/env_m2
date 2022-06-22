@@ -32,7 +32,7 @@ chroot "$LFS_M2_FILESYSTEM" /usr/bin/env --ignore-environment \
   REPO_HOME="$M2FS_REPO_HOME"\
   REPO="$REPO"\
   REPO_DIR="$M2FS_REPO_DIR"\
-  PROJECT="$PROJECT:book_after_chroot"\
+  PROJECT="$PROJECT:env_m2"\
   LFS_ENV="m2"\
   LFS_LOG="$LFS_LOG"\
   LFS_M2_FILESYSTEM="/"\
