@@ -810,3 +810,8 @@
       /dev/vda1        13G   12G  506M  96% /
       
       Also had disks space problems due to saving checkpoints
+
+      be careful about running git from with the env_ environments.  env_m1 seems ok, but
+      env_m1_root and env_m2 wouild be bad, perhaps block git from env environments?
+
+      wget is a confused program, it prints information to stderr, need to fix this or use curl

@@ -25,6 +25,7 @@ fi
 source frame-initialize
 
 env --ignore-environment \
+  HOME="$HOME"\
   HOSTNAME="$HOSTNAME"\
   TMP="$TMP"\
   TZ="$TZ"\

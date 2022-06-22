@@ -51,3 +51,13 @@
        need to get the correct wget options, perhaps better it does not create
        a spearate log file as the output already goes into a log
      
+2022-06-22T21:49:48Z
+
+       wget is a confused program, it prints information to stderr.  Lets move to using
+       curl.  Note
+       https://serverfault.com/questions/70889/wget-to-print-errors-but-nothing-otherwise
+
+         [wizard@laptop ~] curl -s -S http://www.google.coccm/ > /dev/null && echo "TRUE"
+         curl: (6) Couldn't resolve host 'www.google.coccm'
+         [wizard@laptop ~]$ curl -s -S http://www.google.com/ > /dev/null && echo "TRUE"
+         TRUE
