@@ -1,0 +1,4057 @@
+commit d0f5d649f76b8cfc46ba9c9a06df50b1d20da7a5
+Author: Thomas Walker Lynch <thomas.walker.lynch@gmail.com>
+Date:   Wed Jun 22 15:11:23 2022 +0000
+
+    executable -> cantari, environment gates
+
+diff --git a/.gitignore b/.gitignore
+index 6b3d3a7..e0dafbb 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,2 +1,2 @@
+ deprecated/
+-/usr/build/
++/user/build/
+diff --git a/README.md b/README.md
+index b07ffdf..ba0b185 100644
+--- a/README.md
++++ b/README.md
+@@ -1,38 +1,20 @@
+ Scripts for Building Linux From Scratch
+ 
+-Genesis is LFS11 stable, see: https://www.linuxfromscratch.org/lfs/downloads/stable/
+-
+-Named after the hero of this story:
++Lustucru, the man who did amazing things yet did not receive the recognition he deserved, all because of his name.
++However, he did find true love, and isn't that what matters? Just like Linux.
+ https://www.youtube.com/watch?v=KjgGa92sf4U
+ 
++The genesis of these scripts is LFS11 stable, see: https://www.linuxfromscratch.org/lfs/downloads/stable/
++
+ The LFS book contains a great deal of information on how to build the various packages that constitute Linux and the
+-order to do them in.  It would be better to walk through that book step by step than it would be to run these scripts.
+-
+-Well then what are these scripts for?  Some folks kept a transcript of their build, going step by step manually.  For my
+-build I decided to write the commands into files and run those scripts.  Apparently the scripts in the book are already
+-available, but I thought this was a leanring exercise. Those scripts needed to be run in a specific environment,
+-depending where we were in the book, so I wrote some more scripts to set the proper environment depending where in the
+-book a person is. This way a single session isn't necessary.  I also added log files that include time information.  I
+-organized my scripts into section, then collected them into chapter, and then a whole book.
+-
+-The nice thing about the scripts is that I may just reply them to build another system.
+-
+-I would like to run some experiments and make some changes.  So hopefully this will evolve into 'Lustucru'  Linux.  But
+-first I need to get my LFS11 booting.  It is very close.  I will make a release branch for that when it is working.
+-
+-I have two more projects on my github that I use for my other projects.  System and Resource.  I have a standard
+-directory structure for a repo, with top level folders 'executable', 'experiment', 'deprecated', 'document', 'library',
+-and 'temporary'.  The linux build scripts are in a directory called 'build_script'.  I read a directory name as an
+-attribute assigned to the files in the directory.  I.e. <file> is a document, may be read for each file in the
+-'document' directory.
+-
+-Do you also end up fighting for ownership of the top level directory with the system?  It is putting stuff in that
+-directory while making some of it hidden, and some of it not hidden.  Tree walking scripts for your work sometimes
+-walk system files and screw things up?  I am not fighting it anymore.  The system gets to have the top level
+-directory, and I put my stuff under a directory called 'user'.  In this case the top level directory is the 'repo'
+-directory, but same thing.  So LICENSE, README, .gitignore, .git etc, goes into that top level directory and the
+-stuff I, the programmer, gets to work on is in the 'user' directory.
+-
+-To build LFS go to user/build/ directory, and type executable/build.  A person can follow the book by reading
+-that file and going into the scripts that it calls.
++order they go in.  A small group of us met weekly to go through the book. Rather than typing into a shell, I typed into
++the scripts, then ran them.  As the others pointed the LFS11 scripts are already on the website.  
++
++These scripts handle the shell environment in a direct manner, integrate logging, and give execution time for
++the various sections, chapters, and the whole big build.  A person may mix manual execution with script
++execution.
++
++So what to do with these scripts next?
++
++
+ 
+diff --git a/initialize b/initialize
+index efe31db..cadf2b4 100644
+--- a/initialize
++++ b/initialize
+@@ -1,12 +1,12 @@
+ #!/bin/bash
+-# this is sourced into the environment with the repo_env command
++
++(return 0 2>/dev/null) && sourced=1 || sourced=0
++test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
+ 
+ # set the time zone and format so prompts and logs are consistent
+ export TZ=UTC
+ export TIME_STYLE=long-iso
+ 
+ export REPO_USER_DIR="$REPO_DIR/user"
+-export PATH="$REPO_USER_DIR/executable:$PATH"
+-
+-# protect the system files
++export PATH="$REPO_USER_DIR/cantari:$PATH"
+ cd "$REPO_USER_DIR"
+diff --git a/user/executable/Z b/user/cantari/Z
+similarity index 100%
+rename from user/executable/Z
+rename to user/cantari/Z
+diff --git a/user/executable/book b/user/cantari/book
+similarity index 83%
+rename from user/executable/book
+rename to user/cantari/book
+index 20f4686..5ab4b7a 100755
+--- a/user/executable/book
++++ b/user/cantari/book
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run when \$LFS_ENV == 'm1'"
++  exit 1
++fi
++
+ frame book_m1
+ 
+ # this is unnecessary on this system, as it is about the same speed to rebuild up to this point
+@@ -11,7 +16,7 @@ frame environment_root book_m1_to_m2
+ 
+ # This will be the last command that shows in the logs of the m1 build directory. After this the scripts start
+ # writing the logs in the m2_filesystem/sbin/LFS directory.
+-frame environment_root environment_book_m2 book_m2
++frame environment_root env_m2 book_m2
+ 
+ # this doesn't work, at this point there are things on the disk that tar does not like
+ # checkpointing also takes a lot of disk space which might become an issue
+diff --git a/user/executable/book_m1 b/user/cantari/book_m1
+similarity index 79%
+rename from user/executable/book_m1
+rename to user/cantari/book_m1
+index aacbc28..b8cc1cf 100755
+--- a/user/executable/book_m1
++++ b/user/cantari/book_m1
+@@ -1,12 +1,12 @@
+ #!/bin/bash
+-set -x
++#set -x
+ 
+ # nothing to build in chapter 1
+ 
+ # does this script return a true or false result??  Can't tell. 
+ frame c2
+ 
+-# We already have the packages and patches, so don't need to run this
++# We already have the upstream incantatio and patches, so don't need to run this
+ # frame c3
+ 
+ # note the environment stuff described in s4.4 and s4.5 is set by calling through an environment wrapper such as
+@@ -19,4 +19,4 @@ frame c5
+ # user space build stuff
+ frame c6
+ 
+-set +x
++#set +x
+diff --git a/user/cantari/book_m1_to_m2 b/user/cantari/book_m1_to_m2
+new file mode 100755
+index 0000000..dc31a55
+--- /dev/null
++++ b/user/cantari/book_m1_to_m2
+@@ -0,0 +1,17 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m1_root" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1_root"
++  exit 1
++fi
++
++frame s7.02_m2_chown_root
++frame s7.03_devices
++
++mkdir -p "$LFS_M2_FILESYSTEM"/usr/local/bin
++cp "$REPO_USER_DIR"/cantari/Z  "$LFS_M2_FILESYSTEM"/usr/local/bin
++
++repo_dir_target="$LFS_M2_FILESYSTEM""$M2FS_REPO_DIR"
++mkdir -p "$repo_dir_target"
++mount --bind "$REPO_DIR" "$repo_dir_target"
++
+diff --git a/user/cantari/book_m2 b/user/cantari/book_m2
+new file mode 100755
+index 0000000..b61d4eb
+--- /dev/null
++++ b/user/cantari/book_m2
+@@ -0,0 +1,13 @@
++#!/bin/bash
++#set -x
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++frame c7
++frame c8
++#frame c9
++
++#set +x
+diff --git a/user/executable/build b/user/cantari/build
+similarity index 76%
+rename from user/executable/build
+rename to user/cantari/build
+index 5a59738..dae3954 100755
+--- a/user/executable/build
++++ b/user/cantari/build
+@@ -4,8 +4,8 @@
+ export LFS_M2_FILESYSTEM="/mnt/m2_filesystem"
+ 
+ # can't frame this or the 'really?' prompt goes into the logs ...
+-environment_book_m1 environment_root m2_filesystem_wipe
++env_m1 environment_root m2_filesystem_wipe
+ 
+ # if already in the book_m1 environment, build-1 may be called directly
+-environment_book_m1 build-1
++env_m1 build-1
+ 
+diff --git a/user/executable/build-1 b/user/cantari/build-1
+similarity index 77%
+rename from user/executable/build-1
+rename to user/cantari/build-1
+index 2ecc6b9..b879d7a 100755
+--- a/user/executable/build-1
++++ b/user/cantari/build-1
+@@ -1,5 +1,5 @@
+ #!/bin/bash
+ # frames requires that some enverionment variables be set.  Note the code in frame-0
+ 
+-source frame-initialize.source
++source frame-initialize
+ frame book
+diff --git a/user/cantari/c10 b/user/cantari/c10
+new file mode 100755
+index 0000000..fa68e39
+--- /dev/null
++++ b/user/cantari/c10
+@@ -0,0 +1,18 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++...
++
++
++section="
++lfs-bootscripts
++"
++
++IFS=$'\n'; for s in $section;do
++  frame env_incantatio $s s9_$s
++done
++
+diff --git a/user/cantari/c2 b/user/cantari/c2
+new file mode 100755
+index 0000000..c9b617d
+--- /dev/null
++++ b/user/cantari/c2
+@@ -0,0 +1,9 @@
++#!/bin/bash
++set -e
++
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
++frame s2.2_check_script
+diff --git a/user/cantari/c3 b/user/cantari/c3
+new file mode 100755
+index 0000000..8875a1d
+--- /dev/null
++++ b/user/cantari/c3
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
++frame s3.2_wget_all_document
++frame s3.2_wget_all_incantatio
++frame s3.2_wget_all_patch
++
+diff --git a/user/cantari/c4 b/user/cantari/c4
+new file mode 100755
+index 0000000..6ed086e
+--- /dev/null
++++ b/user/cantari/c4
+@@ -0,0 +1,10 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
++# give some structure to the m2 directory tree
++frame s4.2_target_dir_tree
++
+diff --git a/user/cantari/c5 b/user/cantari/c5
+new file mode 100755
+index 0000000..0c3e537
+--- /dev/null
++++ b/user/cantari/c5
+@@ -0,0 +1,23 @@
++#!/bin/bash
++set -e
++
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
++section="
++binutils 
++gcc
++linux
++glibc
++"
++
++IFS=$'\n'; for s in $section;do
++  # echo s6_$s
++  eval frame env_incantatio $s s5_$s
++done
++
++# libstdc++ is found in the gcc incantatio:
++frame env_incantatio gcc s5_libstdc++
++
+diff --git a/user/executable/c6 b/user/cantari/c6
+similarity index 58%
+rename from user/executable/c6
+rename to user/cantari/c6
+index f437fd2..d2b0571 100755
+--- a/user/executable/c6
++++ b/user/cantari/c6
+@@ -1,7 +1,11 @@
+ #!/bin/bash
+-
+ set -e
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ section="
+ m4
+ ncurses
+@@ -24,5 +28,5 @@ gcc
+ 
+ IFS=$'\n'; for s in $section;do
+   # echo s6_$s
+-  eval frame environment_package $s s6_$s
++  eval frame env_incantatio $s s6_$s
+ done
+diff --git a/user/cantari/c7 b/user/cantari/c7
+new file mode 100755
+index 0000000..e6ab788
+--- /dev/null
++++ b/user/cantari/c7
+@@ -0,0 +1,33 @@
++#!/bin/bash
++
++# s7.02 or s7.03 are part of book_m1_to_m2
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++# contain further builds to the m2 directory tree
++frame s7.05_mkdirs
++frame s7.06_essential
++
++frame env_incantatio "gcc" s7.07_libstdc++
++
++section="
++gettext
++bison
++perl
++Python
++texinfo
++util-linux
++"
++
++IFS=$'\n'; for s in $section;do
++  # echo s7_$s
++  frame env_incantatio $s s7_$s
++done
++
++#s7.14_checkpoint
++s7.14_cleanup
++
++
+diff --git a/user/executable/c8 b/user/cantari/c8
+similarity index 78%
+rename from user/executable/c8
+rename to user/cantari/c8
+index a603922..3ced2e7 100755
+--- a/user/executable/c8
++++ b/user/cantari/c8
+@@ -1,9 +1,13 @@
+ #!/bin/bash
+-# think I should break this up ... checkpoint before it?
+-#
++
+ # section 8.25.3 has us set root password, but I don't want to stop the script, so skipped it for now
+ # passwd root
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ section="
+ man-pages
+ iana-etc
+@@ -53,10 +57,10 @@ kmod
+ "
+ 
+ IFS=$'\n'; for s in $section;do
+-  frame environment_package $s s8_$s
++  frame env_incantatio $s s8_$s
+ done
+ 
+-frame environment_package elfutils s8_libelf
++frame env_incantatio elfutils s8_libelf
+ 
+ section="
+ libffi
+@@ -89,7 +93,7 @@ sysvinit
+ "
+ 
+ IFS=$'\n'; for s in $section;do
+-  frame environment_package $s s8_$s
++  frame env_incantatio $s s8_$s
+ done
+ 
+ #strip debug info (if desired)
+diff --git a/user/executable/c9 b/user/cantari/c9
+similarity index 59%
+rename from user/executable/c9
+rename to user/cantari/c9
+index e3a2565..64a5ebf 100755
+--- a/user/executable/c9
++++ b/user/cantari/c9
+@@ -1,11 +1,16 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ section="
+ lfs-bootscripts
+ "
+ 
+ IFS=$'\n'; for s in $section;do
+-  frame environment_package $s s9_$s
++  frame env_incantatio $s s9_$s
+ done
+ 
+ s9.5.1_eth0_exmaple
+diff --git a/user/cantari/checkpoint b/user/cantari/checkpoint
+new file mode 100755
+index 0000000..a574675
+--- /dev/null
++++ b/user/cantari/checkpoint
+@@ -0,0 +1,41 @@
++#!/bin/bash
++#
++# this latest version is untested
++#
++# based on s7.14 then generalized to work in any environment that has REPO_USER_DIR and LFS_M2_FILESYSTEM
++#
++# checkpoint tars $LFS_M2_FILESYSTEM and puts that tar file into build/checkpoint/
++#
++# checkpoint files may be large, and out of diskspace errors might be subtle, so perhaps rebuild instead? Rebuilding
++# might be fast enough on modern machine.
++#
++set -e
++set -x
++
++if [[ -z "$REPO_USER_DIR" ]];then
++  echo $(basename "$0") "requires variable \$REPO_USER_DIR to be set" > /dev/stderr
++  exit 1
++fi
++
++if [[ -z "$LFS_M2_FILESYSTEM" ]];then
++  echo $(basename "$0") "requires variable \$LFS_M2_FILESYSTEM to be set" > /dev/stderr
++  exit 1
++fi
++
++# crates a time stamped file, this is collision free due to using mktemp, and race free
++checkpoint_dir="$REPO_USER_DIR/build/checkpoint"
++if [[ ! -d "$checkpoint_dir" ]];then
++  mkdir -p "$checkpoint_dir" || { echo $(basename "$0") "can't make checkpoint_dir" > /dev/stderr ; exit 2 ; }
++  sudo chown lfs:lfs "$checkpoint_dir"
++fi
++stamp="$(Z)"
++export checkpoint_path=$(mktemp --tmpdir="$checkpoint_dir" -t "$stamp"'-XXXXXXXXXX' --suffix '.tar.xz)
++
++sudo umount -v $LFS_M2_FILESYSTEM/dev/pts || true
++sudo umount -v $LFS_M2_FILESYSTEM/{sys,proc,run,dev} || true
++
++checkpoint_file=$(mktemp --tmpdir="$checkpoint_dir" "$checkpoint.XXXXX.tgz")
++sudo tar -cJpf $checkpoint_file "$LFS_M2_FILESYSTEM"
++sudo chown lfs:lfs $checkpoint_file
++
++set +x
+diff --git a/user/executable/environment_package b/user/cantari/env_incantatio
+similarity index 55%
+rename from user/executable/environment_package
+rename to user/cantari/env_incantatio
+index ed9244a..a73d271 100755
+--- a/user/executable/environment_package
++++ b/user/cantari/env_incantatio
+@@ -1,17 +1,18 @@
+ #!/bin/bash
++#set -x
+ set -e
+-package=$1
++incantatio=$1
+ script=${@:2}
+ 
+-if [[ -z "$package" ]]; then
+-  echo $(basename "$0") "requires a package as a first argument"
++if [[ -z "$incantatio" ]]; then
++  echo $(basename "$0") "requires an incantatio as a first argument"
+   exit 1
+ fi
+ if [[ -z "$script" ]]; then
+   script="/bin/bash --norc"
+ fi
+ 
+-source package_untar.source "$1"  
++source incantatio_untar "$1"  
+ 
+ $script 
+ 
+@@ -19,3 +20,4 @@ if [[ ! -z "$SOURCE_DIR" ]]; then
+   rm -rf $LFS_M2_FILESYSTEM/source/$SOURCE_DIR
+ fi
+ 
++#set +x
+diff --git a/user/executable/environment_book_m1 b/user/cantari/env_m1
+similarity index 93%
+rename from user/executable/environment_book_m1
+rename to user/cantari/env_m1
+index b8f976c..6d67627 100755
+--- a/user/executable/environment_book_m1
++++ b/user/cantari/env_m1
+@@ -14,16 +14,16 @@
+ # set -x
+ 
+ script="$@"
+-if [[ -z "$script" ]]; then
+-  script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/library/bashrc_lfs
+-fi
+ 
+ # should be a parameter
+ lfs_m2_filesystem="/mnt/m2_filesystem"
+ 
++if [[ -z "$script" ]]; then
++  script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/library/bashrc_lfs
++fi
++
+ env --ignore-environment \
+   HOSTNAME="$HOSTNAME"\
+-  USERNAME="$USERNAME"\
+   TMP="$TMP"\
+   TZ="$TZ"\
+   TIME_STYLE="$TIME_STYLE"\
+@@ -37,9 +37,10 @@ env --ignore-environment \
+   REPO="$REPO"\
+   REPO_DIR="$REPO_DIR"\
+   PROJECT="$PROJECT:book-m1"\
++  LFS_ENV="m1"\
++  LFS_LOG="$LFS_LOG"\
+   LFS_M2_FILESYSTEM="$lfs_m2_filesystem"\
+-  "$REPO_USER_DIR"/executable/environment_book_m1-1 $script
+-
++  "$REPO_USER_DIR"/cantari/env_m1-1 $script
+   
+ 
+ # set +x
+diff --git a/user/executable/environment_book_m1-1 b/user/cantari/env_m1-1
+similarity index 73%
+rename from user/executable/environment_book_m1-1
+rename to user/cantari/env_m1-1
+index 246a327..19d82a2 100755
+--- a/user/executable/environment_book_m1-1
++++ b/user/cantari/env_m1-1
+@@ -6,7 +6,7 @@
+ script="$@"
+ 
+ # requires custom configuration:
+-MAKEFLAGS="-j12" 
++export MAKEFLAGS="-j12" 
+ 
+ # according to the book	   
+ umask 022
+@@ -20,16 +20,12 @@ PATH="$LFS_M2_FILESYSTEM/tools/bin:$PATH"
+ CONFIG_SITE="$LFS_M2_FILESYSTEM/usr/share/config.site"
+ export LC_ALL LFS_TGT PATH CONFIG_SITE
+ 
+-# if there are programs we use from /usr/local/bin, eg. Z
+-export PATH="/usr/local/bin:$PATH"
+-
+ # for our build scripts
++export PATH="/usr/local/bin:$PATH"
+ source "$REPO_DIR"/initialize
+-mkdir -p "$REPO_USER_DIR"/build/log
+-mkdir -p "$REPO_USER_DIR"/build/checkpoint
+ 
+ # These are the REPO variables within the m2fs
+-# used by the scripts 'book_m1_to_m2' and 'environment_book_m2', or anywhere else they are useful
++# used by the scripts 'book_m1_to_m2' and 'env_m2', or anywhere else they are useful
+ M2FS_REPO_HOME="/mnt"
+ M2FS_REPO_DIR="$M2FS_REPO_HOME"/"$REPO"
+ M2FS_REPO_USER_DIR="$M2FS_REPO_DIR"/user
+diff --git a/user/executable/environment_root b/user/cantari/env_m1_root
+similarity index 77%
+rename from user/executable/environment_root
+rename to user/cantari/env_m1_root
+index 1c30468..6babda7 100755
+--- a/user/executable/environment_root
++++ b/user/cantari/env_m1_root
+@@ -19,9 +19,16 @@ if [[ -z "$script" ]]; then
+   script="/bin/bash --norc"
+ fi
+ 
+-# bash removes PS1 so we need to reset those
+-# either sudo -E or env is clear TERM
+-# sudo -E still clears the PATH
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++LFS_ENV="m1_root"
++
++# sudo -E and env without the '-i' passes most environment variables to $script
++# bash removes PS1 so we need to reset it
++# either sudo -E or env is clearing the TERM variable
++# sudo -E still clears the PATH variable
+ sudo -E \
+   env \
+     TERM="$TERM"\
+diff --git a/user/executable/environment_book_m2 b/user/cantari/env_m2
+similarity index 71%
+rename from user/executable/environment_book_m2
+rename to user/cantari/env_m2
+index ee6b328..e5edd19 100755
+--- a/user/executable/environment_book_m2
++++ b/user/cantari/env_m2
+@@ -7,21 +7,16 @@ if [[ -z "$script" ]]; then
+   script=/bin/bash\ --init-file\ "$M2FS_REPO_USER_DIR"/library/bashrc_lfs
+ fi
+ 
+-if [[ -z "$LFS_M2_FILESYSTEM" ]];then
+-  echo $(basename "$0") "requires variable LFS_M2_FILESYSTEM to be set" > /dev/stderr
+-  exit 1
+-fi
+-
+-if [[ -z "$TERM" ]];then
+-  echo $(basename "$0") "requires variable TERM to be set"  > /dev/stderr
+-  exit 2
+-fi
+-
+ if [[ !  -x "$LFS_M2_FILESYSTEM"/usr/local/bin/Z ]]; then
+   echo $(basename "$0") "no \$LFS_M2_FILESYSTEM/usr/loca/bin/Z, did you run 'book_m1_to_m2' ?"  > /dev/stderr
+   exit 1
+ fi
+ 
++if [[ "$LFS_ENV" != "m1_root" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1 env_m1_root"
++  exit 1
++fi
++ 
+ chroot "$LFS_M2_FILESYSTEM" /usr/bin/env --ignore-environment \
+   HOSTNAME="$HOSTNAME"\
+   USERNAME="$USERNAME"\
+@@ -38,7 +33,9 @@ chroot "$LFS_M2_FILESYSTEM" /usr/bin/env --ignore-environment \
+   REPO="$REPO"\
+   REPO_DIR="$M2FS_REPO_DIR"\
+   PROJECT="$PROJECT:book_after_chroot"\
++  LFS_ENV="m2"\
++  LFS_LOG="$LFS_LOG"\
+   LFS_M2_FILESYSTEM="/"\
+-  "$M2FS_REPO_USER_DIR"/executable/environment_book_m2-1  $script
++  "$M2FS_REPO_DIR"/user/cantari/env_m2-1 $script
+ 
+ #set +x
+diff --git a/user/executable/environment_book_m2-1 b/user/cantari/env_m2-1
+similarity index 92%
+rename from user/executable/environment_book_m2-1
+rename to user/cantari/env_m2-1
+index 999cb18..3236149 100755
+--- a/user/executable/environment_book_m2-1
++++ b/user/cantari/env_m2-1
+@@ -25,7 +25,7 @@ cd "$HOME"
+ 
+ # for our build scripts
+ source "$REPO_DIR"/initialize
+-export PATH="$REPO_USER_DIR/executable:$PATH"
++export PATH="$REPO_USER_DIR/cantari:$PATH"
+ 
+ $script
+ 
+diff --git a/user/executable/frame b/user/cantari/frame
+similarity index 100%
+rename from user/executable/frame
+rename to user/cantari/frame
+diff --git a/user/executable/frame-initialize.source b/user/cantari/frame-initialize
+similarity index 76%
+rename from user/executable/frame-initialize.source
+rename to user/cantari/frame-initialize
+index faf71ca..e72f9ba 100755
+--- a/user/executable/frame-initialize.source
++++ b/user/cantari/frame-initialize
+@@ -7,10 +7,14 @@ if [[ -z "REPO_USER_DIR" ]];then
+   exit 1
+ fi
+ 
++#https://stackoverflow.com/questions/2683279/how-to-detect-if-a-script-is-being-sourced
++(return 0 2>/dev/null) && sourced=1 || sourced=0
++test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
++
+ # crates a time stamped directory for this build's logs, this is collision free due to using mktemp, and race free
+ log_dir="$REPO_USER_DIR/build/log"
+ if [[ ! -d "$log_dir" ]];then
+-  mkdir -p "$log_dir" || { echo $(basename "$0") "can't make log dir" > /dev/stderr && exit 2 ; }
++  mkdir -p "$log_dir" || { echo $(basename "$0") "can't make log dir" > /dev/stderr ; exit 2 ; }
+ fi
+ stamp="$(Z)"
+ export LFS_LOG=$(basename $(mktemp -d --tmpdir="$log_dir" -t "$stamp"'-XXXXXXXXXX' ))
+@@ -23,5 +27,6 @@ telltale="$log_dir/$LFS_LOG/telltale"
+ cat <<EOF | tee "$frame" | tee "$build" | tee "$telltale"
+ #--------------------------------------------------------------------------------
+ # $stamp
++#    frame-initialize sourced from: $0  
+ #--------------------------------------------------------------------------------
+ EOF
+diff --git a/user/cantari/incantatio_untar b/user/cantari/incantatio_untar
+new file mode 100755
+index 0000000..697aa6d
+--- /dev/null
++++ b/user/cantari/incantatio_untar
+@@ -0,0 +1,28 @@
++#!/bin/bash
++# this should be sourced from the calling script, not executed directly
++# this returns the variables: incantatio, SOURCE_DIR
++# set -x
++
++incantatio_stem="$1"
++if [ -z "$incantatio_stem" ]; then
++  echo $(basename "$0") requires a first parameter for the incantatio_stem name > /dev/stderr
++  exit 1
++fi
++
++(return 0 2>/dev/null) && sourced=1 || sourced=0
++test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
++
++export INCANTATIO_PATH="$(ls -d "$REPO_USER_DIR"/build/upstream/incantatio/"$incantatio_stem"-*.tar* | head -1)"
++export INCANTATIO="$(basename "$INCANTATIO_PATH")"
++export SOURCE_DIR="${INCANTATIO%\.tar*}"
++echo $(basename "$0") $INCANTATIO_PATH $INCANTATIO $SOURCE_DIR
++
++cd $LFS_M2_FILESYSTEM
++! test -d source && mkdir source
++cd source
++
++tar -xf "$INCANTATIO_PATH"
++cd "$SOURCE_DIR"
++pwd
++
++# set +x
+diff --git a/user/executable/m2_filesystem_wipe b/user/cantari/m2_filesystem_wipe
+similarity index 53%
+rename from user/executable/m2_filesystem_wipe
+rename to user/cantari/m2_filesystem_wipe
+index ce6facf..f25d4eb 100755
+--- a/user/executable/m2_filesystem_wipe
++++ b/user/cantari/m2_filesystem_wipe
+@@ -4,6 +4,11 @@
+ # set -x
+ set -e
+ 
++if [[ "$LFS_ENV" == "m2" ]];then
++  echo $(basename "$0") "cannot be run in env_m2"
++  exit 1
++fi
++
+ if [[ -z "$LFS_M2_FILESYSTEM" ]];then
+   echo $(basename "$0") " requires that \$LFS_M2_FILESYSTEM has a value" > /dev/stderr
+   exit 1
+@@ -12,25 +17,26 @@ fi
+ # run m2_wipe as root so that umount will work and rm of files works even when the files are owned by root
+ # this is an excellent script for wiping your host computer by accident!
+ if [ "$EUID" -ne 0 ]; then
+-  echo $(basename "$0") "not being run as root, so can't do unounts, we stop scanning upon reaching the first error" > /dev/stderr
++  echo $(basename "$0") "not being run as root, so can't do unounts" > /dev/stderr
+ fi
+ 
+-read -p "Remove all files except package/ on $LFS_M2_FILESYSTEM? [y|n]:" -n 1 -r
++echo "\$LFS_M2_FILESYSTEM:" "$LFS_M2_FILESYSTEM"
++read -p "Remove all files on $LFS_M2_FILESYSTEM? [y|n]:" -n 1 -r
+ echo    # (optional) move to a new line
+ if [[ ! "$REPLY" =~ ^[y]$ ]];then
+   exit 1
+ fi
+ 
+-# found that the absolute pathname is necessary, independent of the current pwd
+-umount /mnt/m2_filesystem/mnt/Lustucru || true
+-rmdir /mnt/m2_filesystem/mnt/Lustucru || true
++if [ "$EUID" -eq 0 ]; then
++  # found that the absolute pathname is necessary, independent of the current pwd
++  umount /mnt/m2_filesystem/mnt/Lustucru || true
++  rmdir -v /mnt/m2_filesystem/mnt/Lustucru || true
+ 
+-umount /mnt/m2_filesystem/dev || true
+-umount /mnt/m2_filesystem/dev/pts  || true
+-umount /mnt/m2_filesystem/proc || true
+-umount /mnt/m2_filesystem/sys || true
+-umount /mnt/m2_filesystem/run || true
++  umount -v $LFS_M2_FILESYSTEM/dev/pts || true
++  umount -v $LFS_M2_FILESYSTEM/{sys,proc,run,dev} || true
++fi
+ 
++# skip /mnt just in case it did not unmount (has happened ...)
+ echo "rm -rf the following:"
+ find "$LFS_M2_FILESYSTEM" \
+   -maxdepth 1 -mindepth 1 \
+@@ -38,7 +44,11 @@ find "$LFS_M2_FILESYSTEM" \
+   -print \
+   \( -exec rm -rf {} \; -o -quit \)
+ 
+-chown "$USERNAME":"$USERNAME" "$LFS_M2_FILESYSTEM"
+-chmod 0755 "$LFS_M2_FILESYSTEM"
++rmdir -v "$LFS_M2_FILESYSTEM"/mnt
++
++if [ "$EUID" -eq 0 ]; then
++  chown "$USERNAME":"$USERNAME" "$LFS_M2_FILESYSTEM"
++  chmod 0755 "$LFS_M2_FILESYSTEM"
++fi
+ 
+ # set +x
+diff --git a/user/executable/s10.2_fstab b/user/cantari/s10.2_fstab
+similarity index 87%
+rename from user/executable/s10.2_fstab
+rename to user/cantari/s10.2_fstab
+index 719d19e..60c0867 100755
+--- a/user/executable/s10.2_fstab
++++ b/user/cantari/s10.2_fstab
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ cat > /etc/fstab << "EOF"
+ # Begin /etc/fstab
+ 
+@@ -17,4 +22,4 @@ tmpfs          /run         tmpfs    defaults            0     0
+ devtmpfs       /dev         devtmpfs mode=0755,nosuid    0     0
+ 
+ # End /etc/fstab
+-EOF
+\ No newline at end of file
++EOF
+diff --git a/user/executable/s2.2_check_script b/user/cantari/s2.2_check_script
+similarity index 93%
+rename from user/executable/s2.2_check_script
+rename to user/cantari/s2.2_check_script
+index 7b058cc..f5aa285 100755
+--- a/user/executable/s2.2_check_script
++++ b/user/cantari/s2.2_check_script
+@@ -1,6 +1,11 @@
+ #!/bin/bash
+ # Simple script to list version numbers of critical development tools
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ export LC_ALL=C
+ bash --version | head -n1 | cut -d" " -f2-4
+ MYSH=$(readlink -f /bin/sh)
+diff --git a/user/executable/s3.2_raw.txt b/user/cantari/s3.2_raw.txt
+old mode 100755
+new mode 100644
+similarity index 96%
+rename from user/executable/s3.2_raw.txt
+rename to user/cantari/s3.2_raw.txt
+index 7608524..77e89a2
+--- a/user/executable/s3.2_raw.txt
++++ b/user/cantari/s3.2_raw.txt
+@@ -5,7 +5,7 @@ https://www.linuxfromscratch.org/patches/downloads/
+ 
+ 
+ 
+- Download or otherwise obtain the following packages:
++ Download or otherwise obtain the following incantatio:
+ 
+ Acl (2.3.1) - 348 KB:
+ 
+@@ -327,7 +327,7 @@ Linux (5.16.9) - 124,577 KB:
+ 
+     The Linux kernel is updated relatively often, many times due to discoveries of security vulnerabilities. The latest available stable kernel version may be used, unless the errata page says otherwise.
+ 
+-    For users with limited speed or expensive bandwidth who wish to update the Linux kernel, a baseline version of the package and patches can be downloaded separately. This may save some time or cost for a subsequent patch level upgrade within a minor release.
++    For users with limited speed or expensive bandwidth who wish to update the Linux kernel, a baseline version of the incantatio and patches can be downloaded separately. This may save some time or cost for a subsequent patch level upgrade within a minor release.
+ M4 (1.4.19) - 1,617 KB:
+ 
+     Home page: https://www.gnu.org/software/m4/
+@@ -564,11 +564,11 @@ Zstd (1.5.2) - 1,892 KB:
+ 
+     MD5 sum: 072b10f71f5820c24761a65f31f43e73
+ 
+-Total size of these packages: about 446 MB
++Total size of these incantatio: about 446 MB
+ 3.3. Needed Patches
+ 
+ --------------------------------------------------------------------------------
+-In addition to the packages, several patches are also required. These patches correct any mistakes in the packages that should be fixed by the maintainer. The patches also make small modifications to make the packages easier to work with. The following patches will be needed to build an LFS system:
++In addition to the incantatio, several patches are also required. These patches correct any mistakes in the incantatio that should be fixed by the maintainer. The patches also make small modifications to make the incantatio easier to work with. The following patches will be needed to build an LFS system:
+ 
+ Binutils LTO Fix Patch - 3.5 KB:
+ 
+diff --git a/user/cantari/s3.2_wget_all_document b/user/cantari/s3.2_wget_all_document
+new file mode 100755
+index 0000000..b4f26a7
+--- /dev/null
++++ b/user/cantari/s3.2_wget_all_document
+@@ -0,0 +1,42 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
++document_dir="$REPO_DIR/user/build/upstream/document"
++mkdir -p "$document_dir"
++pushd "$document_dir"
++
++link="
++https://www.kernel.org/pub/linux/docs/man-pages/man-pages-5.13.tar.xz
++https://www.python.org/ftp/python/doc/3.10.2/python-3.10.2-docs-html.tar.bz2
++https://downloads.sourceforge.net/tcl/tcl8.6.12-html.tar.gz
++"
++
++IFS=$'\n'; for l in $link;do
++   wget $l
++done
++
++# apply patches here?
++# do docs have patches?
++
++# wonder if we can just dump the wget errors to stderr directly from the commands, or if it does already
++grep -iE 'error|warning|not found' wget-log* 1>&2
++
++# version number should be prefixed by a dash
++tcl_0=tcl8.6.12-html.tar.gz
++tcl_1=tcl-8.6.12-html.tar.gz
++if [ -f $tcl_0  ] && [ ! -f $tcl_1 ];then
++  tar --transform s/tcl8.6.12/tcl-8.6.12/ -xf $tcl_0
++  tar  -cf $tcl_1 tcl-8.6.12
++  rm -r tcl-8.6.12
++#  rm $tcl_0
++fi
++
++
++popd
++
++
++
+diff --git a/user/executable/s3.2_wget_all_source b/user/cantari/s3.2_wget_all_incantatio
+similarity index 95%
+rename from user/executable/s3.2_wget_all_source
+rename to user/cantari/s3.2_wget_all_incantatio
+index b2be20d..4b5fe75 100755
+--- a/user/executable/s3.2_wget_all_source
++++ b/user/cantari/s3.2_wget_all_incantatio
+@@ -3,8 +3,14 @@
+ # book calls for https://zlib.net/zlib-1.2.11.tar.xz, but only https://zlib.net/zlib-1.2.12.tar.xz is still available
+ # from zlib.net.  .11 may be found elsewhere, but for now I fetch .12 instead.
+ 
+-mkdir -p "$REPO_DIR/user/build/library/source"
+-pushd "$REPO_DIR/user/build/library/source"
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
++incantatio_dir="$REPO_DIR/user/build/upstream/incantatio"
++mkdir -p "$incantatio_dir"
++pushd "$incantatio_dir"
+ 
+ link="
+ https://download.savannah.gnu.org/releases/acl/acl-2.3.1.tar.xz
+@@ -100,7 +106,7 @@ test -f procps-ng-3.3.17.tar.xz -a ! -L procps-3.3.17.tar.xz  &&\
+ 
+ # version number should be prefixed by a dash
+ tcl_0=tcl8.6.12-src.tar.gz
+-tcl_1=tcl-8.6.12.tar.gz
++tcl_1=tcl-8.6.12-src.tar.gz
+ if [ -f $tcl_0  ] && [ ! -f $tcl_1 ];then
+   tar --transform s/tcl8.6.12/tcl-8.6.12/ -xf $tcl_0
+   tar  -cf $tcl_1 tcl-8.6.12
+diff --git a/user/cantari/s3.2_wget_all_patch b/user/cantari/s3.2_wget_all_patch
+new file mode 100755
+index 0000000..2794bbf
+--- /dev/null
++++ b/user/cantari/s3.2_wget_all_patch
+@@ -0,0 +1,34 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
++patch_dir="$REPO_DIR/user/build/upstream/patch"
++mkdir -p "$patch_dir"
++pushd "$patch_dir"
++
++link="
++https://www.linuxfromscratch.org/patches/lfs/11.1/binutils-2.38-lto_fix-1.patch
++https://www.linuxfromscratch.org/patches/lfs/11.1/bzip2-1.0.8-install_docs-1.patch
++https://www.linuxfromscratch.org/patches/lfs/11.1/coreutils-9.0-i18n-1.patch
++https://www.linuxfromscratch.org/patches/lfs/11.1/coreutils-9.0-chmod_fix-1.patch
++https://www.linuxfromscratch.org/patches/lfs/11.1/glibc-2.35-fhs-1.patch
++https://www.linuxfromscratch.org/patches/lfs/11.1/kbd-2.4.0-backspace-1.patch
++https://www.linuxfromscratch.org/patches/lfs/11.1/perl-5.34.0-upstream_fixes-1.patch
++https://www.linuxfromscratch.org/patches/lfs/11.1/sysvinit-3.01-consolidated-1.patch
++"
++
++IFS=$'\n'; for l in $link;do
++   wget $l
++done
++
++# wonder if we can just dump the wget errors to stderr directly from the commands, or if it does already
++grep -iE 'error|warning|not found' wget-log* 1>&2
++
++
++popd
++
++
++
+diff --git a/user/executable/s4.2_target_dir_tree b/user/cantari/s4.2_target_dir_tree
+similarity index 80%
+rename from user/executable/s4.2_target_dir_tree
+rename to user/cantari/s4.2_target_dir_tree
+index 742f471..f5504b2 100755
+--- a/user/executable/s4.2_target_dir_tree
++++ b/user/cantari/s4.2_target_dir_tree
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ mkdir -pv "$LFS_M2_FILESYSTEM"/{etc,var} "$LFS_M2_FILESYSTEM"/usr/{bin,lib,sbin,include}
+ 
+ for i in bin lib sbin; do
+diff --git a/user/executable/s5_binutils b/user/cantari/s5_binutils
+similarity index 85%
+rename from user/executable/s5_binutils
+rename to user/cantari/s5_binutils
+index e03040d..5302ecb 100755
+--- a/user/executable/s5_binutils
++++ b/user/cantari/s5_binutils
+@@ -1,6 +1,11 @@
+ #!/bin/bash
+ # set -x
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ # kind of interesting, making the build directory inside the source directory
+ mkdir -v build
+ cd       build
+diff --git a/user/executable/s5_gcc b/user/cantari/s5_gcc
+similarity index 79%
+rename from user/executable/s5_gcc
+rename to user/cantari/s5_gcc
+index 905817f..4559b6a 100755
+--- a/user/executable/s5_gcc
++++ b/user/cantari/s5_gcc
+@@ -1,8 +1,13 @@
+ #!/bin/bash
+ 
+-tar -xf "$LFS_BUILD_DIR"/package/mpfr-*.tar.*
+-tar -xf "$LFS_BUILD_DIR"/package/gmp-*.tar.*
+-tar -xf "$LFS_BUILD_DIR"/package/mpc-*.tar.*
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
++tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/mpfr-*.tar.*
++tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/gmp-*.tar.*
++tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/mpc-*.tar.*
+ 
+ mv -v mpfr-* mpfr
+ mv -v gmp-* gmp
+diff --git a/user/executable/s5_glibc b/user/cantari/s5_glibc
+similarity index 95%
+rename from user/executable/s5_glibc
+rename to user/cantari/s5_glibc
+index bf1e195..c3c7b60 100755
+--- a/user/executable/s5_glibc
++++ b/user/cantari/s5_glibc
+@@ -1,5 +1,9 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
+ 
+ #--------------------------------------------------------------------------------
+ # book is bad about telling us what working directory we should be in for running these commands...
+@@ -25,7 +29,7 @@ esac
+ popd
+ 
+ #--------------------------------------------------------------------------------
+-# now we build the package
++# now we build the cantari
+ 
+ mkdir -v build
+ cd build
+diff --git a/user/executable/s5_libstdc++ b/user/cantari/s5_libstdc++
+similarity index 93%
+rename from user/executable/s5_libstdc++
+rename to user/cantari/s5_libstdc++
+index cc86267..fb862b1 100755
+--- a/user/executable/s5_libstdc++
++++ b/user/cantari/s5_libstdc++
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ mkdir -v build
+ cd build
+ 
+diff --git a/user/executable/s5_linux b/user/cantari/s5_linux
+similarity index 57%
+rename from user/executable/s5_linux
+rename to user/cantari/s5_linux
+index 91c67a3..9b872ac 100755
+--- a/user/executable/s5_linux
++++ b/user/cantari/s5_linux
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ make mrproper
+ make headers
+ find usr/include -name '.*' -delete
+diff --git a/user/executable/s6_bash b/user/cantari/s6_bash
+similarity index 71%
+rename from user/executable/s6_bash
+rename to user/cantari/s6_bash
+index 40c4a53..08c9f50 100755
+--- a/user/executable/s6_bash
++++ b/user/cantari/s6_bash
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ ./configure --prefix=/usr                   \
+             --build=$(support/config.guess) \
+             --host=$LFS_TGT                 \
+diff --git a/user/executable/s6_binutils b/user/cantari/s6_binutils
+similarity index 78%
+rename from user/executable/s6_binutils
+rename to user/cantari/s6_binutils
+index 630f2a3..28fe782 100755
+--- a/user/executable/s6_binutils
++++ b/user/cantari/s6_binutils
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ if [[ -d build ]]; then
+     rm -rf build
+ fi
+diff --git a/user/executable/s6_coreutils b/user/cantari/s6_coreutils
+similarity index 85%
+rename from user/executable/s6_coreutils
+rename to user/cantari/s6_coreutils
+index 4e556f6..d444146 100755
+--- a/user/executable/s6_coreutils
++++ b/user/cantari/s6_coreutils
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ ./configure --prefix=/usr                     \
+             --host=$LFS_TGT                   \
+             --build=$(build-aux/config.guess) \
+diff --git a/user/cantari/s6_diffutils b/user/cantari/s6_diffutils
+new file mode 100755
+index 0000000..ab86eb8
+--- /dev/null
++++ b/user/cantari/s6_diffutils
+@@ -0,0 +1,12 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
++
++./configure --prefix=/usr --host=$LFS_TGT
++make
++make DESTDIR=$LFS_M2_FILESYSTEM install
++
+diff --git a/user/executable/s6_file b/user/cantari/s6_file
+similarity index 76%
+rename from user/executable/s6_file
+rename to user/cantari/s6_file
+index 549e352..24a779f 100755
+--- a/user/executable/s6_file
++++ b/user/cantari/s6_file
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ mkdir build
+ pushd build
+   ../configure --disable-bzlib      \
+diff --git a/user/executable/s6_findutils b/user/cantari/s6_findutils
+similarity index 69%
+rename from user/executable/s6_findutils
+rename to user/cantari/s6_findutils
+index 956c72a..e544d36 100755
+--- a/user/executable/s6_findutils
++++ b/user/cantari/s6_findutils
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ ./configure --prefix=/usr                   \
+             --localstatedir=/var/lib/locate \
+             --host=$LFS_TGT                 \
+diff --git a/user/executable/s6_gawk b/user/cantari/s6_gawk
+similarity index 64%
+rename from user/executable/s6_gawk
+rename to user/cantari/s6_gawk
+index 25e0a0d..b7f48c5 100755
+--- a/user/executable/s6_gawk
++++ b/user/cantari/s6_gawk
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ sed -i 's/extras//' Makefile.in
+ ./configure --prefix=/usr   \
+             --host=$LFS_TGT \
+diff --git a/user/executable/s6_gcc b/user/cantari/s6_gcc
+similarity index 81%
+rename from user/executable/s6_gcc
+rename to user/cantari/s6_gcc
+index 5322734..1bdda6e 100755
+--- a/user/executable/s6_gcc
++++ b/user/cantari/s6_gcc
+@@ -1,8 +1,13 @@
+ #!/bin/bash
+ 
+-tar -xf "$LFS_BUILD_DIR"/package/mpfr-*.tar.*
+-tar -xf "$LFS_BUILD_DIR"/package/gmp-*.tar.*
+-tar -xf "$LFS_BUILD_DIR"/package/mpc-*.tar.*
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
++tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/mpfr-*.tar.*
++tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/gmp-*.tar.*
++tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/mpc-*.tar.*
+ 
+ mv -v mpfr-* mpfr
+ mv -v gmp-* gmp
+diff --git a/user/executable/s6_grep b/user/cantari/s6_grep
+similarity index 52%
+rename from user/executable/s6_grep
+rename to user/cantari/s6_grep
+index 33d16c9..8cd5b25 100755
+--- a/user/executable/s6_grep
++++ b/user/cantari/s6_grep
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ ./configure --prefix=/usr   \
+             --host=$LFS_TGT
+ make
+diff --git a/user/cantari/s6_gzip b/user/cantari/s6_gzip
+new file mode 100755
+index 0000000..b62183d
+--- /dev/null
++++ b/user/cantari/s6_gzip
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
++
++./configure --prefix=/usr --host=$LFS_TGT
++make
++make DESTDIR=$LFS_M2_FILESYSTEM install
+diff --git a/user/executable/s6_m4 b/user/cantari/s6_m4
+similarity index 60%
+rename from user/executable/s6_m4
+rename to user/cantari/s6_m4
+index 9aa3130..dedcc26 100755
+--- a/user/executable/s6_m4
++++ b/user/cantari/s6_m4
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ ./configure --prefix=/usr   \
+             --host=$LFS_TGT \
+             --build=$(build-aux/config.guess)
+diff --git a/user/executable/s6_make b/user/cantari/s6_make
+similarity index 64%
+rename from user/executable/s6_make
+rename to user/cantari/s6_make
+index 9e352ec..6771e63 100755
+--- a/user/executable/s6_make
++++ b/user/cantari/s6_make
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ ./configure --prefix=/usr   \
+             --without-guile \
+             --host=$LFS_TGT \
+diff --git a/user/executable/s6_ncurses b/user/cantari/s6_ncurses
+similarity index 87%
+rename from user/executable/s6_ncurses
+rename to user/cantari/s6_ncurses
+index 0684534..6827abe 100755
+--- a/user/executable/s6_ncurses
++++ b/user/cantari/s6_ncurses
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ sed -i s/mawk// configure
+ 
+ mkdir build
+diff --git a/user/executable/s6_patch b/user/cantari/s6_patch
+similarity index 60%
+rename from user/executable/s6_patch
+rename to user/cantari/s6_patch
+index 9aa3130..dedcc26 100755
+--- a/user/executable/s6_patch
++++ b/user/cantari/s6_patch
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ ./configure --prefix=/usr   \
+             --host=$LFS_TGT \
+             --build=$(build-aux/config.guess)
+diff --git a/user/executable/s6_sed b/user/cantari/s6_sed
+similarity index 52%
+rename from user/executable/s6_sed
+rename to user/cantari/s6_sed
+index 33d16c9..8cd5b25 100755
+--- a/user/executable/s6_sed
++++ b/user/cantari/s6_sed
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ ./configure --prefix=/usr   \
+             --host=$LFS_TGT
+ make
+diff --git a/user/executable/s6_tar b/user/cantari/s6_tar
+similarity index 65%
+rename from user/executable/s6_tar
+rename to user/cantari/s6_tar
+index 3445775..bf690f8 100755
+--- a/user/executable/s6_tar
++++ b/user/cantari/s6_tar
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ ./configure --prefix=/usr                     \
+             --host=$LFS_TGT                   \
+             --build=$(build-aux/config.guess)
+diff --git a/user/executable/s6_xz b/user/cantari/s6_xz
+similarity index 73%
+rename from user/executable/s6_xz
+rename to user/cantari/s6_xz
+index 4f25b01..91ff1a1 100755
+--- a/user/executable/s6_xz
++++ b/user/cantari/s6_xz
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1"
++  exit 1
++fi
++
+ ./configure --prefix=/usr                     \
+             --host=$LFS_TGT                   \
+             --build=$(build-aux/config.guess) \
+diff --git a/user/executable/s7.02_m2_chown_root b/user/cantari/s7.02_m2_chown_root
+similarity index 69%
+rename from user/executable/s7.02_m2_chown_root
+rename to user/cantari/s7.02_m2_chown_root
+index 7ff6d7e..eef3e3c 100755
+--- a/user/executable/s7.02_m2_chown_root
++++ b/user/cantari/s7.02_m2_chown_root
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1_root" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1_root"
++  exit 1
++fi
++
+ # -h will change the owner of a symbolic link instead just changing the owner of the target
+ chown -hR root:root $LFS_M2_FILESYSTEM/{usr,lib,var,etc,bin,sbin,tools}
+ case $(uname -m) in
+diff --git a/user/executable/s7.03_devices b/user/cantari/s7.03_devices
+similarity index 81%
+rename from user/executable/s7.03_devices
+rename to user/cantari/s7.03_devices
+index 434b3a3..64e81a7 100755
+--- a/user/executable/s7.03_devices
++++ b/user/cantari/s7.03_devices
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m1_root" ]];then
++  echo $(basename "$0") "only intended to be run in env_m1_root"
++  exit 1
++fi
++
+ mkdir -pv $LFS_M2_FILESYSTEM/{dev,proc,sys,run}
+ 
+ mknod -m 600 $LFS_M2_FILESYSTEM/dev/console c 5 1
+diff --git a/user/executable/s7.05_mkdirs b/user/cantari/s7.05_mkdirs
+similarity index 89%
+rename from user/executable/s7.05_mkdirs
+rename to user/cantari/s7.05_mkdirs
+index 47923be..6f0d5de 100755
+--- a/user/executable/s7.05_mkdirs
++++ b/user/cantari/s7.05_mkdirs
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ # many of these directories already exist, seems mkdir -pv doesn't mind
+ mkdir -pv /{boot,home,mnt,opt,srv}
+ mkdir -pv /etc/{opt,sysconfig}
+diff --git a/user/executable/s7.06_essential b/user/cantari/s7.06_essential
+similarity index 93%
+rename from user/executable/s7.06_essential
+rename to user/cantari/s7.06_essential
+index 0e341fd..486fa18 100755
+--- a/user/executable/s7.06_essential
++++ b/user/cantari/s7.06_essential
+@@ -1,6 +1,12 @@
+ #!/bin/bash
+ set -e
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++
+ ln -sfv /proc/self/mounts /etc/mtab
+ 
+ # EOF without quotes allows variable expansion within the heredoc
+diff --git a/user/executable/s7.07_libstdc++ b/user/cantari/s7.07_libstdc++
+similarity index 82%
+rename from user/executable/s7.07_libstdc++
+rename to user/cantari/s7.07_libstdc++
+index 0acd65c..1f3bf2d 100755
+--- a/user/executable/s7.07_libstdc++
++++ b/user/cantari/s7.07_libstdc++
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ set -x 
+ #the book has this, 
+ #ln -s gthr-posix.h libgcc/gthr-default.h
+diff --git a/user/cantari/s7.14_checkpoint b/user/cantari/s7.14_checkpoint
+new file mode 100755
+index 0000000..f7eb28c
+--- /dev/null
++++ b/user/cantari/s7.14_checkpoint
+@@ -0,0 +1,8 @@
++#!/bin/bash
++#set -x
++
++sudo df -h .
++checkpoint
++sudo df -h .
++
++#set +x
+diff --git a/user/executable/s7.14_cleanup b/user/cantari/s7.14_cleanup
+similarity index 61%
+rename from user/executable/s7.14_cleanup
+rename to user/cantari/s7.14_cleanup
+index ac1b90c..28e0b3e 100755
+--- a/user/executable/s7.14_cleanup
++++ b/user/cantari/s7.14_cleanup
+@@ -1,6 +1,11 @@
+ #!/bin/bash
+ set -x
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ # not sure why we don't want the docs anymore ...
+ rm -rf /usr/share/{info,man,doc}/*
+ find /usr/{lib,libexec} -name \*.la -delete
+diff --git a/user/executable/s7_Python b/user/cantari/s7_Python
+similarity index 72%
+rename from user/executable/s7_Python
+rename to user/cantari/s7_Python
+index 56cb311..fa7a308 100755
+--- a/user/executable/s7_Python
++++ b/user/cantari/s7_Python
+@@ -1,3 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++
+ cd /source/$SOURCE_DIR
+ echo "In directory: " $(pwd)
+ 
+diff --git a/user/cantari/s7_bison b/user/cantari/s7_bison
+new file mode 100755
+index 0000000..c978baa
+--- /dev/null
++++ b/user/cantari/s7_bison
+@@ -0,0 +1,15 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr --docdir=/usr/share/doc/bison-3.8.2
++
++make
++make install
++
++
++
++
+diff --git a/user/executable/s7_gettext b/user/cantari/s7_gettext
+similarity index 50%
+rename from user/executable/s7_gettext
+rename to user/cantari/s7_gettext
+index ef8e3e7..5fb0c20 100755
+--- a/user/executable/s7_gettext
++++ b/user/cantari/s7_gettext
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --disable-shared
+ make
+ cp -v gettext-tools/src/{msgfmt,msgmerge,xgettext} /usr/bin
+diff --git a/user/executable/s7_perl b/user/cantari/s7_perl
+similarity index 83%
+rename from user/executable/s7_perl
+rename to user/cantari/s7_perl
+index b8a10ef..0966a3a 100755
+--- a/user/executable/s7_perl
++++ b/user/cantari/s7_perl
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ # wonder why not ./configure like the others
+ sh Configure -des                                        \
+    -Dprefix=/usr                               \
+diff --git a/user/executable/s7_texinfo b/user/cantari/s7_texinfo
+similarity index 60%
+rename from user/executable/s7_texinfo
+rename to user/cantari/s7_texinfo
+index f35eb30..df8cdcb 100755
+--- a/user/executable/s7_texinfo
++++ b/user/cantari/s7_texinfo
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ sed -e 's/__attribute_nonnull__/__nonnull/' \
+     -i gnulib/lib/malloc/dynarray-skeleton.c
+ 
+diff --git a/user/executable/s7_util-linux b/user/cantari/s7_util-linux
+similarity index 83%
+rename from user/executable/s7_util-linux
+rename to user/cantari/s7_util-linux
+index 2ff8c96..33d451c 100755
+--- a/user/executable/s7_util-linux
++++ b/user/cantari/s7_util-linux
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ mkdir -pv /var/lib/hwclock
+ 
+ ./configure ADJTIME_PATH=/var/lib/hwclock/adjtime    \
+diff --git a/user/executable/s8.77_stripping b/user/cantari/s8.77_stripping
+similarity index 90%
+rename from user/executable/s8.77_stripping
+rename to user/cantari/s8.77_stripping
+index c48f749..312b477 100755
+--- a/user/executable/s8.77_stripping
++++ b/user/cantari/s8.77_stripping
+@@ -1,6 +1,12 @@
+ #!/bin/bash
+ # used to remove debug info
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++
+ save_usrlib="$(cd /usr/lib; ls ld-linux*)
+              libc.so.6
+              libthread_db.so.1
+@@ -54,4 +60,4 @@ for i in $(find /usr/lib -type f -name \*.so* ! -name \*dbg) \
+     esac
+ done
+ 
+-unset BIN LIB save_usrlib online_usrbin online_usrlib
+\ No newline at end of file
++unset BIN LIB save_usrlib online_usrbin online_usrlib
+diff --git a/user/executable/s8.78_cleanup b/user/cantari/s8.78_cleanup
+similarity index 60%
+rename from user/executable/s8.78_cleanup
+rename to user/cantari/s8.78_cleanup
+index da8499a..e7d47ad 100755
+--- a/user/executable/s8.78_cleanup
++++ b/user/cantari/s8.78_cleanup
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ rm -rf /tmp/*
+ find /usr/lib /usr/libexec -name \*.la -delete
+ find /usr -depth -name $(uname -m)-lfs-linux-gnu\* | xargs rm -rf
+diff --git a/user/executable/s8_Python b/user/cantari/s8_Python
+similarity index 69%
+rename from user/executable/s8_Python
+rename to user/cantari/s8_Python
+index a553886..a8ba6ae 100755
+--- a/user/executable/s8_Python
++++ b/user/cantari/s8_Python
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr        \
+             --enable-shared      \
+             --with-system-expat  \
+@@ -17,6 +22,6 @@ make install
+       --no-same-owner       \
+       --no-same-permissions \
+       -C /usr/share/doc/python-3.10.2/html \
+-      -xvf "$LFS_BUILD_DIR"/package_document/python-3.10.2-docs-html.tar.bz2
++      -xvf "$REPO_USER_DIR"/build/upstream/incantatio_document/python-3.10.2-docs-html.tar.bz2
+ 
+   
+diff --git a/user/cantari/s8_XML-Parser b/user/cantari/s8_XML-Parser
+new file mode 100755
+index 0000000..5f00195
+--- /dev/null
++++ b/user/cantari/s8_XML-Parser
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++perl Makefile.PL
++make
++make test
++make install
+diff --git a/user/executable/s8_acl b/user/cantari/s8_acl
+similarity index 58%
+rename from user/executable/s8_acl
+rename to user/cantari/s8_acl
+index 1527a8b..337fd69 100755
+--- a/user/executable/s8_acl
++++ b/user/cantari/s8_acl
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr         \
+             --disable-static      \
+             --docdir=/usr/share/doc/acl-2.3.1
+diff --git a/user/executable/s8_attr b/user/cantari/s8_attr
+similarity index 63%
+rename from user/executable/s8_attr
+rename to user/cantari/s8_attr
+index 0d440f9..0b58b15 100755
+--- a/user/executable/s8_attr
++++ b/user/cantari/s8_attr
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr     \
+             --disable-static  \
+             --sysconfdir=/etc \
+diff --git a/user/cantari/s8_autoconf b/user/cantari/s8_autoconf
+new file mode 100755
+index 0000000..1bfad7b
+--- /dev/null
++++ b/user/cantari/s8_autoconf
+@@ -0,0 +1,12 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr
++make
++make check
++make install
++
+diff --git a/user/executable/s8_automake b/user/cantari/s8_automake
+similarity index 60%
+rename from user/executable/s8_automake
+rename to user/cantari/s8_automake
+index abc52fe..d14752e 100755
+--- a/user/executable/s8_automake
++++ b/user/cantari/s8_automake
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr --docdir=/usr/share/doc/automake-1.16.5
+ 
+ make
+diff --git a/user/executable/s8_bash b/user/cantari/s8_bash
+similarity index 76%
+rename from user/executable/s8_bash
+rename to user/cantari/s8_bash
+index bd66251..e30254b 100755
+--- a/user/executable/s8_bash
++++ b/user/cantari/s8_bash
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr                      \
+             --docdir=/usr/share/doc/bash-5.1.16 \
+             --without-bash-malloc              \
+@@ -19,4 +24,4 @@ EOF
+ make install
+ 
+ # this would not do the same for our scripts as it does when running this manually
+-# exec /usr/bin/bash --login
+\ No newline at end of file
++# exec /usr/bin/bash --login
+diff --git a/user/cantari/s8_bc b/user/cantari/s8_bc
+new file mode 100755
+index 0000000..28b8cc9
+--- /dev/null
++++ b/user/cantari/s8_bc
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++CC=gcc ./configure --prefix=/usr -G -O3
++make
++make test
++make install
+diff --git a/user/executable/s8_binutils b/user/cantari/s8_binutils
+similarity index 84%
+rename from user/executable/s8_binutils
+rename to user/cantari/s8_binutils
+index c1b6c15..5c8312b 100755
+--- a/user/executable/s8_binutils
++++ b/user/cantari/s8_binutils
+@@ -1,6 +1,11 @@
+ #!/bin/bash
++# set -x
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
+ 
+-set -x
+ echo 'This should output "span ls" '
+ expect -c "spawn ls"
+ 
+diff --git a/user/cantari/s8_bison b/user/cantari/s8_bison
+new file mode 100755
+index 0000000..9f8bbb4
+--- /dev/null
++++ b/user/cantari/s8_bison
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr --docdir=/usr/share/doc/bison-3.8.2
++make
++make check
++make install
+diff --git a/user/executable/s8_bzip2 b/user/cantari/s8_bzip2
+similarity index 81%
+rename from user/executable/s8_bzip2
+rename to user/cantari/s8_bzip2
+index 331156d..9c26e73 100755
+--- a/user/executable/s8_bzip2
++++ b/user/cantari/s8_bzip2
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ patch -Np1 -i "$LFS_BUILD_DIR/patch/bzip2-1.0.8-install_docs-1.patch"
+ sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
+ sed -i "s@(PREFIX)/man@(PREFIX)/share/man@g" Makefile
+diff --git a/user/executable/s8_check b/user/cantari/s8_check
+similarity index 53%
+rename from user/executable/s8_check
+rename to user/cantari/s8_check
+index be4085a..c046977 100755
+--- a/user/executable/s8_check
++++ b/user/cantari/s8_check
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr --disable-static
+ make
+ make check
+diff --git a/user/executable/s8_coreutils b/user/cantari/s8_coreutils
+similarity index 85%
+rename from user/executable/s8_coreutils
+rename to user/cantari/s8_coreutils
+index 427183c..b81d9be 100755
+--- a/user/executable/s8_coreutils
++++ b/user/cantari/s8_coreutils
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ patch -Np1 -i $LFS_BUILD_DIR/patch/coreutils-9.0-i18n-1.patch
+ patch -Np1 -i $LFS_BUILD_DIR/patch/coreutils-9.0-chmod_fix-1.patch
+ 
+diff --git a/user/executable/s8_dejagnu b/user/cantari/s8_dejagnu
+similarity index 76%
+rename from user/executable/s8_dejagnu
+rename to user/cantari/s8_dejagnu
+index 1d73a3d..da5baeb 100755
+--- a/user/executable/s8_dejagnu
++++ b/user/cantari/s8_dejagnu
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ mkdir -v build
+ cd       build
+ 
+diff --git a/user/cantari/s8_diffutils b/user/cantari/s8_diffutils
+new file mode 100755
+index 0000000..a03c137
+--- /dev/null
++++ b/user/cantari/s8_diffutils
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr
++make
++make check
++make install
+diff --git a/user/executable/s8_e2fsprogs b/user/cantari/s8_e2fsprogs
+similarity index 86%
+rename from user/executable/s8_e2fsprogs
+rename to user/cantari/s8_e2fsprogs
+index ce37d1e..e110c9b 100755
+--- a/user/executable/s8_e2fsprogs
++++ b/user/cantari/s8_e2fsprogs
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ mkdir -v build
+ cd       build
+ 
+@@ -22,4 +27,4 @@ install-info --dir-file=/usr/share/info/dir /usr/share/info/libext2fs.info
+ # additional documentation
+ makeinfo -o      doc/com_err.info ../lib/et/com_err.texinfo
+ install -v -m644 doc/com_err.info /usr/share/info
+-install-info --dir-file=/usr/share/info/dir /usr/share/info/com_err.info
+\ No newline at end of file
++install-info --dir-file=/usr/share/info/dir /usr/share/info/com_err.info
+diff --git a/user/executable/s8_eudev b/user/cantari/s8_eudev
+similarity index 62%
+rename from user/executable/s8_eudev
+rename to user/cantari/s8_eudev
+index 660229b..429890b 100755
+--- a/user/executable/s8_eudev
++++ b/user/cantari/s8_eudev
+@@ -1,5 +1,10 @@
+ #/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr           \
+             --bindir=/usr/sbin      \
+             --sysconfdir=/etc       \
+@@ -13,7 +18,7 @@ mkdir -pv /etc/udev/rules.d
+ 
+ make check
+ make install
+-tar -xvf "$LFS_BUILD_DIR"/package/udev-lfs-20171102.tar.xz
++tar -xvf "$REPO_USER_DIR"/build/upstream/incantatio/udev-lfs-20171102.tar.xz
+ make -f udev-lfs-20171102/Makefile.lfs install
+ 
+ udevadm hwdb --update
+\ No newline at end of file
+diff --git a/user/executable/s8_expat b/user/cantari/s8_expat
+similarity index 50%
+rename from user/executable/s8_expat
+rename to user/cantari/s8_expat
+index 9e7318b..28c8f09 100755
+--- a/user/executable/s8_expat
++++ b/user/cantari/s8_expat
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr    \
+             --disable-static \
+             --docdir=/usr/share/doc/expat-2.4.6
+@@ -8,4 +13,4 @@ make
+ make check
+ make install
+ # documentation
+-install -v -m644 doc/*.{html,css} /usr/share/doc/expat-2.4.6
+\ No newline at end of file
++install -v -m644 doc/*.{html,css} /usr/share/doc/expat-2.4.6
+diff --git a/user/executable/s8_expect b/user/cantari/s8_expect
+similarity index 72%
+rename from user/executable/s8_expect
+rename to user/cantari/s8_expect
+index 1191b60..125d9d7 100755
+--- a/user/executable/s8_expect
++++ b/user/cantari/s8_expect
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr           \
+             --with-tcl=/usr/lib     \
+             --enable-shared         \
+diff --git a/user/cantari/s8_file b/user/cantari/s8_file
+new file mode 100755
+index 0000000..a03c137
+--- /dev/null
++++ b/user/cantari/s8_file
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr
++make
++make check
++make install
+diff --git a/user/executable/s8_findutils b/user/cantari/s8_findutils
+similarity index 72%
+rename from user/executable/s8_findutils
+rename to user/cantari/s8_findutils
+index 6f24ac8..e753267 100755
+--- a/user/executable/s8_findutils
++++ b/user/cantari/s8_findutils
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ case $(uname -m) in
+     i?86)   TIME_T_32_BIT_OK=yes ./configure --prefix=/usr --localstatedir=/var/lib/locate ;;
+     x86_64) ./configure --prefix=/usr --localstatedir=/var/lib/locate ;;
+diff --git a/user/executable/s8_flex b/user/cantari/s8_flex
+similarity index 62%
+rename from user/executable/s8_flex
+rename to user/cantari/s8_flex
+index 8a3b103..aa9fadc 100755
+--- a/user/executable/s8_flex
++++ b/user/cantari/s8_flex
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr \
+             --docdir=/usr/share/doc/flex-2.6.4 \
+             --disable-static
+diff --git a/user/executable/s8_gawk b/user/cantari/s8_gawk
+similarity index 69%
+rename from user/executable/s8_gawk
+rename to user/cantari/s8_gawk
+index d0bed5a..fbdaee8 100755
+--- a/user/executable/s8_gawk
++++ b/user/cantari/s8_gawk
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ sed -i 's/extras//' Makefile.in
+ ./configure --prefix=/usr
+ make
+diff --git a/user/executable/s8_gcc b/user/cantari/s8_gcc
+similarity index 93%
+rename from user/executable/s8_gcc
+rename to user/cantari/s8_gcc
+index 6492f7f..2871b13 100755
+--- a/user/executable/s8_gcc
++++ b/user/cantari/s8_gcc
+@@ -1,4 +1,10 @@
+ #!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ echo "section 8.26.1 Installation of GCC"
+ echo "please consult that section for expected output, there is a lot of it"
+ 
+diff --git a/user/executable/s8_gdbm b/user/cantari/s8_gdbm
+similarity index 51%
+rename from user/executable/s8_gdbm
+rename to user/cantari/s8_gdbm
+index a3e4558..cc3dcfa 100755
+--- a/user/executable/s8_gdbm
++++ b/user/cantari/s8_gdbm
+@@ -1,9 +1,14 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr    \
+             --disable-static \
+             --enable-libgdbm-compat
+ 
+ make
+ make check
+-make install
+\ No newline at end of file
++make install
+diff --git a/user/executable/s8_gettext b/user/cantari/s8_gettext
+similarity index 65%
+rename from user/executable/s8_gettext
+rename to user/cantari/s8_gettext
+index 1a74830..f367453 100755
+--- a/user/executable/s8_gettext
++++ b/user/cantari/s8_gettext
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr    \
+             --disable-static \
+             --docdir=/usr/share/doc/gettext-0.21
+diff --git a/user/executable/s8_glibc b/user/cantari/s8_glibc
+similarity index 89%
+rename from user/executable/s8_glibc
+rename to user/cantari/s8_glibc
+index 4415dfb..0d11890 100755
+--- a/user/executable/s8_glibc
++++ b/user/cantari/s8_glibc
+@@ -1,8 +1,14 @@
+ #!/bin/bash
+ # this appears to be the most complex install in the whole book
+ 
+-set -x
+-patch -Np1 -i "$LFS_BUILD_DIR/patch/glibc-2.35-fhs-1.patch"
++#set -x
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++patch -Np1 -i "$REPO_USER_DIR/patch/glibc-2.35-fhs-1.patch"
+ 
+ mkdir -v build
+ cd       build
+@@ -50,7 +56,7 @@ rpc: files
+ # End /etc/nsswitch.conf
+ EOF
+ 
+-tar -xf "$LFS_BUILD_DIR/package/tzdata2021e.tar.gz"
++tar -xf "$REPO_USER_DIR/build/upstream/incantatio/tzdata2021e.tar.gz"
+ #tar -xf ../../tzdata2021e.tar.gz
+ 
+ ZONEINFO=/usr/share/zoneinfo
+@@ -87,4 +93,4 @@ EOF
+ mkdir -pv /etc/ld.so.conf.d
+ 
+ 
+-set +x
++#set +x
+diff --git a/user/executable/s8_gmp b/user/cantari/s8_gmp
+similarity index 88%
+rename from user/executable/s8_gmp
+rename to user/cantari/s8_gmp
+index 8b98806..47ff55f 100755
+--- a/user/executable/s8_gmp
++++ b/user/cantari/s8_gmp
+@@ -1,5 +1,11 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++
+ #The default settings of GMP produce libraries optimized for the host processor. If libraries suitable for processors less capable than the host's CPU are desired, generic libraries can be created by running the following:
+ #cp -v configfsf.guess config.guess
+ #cp -v configfsf.sub   config.sub
+diff --git a/user/cantari/s8_gperf b/user/cantari/s8_gperf
+new file mode 100755
+index 0000000..408a625
+--- /dev/null
++++ b/user/cantari/s8_gperf
+@@ -0,0 +1,12 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr --docdir=/usr/share/doc/gperf-3.1
++
++make
++make -j1 check
++make install
+diff --git a/user/cantari/s8_grep b/user/cantari/s8_grep
+new file mode 100755
+index 0000000..a03c137
+--- /dev/null
++++ b/user/cantari/s8_grep
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr
++make
++make check
++make install
+diff --git a/user/cantari/s8_groff b/user/cantari/s8_groff
+new file mode 100755
+index 0000000..8acce85
+--- /dev/null
++++ b/user/cantari/s8_groff
+@@ -0,0 +1,10 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++PAGE=A4 ./configure --prefix=/usr
++make -j1
++make install
+diff --git a/user/executable/s8_grub b/user/cantari/s8_grub
+similarity index 69%
+rename from user/executable/s8_grub
+rename to user/cantari/s8_grub
+index a1375eb..b089a96 100755
+--- a/user/executable/s8_grub
++++ b/user/cantari/s8_grub
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr          \
+             --sysconfdir=/etc      \
+             --disable-efiemu       \
+diff --git a/user/cantari/s8_gzip b/user/cantari/s8_gzip
+new file mode 100755
+index 0000000..1bfad7b
+--- /dev/null
++++ b/user/cantari/s8_gzip
+@@ -0,0 +1,12 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr
++make
++make check
++make install
++
+diff --git a/user/cantari/s8_iana-etc b/user/cantari/s8_iana-etc
+new file mode 100755
+index 0000000..a3ff0ca
+--- /dev/null
++++ b/user/cantari/s8_iana-etc
+@@ -0,0 +1,12 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++cp services protocols /etc
++
++
++
++
+diff --git a/user/executable/s8_inetutils b/user/cantari/s8_inetutils
+similarity index 79%
+rename from user/executable/s8_inetutils
+rename to user/cantari/s8_inetutils
+index 15aa3c2..fc48c47 100755
+--- a/user/executable/s8_inetutils
++++ b/user/cantari/s8_inetutils
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr        \
+             --bindir=/usr/bin    \
+             --localstatedir=/var \
+diff --git a/user/executable/s8_intltool b/user/cantari/s8_intltool
+similarity index 63%
+rename from user/executable/s8_intltool
+rename to user/cantari/s8_intltool
+index 50d827c..a16db03 100755
+--- a/user/executable/s8_intltool
++++ b/user/cantari/s8_intltool
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ sed -i 's:\\\${:\\\$\\{:' intltool-update.in
+ ./configure --prefix=/usr
+ make
+diff --git a/user/executable/s8_iproute2 b/user/cantari/s8_iproute2
+similarity index 65%
+rename from user/executable/s8_iproute2
+rename to user/cantari/s8_iproute2
+index e52ce6d..abbb775 100755
+--- a/user/executable/s8_iproute2
++++ b/user/cantari/s8_iproute2
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ sed -i /ARPD/d Makefile
+ rm -fv man/man8/arpd.8
+ 
+diff --git a/user/executable/s8_kbd b/user/cantari/s8_kbd
+similarity index 77%
+rename from user/executable/s8_kbd
+rename to user/cantari/s8_kbd
+index 49ccf78..9b30bc1 100755
+--- a/user/executable/s8_kbd
++++ b/user/cantari/s8_kbd
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ patch -Np1 -i $LFS_BUILD_DIR/patch/kbd-2.4.0-backspace-1.patch
+ sed -i '/RESIZECONS_PROGS=/s/yes/no/' configure
+ sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in
+diff --git a/user/executable/s8_kmod b/user/cantari/s8_kmod
+similarity index 77%
+rename from user/executable/s8_kmod
+rename to user/cantari/s8_kmod
+index 7fbbab3..a6472b8 100755
+--- a/user/executable/s8_kmod
++++ b/user/cantari/s8_kmod
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr          \
+             --sysconfdir=/etc      \
+             --with-openssl         \
+diff --git a/user/cantari/s8_less b/user/cantari/s8_less
+new file mode 100755
+index 0000000..008f405
+--- /dev/null
++++ b/user/cantari/s8_less
+@@ -0,0 +1,10 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr --sysconfdir=/etc
++make
++make install
+diff --git a/user/executable/s8_libcap b/user/cantari/s8_libcap
+similarity index 54%
+rename from user/executable/s8_libcap
+rename to user/cantari/s8_libcap
+index f62d995..9dec097 100755
+--- a/user/executable/s8_libcap
++++ b/user/cantari/s8_libcap
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ sed -i '/install -m.*STA/d' libcap/Makefile
+ make prefix=/usr lib=lib
+ make test
+diff --git a/user/executable/s8_libelf b/user/cantari/s8_libelf
+similarity index 70%
+rename from user/executable/s8_libelf
+rename to user/cantari/s8_libelf
+index ee7298f..03ef949 100755
+--- a/user/executable/s8_libelf
++++ b/user/cantari/s8_libelf
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr                \
+             --disable-debuginfod         \
+             --enable-libdebuginfod=dummy
+diff --git a/user/executable/s8_libffi b/user/cantari/s8_libffi
+similarity index 64%
+rename from user/executable/s8_libffi
+rename to user/cantari/s8_libffi
+index 1335fd4..7e7dc09 100755
+--- a/user/executable/s8_libffi
++++ b/user/cantari/s8_libffi
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr          \
+             --disable-static       \
+             --with-gcc-arch=native \
+diff --git a/user/cantari/s8_libpipeline b/user/cantari/s8_libpipeline
+new file mode 100755
+index 0000000..a03c137
+--- /dev/null
++++ b/user/cantari/s8_libpipeline
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr
++make
++make check
++make install
+diff --git a/user/cantari/s8_libtool b/user/cantari/s8_libtool
+new file mode 100755
+index 0000000..b377b2e
+--- /dev/null
++++ b/user/cantari/s8_libtool
+@@ -0,0 +1,12 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr
++make
++make check
++make install
++rm -fv /usr/lib/libltdl.a
+diff --git a/user/cantari/s8_m4 b/user/cantari/s8_m4
+new file mode 100755
+index 0000000..d9ceafe
+--- /dev/null
++++ b/user/cantari/s8_m4
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr  
++make
++make check
++make install
+diff --git a/user/cantari/s8_make b/user/cantari/s8_make
+new file mode 100755
+index 0000000..a03c137
+--- /dev/null
++++ b/user/cantari/s8_make
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr
++make
++make check
++make install
+diff --git a/user/executable/s8_man-db b/user/cantari/s8_man-db
+similarity index 83%
+rename from user/executable/s8_man-db
+rename to user/cantari/s8_man-db
+index f9a1e31..9ed980b 100755
+--- a/user/executable/s8_man-db
++++ b/user/cantari/s8_man-db
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr                         \
+             --docdir=/usr/share/doc/man-db-2.10.1 \
+             --sysconfdir=/etc                     \
+diff --git a/user/cantari/s8_man-pages b/user/cantari/s8_man-pages
+new file mode 100755
+index 0000000..e8016a4
+--- /dev/null
++++ b/user/cantari/s8_man-pages
+@@ -0,0 +1,12 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++make prefix=/usr install
++
++
++
++
+diff --git a/user/executable/s8_meson b/user/cantari/s8_meson
+similarity index 71%
+rename from user/executable/s8_meson
+rename to user/cantari/s8_meson
+index e9a62c0..9625c25 100755
+--- a/user/executable/s8_meson
++++ b/user/cantari/s8_meson
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ python3 setup.py build
+ python3 setup.py install --root=dest
+ cp -rv dest/* /
+diff --git a/user/executable/s8_mpc b/user/cantari/s8_mpc
+similarity index 63%
+rename from user/executable/s8_mpc
+rename to user/cantari/s8_mpc
+index 7c51258..2a08593 100755
+--- a/user/executable/s8_mpc
++++ b/user/cantari/s8_mpc
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr    \
+             --disable-static \
+             --docdir=/usr/share/doc/mpc-1.2.1
+diff --git a/user/executable/s8_mpfr b/user/cantari/s8_mpfr
+similarity index 62%
+rename from user/executable/s8_mpfr
+rename to user/cantari/s8_mpfr
+index 1dcdf2f..3fd3a82 100755
+--- a/user/executable/s8_mpfr
++++ b/user/cantari/s8_mpfr
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr        \
+             --disable-static     \
+             --enable-thread-safe \
+@@ -11,4 +16,4 @@ make html
+ make check
+ 
+ make install
+-make install-html
+\ No newline at end of file
++make install-html
+diff --git a/user/executable/s8_ncurses b/user/cantari/s8_ncurses
+similarity index 90%
+rename from user/executable/s8_ncurses
+rename to user/cantari/s8_ncurses
+index 2a93336..a371a65 100755
+--- a/user/executable/s8_ncurses
++++ b/user/cantari/s8_ncurses
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr           \
+             --mandir=/usr/share/man \
+             --with-shared           \
+diff --git a/user/executable/s8_ninja b/user/cantari/s8_ninja
+similarity index 83%
+rename from user/executable/s8_ninja
+rename to user/cantari/s8_ninja
+index e5fd108..95d8a22 100755
+--- a/user/executable/s8_ninja
++++ b/user/cantari/s8_ninja
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ # limit number of parallel jobs:
+ # export NINJAJOBS=4
+ # sed -i '/int Guess/a \
+diff --git a/user/executable/s8_openssl b/user/cantari/s8_openssl
+similarity index 68%
+rename from user/executable/s8_openssl
+rename to user/cantari/s8_openssl
+index 187999c..3d920a1 100755
+--- a/user/executable/s8_openssl
++++ b/user/cantari/s8_openssl
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./config --prefix=/usr         \
+          --openssldir=/etc/ssl \
+          --libdir=lib          \
+@@ -12,4 +17,4 @@ sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
+ make MANSUFFIX=ssl install
+ 
+ mv -v /usr/share/doc/openssl /usr/share/doc/openssl-3.0.1
+-cp -vfr doc/* /usr/share/doc/openssl-3.0.1
+\ No newline at end of file
++cp -vfr doc/* /usr/share/doc/openssl-3.0.1
+diff --git a/user/cantari/s8_patch b/user/cantari/s8_patch
+new file mode 100755
+index 0000000..a03c137
+--- /dev/null
++++ b/user/cantari/s8_patch
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr
++make
++make check
++make install
+diff --git a/user/executable/s8_perl b/user/cantari/s8_perl
+similarity index 90%
+rename from user/executable/s8_perl
+rename to user/cantari/s8_perl
+index 210909d..1650ab4 100755
+--- a/user/executable/s8_perl
++++ b/user/cantari/s8_perl
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ patch -Np1 -i $LFS_BUILD_DIR/patch/perl-5.34.0-upstream_fixes-1.patch
+ export BUILD_ZLIB=False
+ export BUILD_BZIP2=0
+diff --git a/user/executable/s8_pkg-config b/user/cantari/s8_pkg-config
+similarity index 67%
+rename from user/executable/s8_pkg-config
+rename to user/cantari/s8_pkg-config
+index 5e50142..e464f17 100755
+--- a/user/executable/s8_pkg-config
++++ b/user/cantari/s8_pkg-config
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr              \
+             --with-internal-glib       \
+             --disable-host-tool        \
+diff --git a/user/executable/s8_procps b/user/cantari/s8_procps
+similarity index 51%
+rename from user/executable/s8_procps
+rename to user/cantari/s8_procps
+index fdbb041..f377d6c 100755
+--- a/user/executable/s8_procps
++++ b/user/cantari/s8_procps
+@@ -1,7 +1,12 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr                      \
+-            --docdir=/usr/share/doc/"$PACKAGE" \
++            --docdir=/usr/share/doc/"$INCANTATIO" \
+             --disable-static                   \
+             --disable-kill
+ 
+diff --git a/user/cantari/s8_psmisc b/user/cantari/s8_psmisc
+new file mode 100755
+index 0000000..9fe1fd4
+--- /dev/null
++++ b/user/cantari/s8_psmisc
+@@ -0,0 +1,10 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr
++make
++make install
+diff --git a/user/executable/s8_readline b/user/cantari/s8_readline
+similarity index 77%
+rename from user/executable/s8_readline
+rename to user/cantari/s8_readline
+index a3095bd..4e4c13e 100755
+--- a/user/executable/s8_readline
++++ b/user/cantari/s8_readline
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ sed -i '/MV.*old/d' Makefile.in
+ sed -i '/{OLDSUFF}/c:' support/shlib-install
+ 
+diff --git a/user/executable/s8_sed b/user/cantari/s8_sed
+similarity index 68%
+rename from user/executable/s8_sed
+rename to user/cantari/s8_sed
+index fbd8491..038c42d 100755
+--- a/user/executable/s8_sed
++++ b/user/cantari/s8_sed
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr
+ 
+ make
+diff --git a/user/executable/s8_shadow b/user/cantari/s8_shadow
+similarity index 87%
+rename from user/executable/s8_shadow
+rename to user/cantari/s8_shadow
+index 200effb..1bbcadf 100755
+--- a/user/executable/s8_shadow
++++ b/user/cantari/s8_shadow
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ # If you would like to enforce the use of strong passwords, refer to https://www.linuxfromscratch.org/blfs/view/11.1/postlfs/cracklib.html for installing CrackLib prior to building Shadow. Then add --with-libcrack to the configure command below.
+ 
+ sed -i 's/groups$(EXEEXT) //' src/Makefile.in
+@@ -30,4 +35,4 @@ grpconv
+ mkdir -p /etc/default
+ useradd -D --gid 999
+ 
+-# sed -i '/MAIL/s/yes/no/' /etc/default/useradd
+\ No newline at end of file
++# sed -i '/MAIL/s/yes/no/' /etc/default/useradd
+diff --git a/user/executable/s8_sysklogd b/user/cantari/s8_sysklogd
+similarity index 79%
+rename from user/executable/s8_sysklogd
+rename to user/cantari/s8_sysklogd
+index 3b0fc8e..8a6a10c 100755
+--- a/user/executable/s8_sysklogd
++++ b/user/cantari/s8_sysklogd
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ sed -i '/Error loading kernel symbols/{n;n;d}' ksym_mod.c
+ sed -i 's/union wait/int/' syslogd.c
+ 
+diff --git a/user/cantari/s8_sysvinit b/user/cantari/s8_sysvinit
+new file mode 100755
+index 0000000..6f1149b
+--- /dev/null
++++ b/user/cantari/s8_sysvinit
+@@ -0,0 +1,10 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++patch -Np1 -i "$LFS_BUILD_DIR/patch/sysvinit-3.01-consolidated-1.patch"
++make
++make install
+diff --git a/user/executable/s8_tar b/user/cantari/s8_tar
+similarity index 59%
+rename from user/executable/s8_tar
+rename to user/cantari/s8_tar
+index 9050d6d..3722f25 100755
+--- a/user/executable/s8_tar
++++ b/user/cantari/s8_tar
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ FORCE_UNSAFE_CONFIGURE=1  \
+ ./configure --prefix=/usr
+ 
+diff --git a/user/executable/s8_tcl b/user/cantari/s8_tcl
+similarity index 77%
+rename from user/executable/s8_tcl
+rename to user/cantari/s8_tcl
+index 3ae46e2..d616eea 100755
+--- a/user/executable/s8_tcl
++++ b/user/cantari/s8_tcl
+@@ -1,10 +1,15 @@
+ #!/bin/bash
+ set -x
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ 
+ # install the documentation
+ pushd /usr/share/doc
+-#tar -xf "$(ls -d $LFS_BUILD_DIR/package/tcl*-html.tar*)" --strip-components=1  # why strip-components=1 ??
+-tar -xf "$(ls -d $LFS_BUILD_DIR/package_document/tcl*-html.tar* | head -1)"
++#tar -xf "$(ls -d $REPO_USER_DIR/build/upstream/incantatio/tcl*-html.tar*)" --strip-components=1  # why strip-components=1 ??
++tar -xf "$(ls -d $REPO_USER_DIR/build/upstream/document/tcl*-html.tar* | head -1)"
+ popd
+ 
+ SRCDIR="$(pwd)"
+@@ -42,7 +47,7 @@ mkdir -v -p /usr/share/doc/tcl-8.6.12
+ 
+ # I just expanded the html docs into usr/share/doc in the first place.
+ # Note here they add the dash between tcl and the version.  hmmm. Perhaps
+-# should fix the tcl and expect packages up front ...
++# should fix the tcl and expect incantatios up front ...
+ #cp -v -r  ../html/* /usr/share/doc/tcl-8.6.12
+ 
+ set +x
+diff --git a/user/executable/s8_texinfo b/user/cantari/s8_texinfo
+similarity index 73%
+rename from user/executable/s8_texinfo
+rename to user/cantari/s8_texinfo
+index 2d99fbd..28d939d 100755
+--- a/user/executable/s8_texinfo
++++ b/user/cantari/s8_texinfo
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr
+ sed -e 's/__attribute_nonnull__/__nonnull/' \
+     -i gnulib/lib/malloc/dynarray-skeleton.c
+diff --git a/user/executable/s8_util-linux b/user/cantari/s8_util-linux
+similarity index 86%
+rename from user/executable/s8_util-linux
+rename to user/cantari/s8_util-linux
+index 0b05990..a5423de 100755
+--- a/user/executable/s8_util-linux
++++ b/user/cantari/s8_util-linux
+@@ -1,4 +1,8 @@
+ #!/bin/bash
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
+ 
+ ./configure ADJTIME_PATH=/var/lib/hwclock/adjtime   \
+             --bindir=/usr/bin    \
+diff --git a/user/executable/s8_vim b/user/cantari/s8_vim
+similarity index 87%
+rename from user/executable/s8_vim
+rename to user/cantari/s8_vim
+index 4e3db23..5b5546e 100755
+--- a/user/executable/s8_vim
++++ b/user/cantari/s8_vim
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ # about other editors
+ #https://www.linuxfromscratch.org/blfs/view/11.1/postlfs/editors.html
+ 
+@@ -36,4 +41,4 @@ if (&term == "xterm") || (&term == "putty")
+ endif
+ 
+ " End /etc/vimrc
+-EOF
+\ No newline at end of file
++EOF
+diff --git a/user/executable/s8_xz b/user/cantari/s8_xz
+similarity index 58%
+rename from user/executable/s8_xz
+rename to user/cantari/s8_xz
+index be667ac..d661b89 100755
+--- a/user/executable/s8_xz
++++ b/user/cantari/s8_xz
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ ./configure --prefix=/usr    \
+             --disable-static \
+             --docdir=/usr/share/doc/xz-5.2.5
+diff --git a/user/cantari/s8_zlib b/user/cantari/s8_zlib
+new file mode 100755
+index 0000000..a41d242
+--- /dev/null
++++ b/user/cantari/s8_zlib
+@@ -0,0 +1,13 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++./configure --prefix=/usr
++make
++make check
++make install
++rm -fv /usr/lib/libz.a
++
+diff --git a/user/cantari/s8_zstd b/user/cantari/s8_zstd
+new file mode 100755
+index 0000000..cf08523
+--- /dev/null
++++ b/user/cantari/s8_zstd
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++make
++make check
++make prefix=/usr install
++rm -v /usr/lib/libzstd.a
+diff --git a/user/executable/s9.5.1_eth0_exmaple b/user/cantari/s9.5.1_eth0_exmaple
+similarity index 60%
+rename from user/executable/s9.5.1_eth0_exmaple
+rename to user/cantari/s9.5.1_eth0_exmaple
+index b352290..d0cb225 100755
+--- a/user/executable/s9.5.1_eth0_exmaple
++++ b/user/cantari/s9.5.1_eth0_exmaple
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ cd /etc/sysconfig/
+ cat > ifconfig.eth0 << "EOF"
+ ONBOOT=yes
+@@ -9,4 +14,4 @@ IP=192.168.1.2
+ GATEWAY=192.168.1.1
+ PREFIX=24
+ BROADCAST=192.168.1.255
+-EOF
+\ No newline at end of file
++EOF
+diff --git a/user/executable/s9.5.2_resolv.conf b/user/cantari/s9.5.2_resolv.conf
+similarity index 59%
+rename from user/executable/s9.5.2_resolv.conf
+rename to user/cantari/s9.5.2_resolv.conf
+index cba838e..773acff 100755
+--- a/user/executable/s9.5.2_resolv.conf
++++ b/user/cantari/s9.5.2_resolv.conf
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ cat > /etc/resolv.conf << "EOF"
+ # Begin /etc/resolv.conf
+ 
+@@ -8,4 +13,4 @@ nameserver 8.8.8.8
+ nameserver 8.8.4.4
+ 
+ # End /etc/resolv.conf
+-EOF
+\ No newline at end of file
++EOF
+diff --git a/user/cantari/s9.5.3_hostname b/user/cantari/s9.5.3_hostname
+new file mode 100755
+index 0000000..fcdc428
+--- /dev/null
++++ b/user/cantari/s9.5.3_hostname
+@@ -0,0 +1,8 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++echo "m2" > /etc/hostname
+diff --git a/user/executable/s9.5.4_etc_hosts b/user/cantari/s9.5.4_etc_hosts
+similarity index 71%
+rename from user/executable/s9.5.4_etc_hosts
+rename to user/cantari/s9.5.4_etc_hosts
+index b3dd2b8..02e3f14 100755
+--- a/user/executable/s9.5.4_etc_hosts
++++ b/user/cantari/s9.5.4_etc_hosts
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ cat > /etc/hosts <<-EOF
+ 	127.0.0.1 localhost.localdomain localhost
+ 	127.0.1.1  m2.reasoningtechnology.com m2
+diff --git a/user/executable/s9.6.2_sysvinit b/user/cantari/s9.6.2_sysvinit
+similarity index 86%
+rename from user/executable/s9.6.2_sysvinit
+rename to user/cantari/s9.6.2_sysvinit
+index 7f157f4..3a18d1c 100755
+--- a/user/executable/s9.6.2_sysvinit
++++ b/user/cantari/s9.6.2_sysvinit
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ cat > /etc/inittab << "EOF"
+ # Begin /etc/inittab
+ 
+@@ -27,4 +32,4 @@ su:S016:once:/sbin/sulogin
+ 6:2345:respawn:/sbin/agetty tty6 9600
+ 
+ # End /etc/inittab
+-EOF
+\ No newline at end of file
++EOF
+diff --git a/user/executable/s9.6.4_clock b/user/cantari/s9.6.4_clock
+similarity index 69%
+rename from user/executable/s9.6.4_clock
+rename to user/cantari/s9.6.4_clock
+index 2047b5e..2b09e39 100755
+--- a/user/executable/s9.6.4_clock
++++ b/user/cantari/s9.6.4_clock
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ cat > /etc/sysconfig/clock << "EOF"
+ # Begin /etc/sysconfig/clock
+ 
+diff --git a/user/executable/s9.8_inputrc b/user/cantari/s9.8_inputrc
+similarity index 88%
+rename from user/executable/s9.8_inputrc
+rename to user/cantari/s9.8_inputrc
+index 378c91e..c75a001 100755
+--- a/user/executable/s9.8_inputrc
++++ b/user/cantari/s9.8_inputrc
+@@ -1,5 +1,10 @@
+ #!/bin/bash
+ 
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
+ cat > /etc/inputrc << "EOF"
+ # Begin /etc/inputrc
+ # Modified by Chris Lynn <roryo@roryo.dynup.net>
+@@ -42,4 +47,4 @@ set bell-style none
+ "\e[F": end-of-line
+ 
+ # End /etc/inputrc
+-EOF
+\ No newline at end of file
++EOF
+diff --git a/user/cantari/s9.9_shells b/user/cantari/s9.9_shells
+new file mode 100755
+index 0000000..9fa5ce3
+--- /dev/null
++++ b/user/cantari/s9.9_shells
+@@ -0,0 +1,16 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++cat > /etc/shells << "EOF"
++# Begin /etc/shells
++
++/bin/sh
++/bin/bash
++
++# End /etc/shells
++EOF
++
+diff --git a/user/cantari/s9_lfs-bootscripts b/user/cantari/s9_lfs-bootscripts
+new file mode 100755
+index 0000000..542b207
+--- /dev/null
++++ b/user/cantari/s9_lfs-bootscripts
+@@ -0,0 +1,8 @@
++#!/bin/bash
++
++if [[ "$LFS_ENV" != "m2" ]];then
++  echo $(basename "$0") "only intended to be run in env_m2"
++  exit 1
++fi
++
++make install
+diff --git a/user/document/journal_Thomas.txt b/user/document/journal_Thomas.txt
+index 384ef8a..e074a2d 100644
+--- a/user/document/journal_Thomas.txt
++++ b/user/document/journal_Thomas.txt
+@@ -795,3 +795,7 @@
+      then being when a variable value is explictly 'sampled'.  Intersting argument for
+      lazy evaluation being the default, and other types of evaluation being optimizations.
+ 
++2022-06-21T10:15:39Z
++
++     perhaps add to doc definitions for 'dir' 'home' ..  basename ...
++     
+diff --git a/user/document/todo.txt b/user/document/todo.txt
+index 8275b41..f8b3f7c 100644
+--- a/user/document/todo.txt
++++ b/user/document/todo.txt
+@@ -45,3 +45,9 @@
+        MAKEFLAGS="-j12" 
+ 
+        s7.06 add user and group lfs for the install 
++
++2022-06-21T15:03:25Z
++
++       need to get the correct wget options, perhaps better it does not create
++       a spearate log file as the output already goes into a log
++     
+diff --git a/user/executable/book_m1_to_m2 b/user/executable/book_m1_to_m2
+deleted file mode 100755
+index 1474658..0000000
+--- a/user/executable/book_m1_to_m2
++++ /dev/null
+@@ -1,22 +0,0 @@
+-#!/bin/bash
+-
+-if [[ -z "$LFS_M2_FILESYSTEM" ]];then
+-  echo $(basename "$0") "requires variable LFS_M2_FILESYSTEM to be set" > /dev/stderr
+-  exit 1
+-fi
+-
+-if [[ "$EUID" -ne 0 ]];then
+-   echo $(basename "$0") "must run as root" > /dev/stderr
+-  exit 2
+-fi
+-
+-frame s7.02_m2_chown_root
+-frame s7.03_devices
+-
+-mkdir -p "$LFS_M2_FILESYSTEM"/usr/local/bin
+-cp "$REPO_USER_DIR"/executable/Z  "$LFS_M2_FILESYSTEM"/usr/local/bin
+-
+-repo_dir_target="$LFS_M2_FILESYSTEM""$M2FS_REPO_DIR"
+-mkdir -p "$repo_dir_target"
+-mount --bind "$REPO_DIR" "$repo_dir_target"
+-
+diff --git a/user/executable/book_m2 b/user/executable/book_m2
+deleted file mode 100755
+index 752c898..0000000
+--- a/user/executable/book_m2
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#!/bin/bash
+-#set -x
+-
+-frame c7
+-frame c8
+-#frame c9
+-
+-#set +x
+diff --git a/user/executable/c10 b/user/executable/c10
+deleted file mode 100755
+index b4804b7..0000000
+--- a/user/executable/c10
++++ /dev/null
+@@ -1,13 +0,0 @@
+-#!/bin/bash
+-
+-...
+-
+-
+-section="
+-lfs-bootscripts
+-"
+-
+-IFS=$'\n'; for s in $section;do
+-  frame environment_package $s s9_$s
+-done
+-
+diff --git a/user/executable/c2 b/user/executable/c2
+deleted file mode 100755
+index 085584b..0000000
+--- a/user/executable/c2
++++ /dev/null
+@@ -1,4 +0,0 @@
+-#!/bin/bash
+-
+-set -e
+-frame s2.2_check_script
+diff --git a/user/executable/c3 b/user/executable/c3
+deleted file mode 100755
+index da76898..0000000
+--- a/user/executable/c3
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#!/bin/bash
+-
+-frame s3.2_wget_all_source
+-frame s3.2_wget_all_document
+-frame s3.2_wget_all_patch
+-
+-# moved current fixes to script files
+-# frame s3.2_fix
+diff --git a/user/executable/c4 b/user/executable/c4
+deleted file mode 100755
+index 8068111..0000000
+--- a/user/executable/c4
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#!/bin/bash
+-
+-# give some structure to the m2 directory tree
+-frame s4.2_target_dir_tree
+-
+diff --git a/user/executable/c5 b/user/executable/c5
+deleted file mode 100755
+index f3b0f92..0000000
+--- a/user/executable/c5
++++ /dev/null
+@@ -1,19 +0,0 @@
+-#!/bin/bash
+-
+-set -e
+-
+-section="
+-binutils 
+-gcc
+-linux
+-glibc
+-"
+-
+-IFS=$'\n'; for s in $section;do
+-  # echo s6_$s
+-  eval frame environment_package $s s5_$s
+-done
+-
+-# libstdc++ is found in the gcc package:
+-frame environment_package gcc s5_libstdc++
+-
+diff --git a/user/executable/c7 b/user/executable/c7
+deleted file mode 100755
+index a491707..0000000
+--- a/user/executable/c7
++++ /dev/null
+@@ -1,27 +0,0 @@
+-#!/bin/bash
+-
+-# s7.02 or s7.03 are part of book_transition
+-
+-# contain further builds to the m2 directory tree
+-frame s7.05_mkdirs
+-frame s7.06_essential
+-
+-frame environment_package "gcc" s7.07_libstdc++
+-
+-section="
+-gettext
+-bison
+-perl
+-Python
+-texinfo
+-util-linux
+-"
+-
+-IFS=$'\n'; for s in $section;do
+-  # echo s7_$s
+-  frame environment_package $s s7_$s
+-done
+-
+-s7.14_cleanup
+-
+-
+diff --git a/user/executable/checkpoint b/user/executable/checkpoint
+deleted file mode 100755
+index 397cb22..0000000
+--- a/user/executable/checkpoint
++++ /dev/null
+@@ -1,38 +0,0 @@
+-#!/bin/bash
+-#
+-# A checkpoint is just an tar file made from the m2 filesystem placed into the $LFS_BUILD_DIR/checkpoint directory.
+-#
+-# Tar does not take into mounts or special file systems, so checkpointing doesn't make much sense after those steps.
+-#
+-# Checkpoints take a lot of disk space. Keeping them around can lead to 'out of disk space' errors pretty quickly. These
+-# can be subtles.  Typically just a bunch of "can't make/save file" without much explanation.
+-#
+-# On a modern high performance system it is just about as fast to run the install again instead of checkpointing,
+-# and this is also a more effective use of diskspace.
+-#
+-# This is here mainly because the book suggests at one point to do an archive, i.e. to check point the install thus far
+-#
+-set -x
+-
+-if [[ -z "$LFS_BUILD_DIR" ]];then
+-  echo $(basename "$0") "requires variable \$LFS_BUILD_DIR to be set" > /dev/stderr
+-  exit 1
+-fi
+-
+-checkpoint="$1"
+-if [[ -z "$checkpoint" ]];then
+-  echo $(basename "$0") "warning has no checkpoint name parameter - making generic 'checkpoint'" > /dev/stderr
+-  checkpoint="checkpoint"
+-fi
+-
+-checkpoint_dir="$LFS_BUILD_DIR/checkpoint"
+-if [[ -d "$checkpoint_dir" ]];then
+-  mkdir -p "$checkpoint_dir"  || { echo $(basename "$0") "failed to make checkpoint_dir" >/dev/stderr || exit 1 ; }
+-fi
+-
+-checkpoint_file=$(mktemp --tmpdir="$checkpoint_dir" "$checkpoint.XXXXX.tgz")
+-
+-echo $(basename "$0") "$checkpoint_file" "$LFS_M2_FILESYSTEM" 
+-tar -czf $checkpoint_file "$LFS_M2_FILESYSTEM"
+-
+-set +x
+diff --git a/user/executable/package_untar.source b/user/executable/package_untar.source
+deleted file mode 100755
+index 2b0ef73..0000000
+--- a/user/executable/package_untar.source
++++ /dev/null
+@@ -1,22 +0,0 @@
+-#!/bin/bash
+-# this should be sourced from the calling script, not executed directly
+-# this returns the variables: package, SOURCE_DIR
+-
+-package_stem="$1"
+-if [ -z "$package_stem" ]; then
+-  echo $(basename "$0") requires a first parameter for the package_stem name > /dev/stderr
+-  exit 1
+-fi
+-
+-
+-export PACKAGE_PATH="$(ls -d "$LFS_BUILD_DIR"/package/"$package_stem"-*.tar* | head -1)"
+-export PACKAGE="$(basename "$PACKAGE_PATH")"
+-export SOURCE_DIR="${PACKAGE%\.tar*}"
+-echo $(basename "$0") $PACKAGE_PATH $PACKAGE $SOURCE_DIR
+-
+-cd $LFS_M2_FILESYSTEM
+-! test -d source && mkdir source
+-cd source
+-
+-tar -xf "$PACKAGE_PATH"
+-cd "$SOURCE_DIR"
+diff --git a/user/executable/s3.2_fix b/user/executable/s3.2_fix
+deleted file mode 100644
+index 4075464..0000000
+--- a/user/executable/s3.2_fix
++++ /dev/null
+@@ -1,28 +0,0 @@
+-#!/bin/bash
+-# should rewrite this to be less sensitive to version numbers ..
+-# should just wget directly into package_doc instead of moving tcl afterwward, though this way versions can be seen to match
+-# probably should remove the comment on the rum $tcl_09 and $expect_0 to save some space
+-
+-pushd $LFS_BUILD_DIR/package
+-
+-tcl_html=$(ls -d tcl*-html.tar*)
+-if [[ ! -z "$tcl_html" ]];then
+-  mkdir -p "$LFS_BUILD_DIR"/package_document
+-  mv $tcl_html "$LFS_BUILD_DIR"/package_document
+-fi
+-
+-
+-expect_0=expect5.45.4.tar.gz
+-expect_1=expect-5.45.4.tar.gz
+-if [ -f $expect_0 ] && [ ! -f $expect_1 ];then
+-  tar --transform s/expect5.45.4/expect-5.45.4/ -xf $expect_0
+-  tar  -cf $expect_1 expect-5.45.4
+-  rm -r expect-5.45.4
+-#  rm $expect_0
+-fi
+-
+-# this should not be needed!  bzip2 is made before package_source on elfutils is called!
+-# there is a bug in the scripts
+-bunzip2 elfutils-0.186.tar.bz2 
+-
+-popd
+diff --git a/user/executable/s3.2_wget_all_patch b/user/executable/s3.2_wget_all_patch
+deleted file mode 100755
+index 021fe17..0000000
+--- a/user/executable/s3.2_wget_all_patch
++++ /dev/null
+@@ -1,23 +0,0 @@
+-#!/bin/bash
+-
+-# need to add the checksum test
+-
+-if [[ ! -d "$LFS_BUILD_DIR/patch" ]]; then
+-  mkdir "$LFS_BUILD_DIR/patch"
+-fi
+-pushd "$LFS_BUILD_DIR/patch"
+-
+-wget https://www.linuxfromscratch.org/patches/lfs/11.1/binutils-2.38-lto_fix-1.patch
+-wget https://www.linuxfromscratch.org/patches/lfs/11.1/bzip2-1.0.8-install_docs-1.patch
+-wget https://www.linuxfromscratch.org/patches/lfs/11.1/coreutils-9.0-i18n-1.patch
+-wget https://www.linuxfromscratch.org/patches/lfs/11.1/coreutils-9.0-chmod_fix-1.patch
+-wget https://www.linuxfromscratch.org/patches/lfs/11.1/glibc-2.35-fhs-1.patch
+-wget https://www.linuxfromscratch.org/patches/lfs/11.1/kbd-2.4.0-backspace-1.patch
+-wget https://www.linuxfromscratch.org/patches/lfs/11.1/perl-5.34.0-upstream_fixes-1.patch
+-wget https://www.linuxfromscratch.org/patches/lfs/11.1/sysvinit-3.01-consolidated-1.patch
+-
+-# wonder if we can just dump the wget errors to stderr directly from the commands, or if it does already
+-grep -iE 'error|warning|not found' wget-log* 1>&2
+-
+-popd
+-
+diff --git a/user/executable/s6_diffutils b/user/executable/s6_diffutils
+deleted file mode 100755
+index 99e0eff..0000000
+--- a/user/executable/s6_diffutils
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr --host=$LFS_TGT
+-make
+-make DESTDIR=$LFS_M2_FILESYSTEM install
+-
+diff --git a/user/executable/s6_gzip b/user/executable/s6_gzip
+deleted file mode 100755
+index 0e2e33c..0000000
+--- a/user/executable/s6_gzip
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr --host=$LFS_TGT
+-make
+-make DESTDIR=$LFS_M2_FILESYSTEM install
+diff --git a/user/executable/s7.14_checkpoint b/user/executable/s7.14_checkpoint
+deleted file mode 100755
+index 1e14a92..0000000
+--- a/user/executable/s7.14_checkpoint
++++ /dev/null
+@@ -1,18 +0,0 @@
+-#!/bin/bash
+-
+-set -x
+-sudo umount $LFS_M2_FILESYSTEM/dev/pts
+-sudo umount $LFS_M2_FILESYSTEM/{sys,proc,run,div}
+-sudo df -h .
+-
+-
+-# I guess they want to checkpoint the work thus far, but can we really continue after expanding such a tar file?
+-# what about all the devices and mounted stuff?
+-#tar -cJpf $HOME/lfs-temp-tools-11.1.tar.xz .
+-#
+-sudo cd $LFS_M2_FILESYSTEM
+-sudo tar -cJpf $LFS_BUILD_DIR/checkpoint/lfs-temp-tools-11.1.tar.xz .
+-sudo chown lfs:lfs $LFS_BUILD_DIR/checkpoint/lfs-temp-tools-11.1.tar.xz
+-sudo df -h .
+-
+-set +x
+diff --git a/user/executable/s7_bison b/user/executable/s7_bison
+deleted file mode 100755
+index 566194c..0000000
+--- a/user/executable/s7_bison
++++ /dev/null
+@@ -1,10 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr --docdir=/usr/share/doc/bison-3.8.2
+-
+-make
+-make install
+-
+-
+-
+-
+diff --git a/user/executable/s8_XML-Parser b/user/executable/s8_XML-Parser
+deleted file mode 100755
+index 2803f7a..0000000
+--- a/user/executable/s8_XML-Parser
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-perl Makefile.PL
+-make
+-make test
+-make install
+diff --git a/user/executable/s8_autoconf b/user/executable/s8_autoconf
+deleted file mode 100755
+index 506a495..0000000
+--- a/user/executable/s8_autoconf
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr
+-make
+-make check
+-make install
+-
+diff --git a/user/executable/s8_bc b/user/executable/s8_bc
+deleted file mode 100755
+index ba6fad8..0000000
+--- a/user/executable/s8_bc
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-CC=gcc ./configure --prefix=/usr -G -O3
+-make
+-make test
+-make install
+diff --git a/user/executable/s8_bison b/user/executable/s8_bison
+deleted file mode 100755
+index 967bc6a..0000000
+--- a/user/executable/s8_bison
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr --docdir=/usr/share/doc/bison-3.8.2
+-make
+-make check
+-make install
+diff --git a/user/executable/s8_diffutils b/user/executable/s8_diffutils
+deleted file mode 100755
+index b956f73..0000000
+--- a/user/executable/s8_diffutils
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr
+-make
+-make check
+-make install
+diff --git a/user/executable/s8_file b/user/executable/s8_file
+deleted file mode 100755
+index b956f73..0000000
+--- a/user/executable/s8_file
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr
+-make
+-make check
+-make install
+diff --git a/user/executable/s8_gperf b/user/executable/s8_gperf
+deleted file mode 100755
+index 54b3c79..0000000
+--- a/user/executable/s8_gperf
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr --docdir=/usr/share/doc/gperf-3.1
+-
+-make
+-make -j1 check
+-make install
+\ No newline at end of file
+diff --git a/user/executable/s8_grep b/user/executable/s8_grep
+deleted file mode 100755
+index b956f73..0000000
+--- a/user/executable/s8_grep
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr
+-make
+-make check
+-make install
+diff --git a/user/executable/s8_groff b/user/executable/s8_groff
+deleted file mode 100755
+index 80c6e23..0000000
+--- a/user/executable/s8_groff
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#!/bin/bash
+-
+-PAGE=A4 ./configure --prefix=/usr
+-make -j1
+-make install
+diff --git a/user/executable/s8_gzip b/user/executable/s8_gzip
+deleted file mode 100755
+index 506a495..0000000
+--- a/user/executable/s8_gzip
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr
+-make
+-make check
+-make install
+-
+diff --git a/user/executable/s8_iana-etc b/user/executable/s8_iana-etc
+deleted file mode 100755
+index de899bd..0000000
+--- a/user/executable/s8_iana-etc
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#!/bin/bash
+-
+-cp services protocols /etc
+-
+-
+-
+-
+diff --git a/user/executable/s8_less b/user/executable/s8_less
+deleted file mode 100755
+index dcabc7a..0000000
+--- a/user/executable/s8_less
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr --sysconfdir=/etc
+-make
+-make install
+diff --git a/user/executable/s8_libpipeline b/user/executable/s8_libpipeline
+deleted file mode 100755
+index 5564413..0000000
+--- a/user/executable/s8_libpipeline
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr
+-make
+-make check
+-make install
+\ No newline at end of file
+diff --git a/user/executable/s8_libtool b/user/executable/s8_libtool
+deleted file mode 100755
+index 48a2bda..0000000
+--- a/user/executable/s8_libtool
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr
+-make
+-make check
+-make install
+-rm -fv /usr/lib/libltdl.a
+diff --git a/user/executable/s8_m4 b/user/executable/s8_m4
+deleted file mode 100755
+index 710916c..0000000
+--- a/user/executable/s8_m4
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr  
+-make
+-make check
+-make install
+diff --git a/user/executable/s8_make b/user/executable/s8_make
+deleted file mode 100755
+index b956f73..0000000
+--- a/user/executable/s8_make
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr
+-make
+-make check
+-make install
+diff --git a/user/executable/s8_man-pages b/user/executable/s8_man-pages
+deleted file mode 100755
+index 22a37fd..0000000
+--- a/user/executable/s8_man-pages
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#!/bin/bash
+-
+-make prefix=/usr install
+-
+-
+-
+-
+diff --git a/user/executable/s8_patch b/user/executable/s8_patch
+deleted file mode 100755
+index b956f73..0000000
+--- a/user/executable/s8_patch
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr
+-make
+-make check
+-make install
+diff --git a/user/executable/s8_psmisc b/user/executable/s8_psmisc
+deleted file mode 100755
+index f8cd7c0..0000000
+--- a/user/executable/s8_psmisc
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr
+-make
+-make install
+diff --git a/user/executable/s8_sysvinit b/user/executable/s8_sysvinit
+deleted file mode 100755
+index 34f9e93..0000000
+--- a/user/executable/s8_sysvinit
++++ /dev/null
+@@ -1,5 +0,0 @@
+-#!/bin/bash
+-
+-patch -Np1 -i "$LFS_BUILD_DIR/patch/sysvinit-3.01-consolidated-1.patch"
+-make
+-make install
+diff --git a/user/executable/s8_zlib b/user/executable/s8_zlib
+deleted file mode 100755
+index 1311b48..0000000
+--- a/user/executable/s8_zlib
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#!/bin/bash
+-
+-./configure --prefix=/usr
+-make
+-make check
+-make install
+-rm -fv /usr/lib/libz.a
+-
+diff --git a/user/executable/s8_zstd b/user/executable/s8_zstd
+deleted file mode 100755
+index d097c10..0000000
+--- a/user/executable/s8_zstd
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/bash
+-
+-make
+-make check
+-make prefix=/usr install
+-rm -v /usr/lib/libzstd.a
+diff --git a/user/executable/s9.5.3_hostname b/user/executable/s9.5.3_hostname
+deleted file mode 100755
+index 9cdf0db..0000000
+--- a/user/executable/s9.5.3_hostname
++++ /dev/null
+@@ -1,3 +0,0 @@
+-#!/bin/bash
+-
+-echo "m2" > /etc/hostname
+diff --git a/user/executable/s9.9_shells b/user/executable/s9.9_shells
+deleted file mode 100755
+index de9a3a3..0000000
+--- a/user/executable/s9.9_shells
++++ /dev/null
+@@ -1,11 +0,0 @@
+-#!/bin/bash
+-
+-cat > /etc/shells << "EOF"
+-# Begin /etc/shells
+-
+-/bin/sh
+-/bin/bash
+-
+-# End /etc/shells
+-EOF
+-
+diff --git a/user/executable/s9_lfs-bootscripts b/user/executable/s9_lfs-bootscripts
+deleted file mode 100755
+index b22f3aa..0000000
+--- a/user/executable/s9_lfs-bootscripts
++++ /dev/null
+@@ -1,3 +0,0 @@
+-#!/bin/bash
+-
+-make install
+diff --git a/user/typescript b/user/typescript
+new file mode 100644
+index 0000000..34c95e2
+--- /dev/null
++++ b/user/typescript
+@@ -0,0 +1,4 @@
++Script started on 2022-06-21 18:15:22+00:00 [TERM="dumb" TTY="/dev/pts/2" COLUMNS="-1" LINES="-1"]
++sh-5.1$ exit
++
++Script done on 2022-06-21 18:15:26+00:00 [COMMAND_EXIT_CODE="0"]
