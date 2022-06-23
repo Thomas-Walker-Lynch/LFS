@@ -92,11 +92,12 @@ https://github.com/facebook/zstd/releases/download/v1.5.2/zstd-1.5.2.tar.gz
 "
 
 IFS=$'\n'; for l in $link;do
-   wget -nv $l
+  # wget -nv $l
+  curl -LOfsS $l
 done
 
 # wonder if we can just dump the wget errors to stderr directly from the commands, or if it does already
-grep -iE 'error|warning|not found' wget-log* 1>&2
+# grep -iE 'error|warning|not found' wget-log* 1>&2
 
 # apply patches here?
 
@@ -106,7 +107,7 @@ test -f procps-ng-3.3.17.tar.xz -a ! -L procps-3.3.17.tar.xz  &&\
 
 # version number should be prefixed by a dash
 tcl_0=tcl8.6.12-src.tar.gz
-tcl_1=tcl-8.6.12-src.tar.gz
+tcl_1=tcl-8.6.12.tar.gz
 if [ -f $tcl_0  ] && [ ! -f $tcl_1 ];then
   tar --transform s/tcl8.6.12/tcl-8.6.12/ -xf $tcl_0
   tar  -cf $tcl_1 tcl-8.6.12

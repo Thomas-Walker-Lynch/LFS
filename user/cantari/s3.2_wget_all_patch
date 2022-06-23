@@ -21,11 +21,12 @@ https://www.linuxfromscratch.org/patches/lfs/11.1/sysvinit-3.01-consolidated-1.p
 "
 
 IFS=$'\n'; for l in $link;do
-   wget -nv $l
+  #   wget -nv $l
+  curl -LOfsS $l           
 done
 
 # wonder if we can just dump the wget errors to stderr directly from the commands, or if it does already
-grep -iE 'error|warning|not found' wget-log* 1>&2
+#  grep -iE 'error|warning|not found' wget-log* 1>&2
 
 
 popd

@@ -2,22 +2,10 @@
 # This might require sudo_LFS depending on the stage in the build that it is run at.
 # This is dangerous. This is the kind of thing that causes a person to use an emulated m1 machine.
 # set -x
-set -e
 
-if [[ "$LFS_ENV" == "m2" ]];then
-  echo $(basename "$0") "cannot be run in env_m2"
+if [[ "$LFS_ENV" != "m1_root" ]];then
+  echo $(basename "$0") "only intended to be run in env_m1_root"
   exit 1
-fi
-
-if [[ -z "$LFS_M2_FILESYSTEM" ]];then
-  echo $(basename "$0") " requires that \$LFS_M2_FILESYSTEM has a value" > /dev/stderr
-  exit 1
-fi
-
-# run m2_wipe as root so that umount will work and rm of files works even when the files are owned by root
-# this is an excellent script for wiping your host computer by accident!
-if [ "$EUID" -ne 0 ]; then
-  echo $(basename "$0") "not being run as root, so can't do unounts" > /dev/stderr
 fi
 
 echo "\$LFS_M2_FILESYSTEM:" "$LFS_M2_FILESYSTEM"
@@ -27,14 +15,12 @@ if [[ ! "$REPLY" =~ ^[y]$ ]];then
   exit 1
 fi
 
-if [ "$EUID" -eq 0 ]; then
-  # found that the absolute pathname is necessary, independent of the current pwd
-  umount /mnt/m2_filesystem/mnt/Lustucru || true
-  rmdir -v /mnt/m2_filesystem/mnt/Lustucru || true
+# found that the absolute pathname is necessary, independent of the current pwd
+umount /mnt/m2_filesystem/mnt/Lustucru || true
+rmdir -v /mnt/m2_filesystem/mnt/Lustucru || true
 
-  umount -v $LFS_M2_FILESYSTEM/dev/pts || true
-  umount -v $LFS_M2_FILESYSTEM/{sys,proc,run,dev} || true
-fi
+umount -v $LFS_M2_FILESYSTEM/dev/pts || true
+umount -v $LFS_M2_FILESYSTEM/{sys,proc,run,dev} || true
 
 # skip /mnt just in case it did not unmount (has happened ...)
 echo "rm -rf the following:"
@@ -46,9 +32,7 @@ find "$LFS_M2_FILESYSTEM" \
 
 rmdir -v "$LFS_M2_FILESYSTEM"/mnt
 
-if [ "$EUID" -eq 0 ]; then
-  chown "$USERNAME":"$USERNAME" "$LFS_M2_FILESYSTEM"
-  chmod 0755 "$LFS_M2_FILESYSTEM"
-fi
+chown "$USERNAME":"$USERNAME" "$LFS_M2_FILESYSTEM"
+chmod 0755 "$LFS_M2_FILESYSTEM"
 
 # set +x

@@ -1,5 +1,5 @@
 #!/bin/bash
-# set -x
+#set -x
 
 script="$@"
 
@@ -8,7 +8,7 @@ if [[ -z "$script" ]]; then
 fi
 
 if [[ !  -x "$LFS_M2_FILESYSTEM"/usr/local/bin/Z ]]; then
-  echo $(basename "$0") "no \$LFS_M2_FILESYSTEM/usr/loca/bin/Z, did you run 'book_m1_to_m2' ?"  > /dev/stderr
+  echo $(basename "$0") "no \$LFS_M2_FILESYSTEM/usr/local/bin/Z, did you run 'book_m1_to_m2' ?"  > /dev/stderr
   exit 1
 fi
 
@@ -16,7 +16,8 @@ if [[ "$LFS_ENV" != "m1_root" ]];then
   echo $(basename "$0") "only intended to be run in env_m1 env_m1_root"
   exit 1
 fi
- 
+
+echo "chroot to"  "$LFS_M2_FILESYSTEM"
 chroot "$LFS_M2_FILESYSTEM" /usr/bin/env --ignore-environment \
   HOSTNAME="$HOSTNAME"\
   USERNAME="$USERNAME"\

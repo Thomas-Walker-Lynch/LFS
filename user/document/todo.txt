@@ -61,3 +61,19 @@
          curl: (6) Couldn't resolve host 'www.google.coccm'
          [wizard@laptop ~]$ curl -s -S http://www.google.com/ > /dev/null && echo "TRUE"
          TRUE
+
+      add env_configure that accepts the name of the target device, runs
+      wipe, and accepts options.  env_configure  sets variable like MAKEFILE="j12"
+      etc.
+
+      Perl is unhappy not to find local variables in env_m2, must have printed this a 100 times:
+        perl: warning: Please check that your locale settings:
+          LANGUAGE = (unset),
+          LC_ALL = (unset),
+          LANG = "en_US.UTF-8"
+
+      # 2022-06-23T00:26:23Z
+      # start of: env_incantatio glibc s8_glibc
+      #
+      #
+      patch: **** Can't open patch file /mnt/Lustucru/user/patch/glibc-2.35-fhs-1.patch : No such file or directory

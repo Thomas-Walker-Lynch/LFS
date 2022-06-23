@@ -26,9 +26,9 @@ source "$REPO_DIR"/initialize
 
 # These are the REPO variables within the m2fs
 # used by the scripts 'book_m1_to_m2' and 'env_m2', or anywhere else they are useful
-M2FS_REPO_HOME="/mnt"
-M2FS_REPO_DIR="$M2FS_REPO_HOME"/"$REPO"
-M2FS_REPO_USER_DIR="$M2FS_REPO_DIR"/user
+export M2FS_REPO_HOME="/mnt"
+export M2FS_REPO_DIR="$M2FS_REPO_HOME"/"$REPO"
+export M2FS_REPO_USER_DIR="$M2FS_REPO_DIR"/user
 
 
 $script

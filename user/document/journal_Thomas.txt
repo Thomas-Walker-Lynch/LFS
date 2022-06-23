@@ -801,6 +801,14 @@
      
 2022-06-22T21:14:33Z
 
+      screwed up .gitignore excluding /usr/build instead of /user/build.  These were useful commands;
+      git rm --cached with relative path
+      "git commit --amend -C HEAD --reset-author", that will skip the commit message editor and use the old message
+      needed user/build, i.e. a relative path, dunno why, also needed to skip the commit message because
+      git does not like the emacs terminal
+
+      if the HOME variable is not set, git freaks.  thus git after env -i was a problem
+
       rm -r a directory rather than using a wild card (mkdir followed by rm if necessary)
 
       due to using a repo for Lustucru and accidentally checking in the upstream, then
@@ -815,3 +823,16 @@
       env_m1_root and env_m2 wouild be bad, perhaps block git from env environments?
 
       wget is a confused program, it prints information to stderr, need to fix this or use curl
+
+      funny behavior after running out of disk space.  Made space, but things still ain't right, rebooting.
+
+      the extended scripts like 'build'  or 'book'  are very difficult to kill with cntrl-c, I am not
+      sure why.  c-z bg kill %job works better, but still does not always seem to work.  The best
+      seems to be to exit the shell.  given we use env_m1 etc. exiting the shell then re-entering
+      the environment is straightforward.
+
+      moved to using curl, had to install it first, it is now a required program, due wegst dumping
+      info to stderr - wget was not exactly clean but seems to work with -LOfsS options.
+
+      in s7.02 chown, the source dir remains owned by lfs, problem, correct?
+      # $LFS_M2_FILESYSTEM/source remains owned by lfs hmmm.

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 if [[ "$LFS_ENV" != "m2" ]];then
   echo $(basename "$0") "only intended to be run in env_m2"
   exit 1
@@ -9,7 +9,7 @@ fi
 # install the documentation
 pushd /usr/share/doc
 #tar -xf "$(ls -d $REPO_USER_DIR/build/upstream/incantatio/tcl*-html.tar*)" --strip-components=1  # why strip-components=1 ??
-tar -xf "$(ls -d $REPO_USER_DIR/build/upstream/document/tcl*-html.tar* | head -1)"
+tar -xf "$(ls -d $REPO_USER_DIR/build/upstream/document/tcl-*.tar* | head -1)"
 popd
 
 SRCDIR="$(pwd)"
@@ -50,4 +50,4 @@ mkdir -v -p /usr/share/doc/tcl-8.6.12
 # should fix the tcl and expect incantatios up front ...
 #cp -v -r  ../html/* /usr/share/doc/tcl-8.6.12
 
-set +x
+#set +x

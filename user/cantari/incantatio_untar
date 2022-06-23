@@ -15,7 +15,7 @@ test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
 export INCANTATIO_PATH="$(ls -d "$REPO_USER_DIR"/build/upstream/incantatio/"$incantatio_stem"-*.tar* | head -1)"
 export INCANTATIO="$(basename "$INCANTATIO_PATH")"
 export SOURCE_DIR="${INCANTATIO%\.tar*}"
-echo $(basename "$0") $INCANTATIO_PATH $INCANTATIO $SOURCE_DIR
+# echo $(basename "$0") $INCANTATIO_PATH $INCANTATIO $SOURCE_DIR
 
 cd $LFS_M2_FILESYSTEM
 ! test -d source && mkdir source

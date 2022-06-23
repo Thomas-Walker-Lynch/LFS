@@ -9,7 +9,7 @@ fi
 echo 'This should output "span ls" '
 expect -c "spawn ls"
 
-patch -Np1 -i "$LFS_BUILD_DIR/patch/binutils-2.38-lto_fix-1.patch"
+patch -Np1 -i "$REPO_USER_DIR/build/upstream/patch/binutils-2.38-lto_fix-1.patch"
 
 sed -e '/R_386_TLS_LE /i \   || (TYPE) == R_386_TLS_IE \\' \
     -i ./bfd/elfxx-x86.h

@@ -5,7 +5,7 @@ if [[ "$LFS_ENV" != "m2" ]];then
   exit 1
 fi
 
-patch -Np1 -i $LFS_BUILD_DIR/patch/perl-5.34.0-upstream_fixes-1.patch
+patch -Np1 -i $REPO_USER_DIR/build/upstream/patch/perl-5.34.0-upstream_fixes-1.patch
 export BUILD_ZLIB=False
 export BUILD_BZIP2=0
 sh Configure -des                                         \

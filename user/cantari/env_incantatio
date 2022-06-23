@@ -9,7 +9,7 @@ if [[ -z "$incantatio" ]]; then
   exit 1
 fi
 if [[ -z "$script" ]]; then
-  script="/bin/bash --norc"
+  script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/library/bashrc_lfs
 fi
 
 source incantatio_untar "$1"  

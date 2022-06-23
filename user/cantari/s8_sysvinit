@@ -5,6 +5,6 @@ if [[ "$LFS_ENV" != "m2" ]];then
   exit 1
 fi
 
-patch -Np1 -i "$LFS_BUILD_DIR/patch/sysvinit-3.01-consolidated-1.patch"
+patch -Np1 -i "$REPO_USER_DIR/build/upstream/patch/sysvinit-3.01-consolidated-1.patch"
 make
 make install
