@@ -2,12 +2,11 @@ grep -iE
 
 error
 not found
-command not found
 cannot
 fatal
 aborting
 not recoverable
 exiting
-exiting now
 missing
 fail
+denied

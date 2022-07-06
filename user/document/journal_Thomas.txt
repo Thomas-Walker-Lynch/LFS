@@ -836,3 +836,39 @@
 
       in s7.02 chown, the source dir remains owned by lfs, problem, correct?
       # $LFS_M2_FILESYSTEM/source remains owned by lfs hmmm.
+
+2022-06-23T17:06:58Z
+
+      s8_tcl failed due to the -src on the tar name but not on the expanded dir name,
+      so changed the tar name (added that to the fetch script)
+
+      the build continued to run after s8_tcl failed.  So ... I restarted the scripts
+      from s8_tcl.  s8_tcl ran fine, but later I got the error "out of PTYs".  So
+      rebooted, wiped, and started again. It would be nice if builds were idempotent,
+      but apparently they are not.
+
+2022-07-06T13:58:31Z
+
+      dirtrack does not follow chroot, and it will just stay in the directory we were in when env_m2 was run.
+      in 10.3.1 they ask us to do:
+         make menuconfig
+
+       but that requires a terminal.  perhpas emacs eshell would do it?  Robert instead did:
+         make defconfig
+       make deconfig writes the file '.config' with a list of variables said to be set
+       or not set.  I wonder how to manually set or unset those variables. The book references
+        https://www.linuxfromscratch.org/hints/downloads/files/kernel-configuration.txt. 
+
+       Instead of requring to be sourced can these run a subshell?
+         frame-initialize:test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
+         incantatio_untar:test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
+
+       Roberts transcript ends with a call to an unknown bind-lfs script, and a call to chroot
+       to run the system.  I.e. in this script he does not write boot record. As I recall,
+       he mentioned simply adding the LFS particition as a boot option to the existing boot
+       loader. The book does suggest that a person might want to do that. I am left wondering if
+       a modern system will insist upon an EFI boot, so to make this really work, we will need
+       to look at the BLFS book for EFI boot.
+
+
+         

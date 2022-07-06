@@ -13,11 +13,11 @@ IFS=$'\n'; for s in $section;do
   frame env_incantatio $s s9_$s
 done
 
-s9.5.1_eth0_exmaple
-s9.5.2_resolv.conf
-s9.5.3_hostname
-s9.5.4_etc_hosts
-s9.6.2_sysvinit
-s9.6.4_clock
-s9.8_inputrc
-s9.9_shells
+frame s9.5.1_eth0_exmaple
+frame s9.5.2_resolv.conf
+frame s9.5.3_hostname
+frame s9.5.4_etc_hosts
+frame s9.6.2_sysvinit
+frame s9.6.4_clock
+frame s9.8_inputrc
+frame s9.9_shells

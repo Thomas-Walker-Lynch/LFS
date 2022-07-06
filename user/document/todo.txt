@@ -77,3 +77,10 @@
       #
       #
       patch: **** Can't open patch file /mnt/Lustucru/user/patch/glibc-2.35-fhs-1.patch : No such file or directory
+
+2022-07-06T13:58:31Z
+      book_m1_to_m2 needs to be run after rebooting the virtual machine and continuing and m2 install,
+      however it will give errors as the make devices will already be done.  Need to check this, perhaps
+      split into two scripts and have env_m2 run one of those.  Root problem is that the repo needs
+      to be mounted again if it is not mounted.  Other stuff too.  note the /etc/fstab file created
+      in c10.
