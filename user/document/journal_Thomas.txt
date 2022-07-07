@@ -870,5 +870,8 @@
        a modern system will insist upon an EFI boot, so to make this really work, we will need
        to look at the BLFS book for EFI boot.
 
-
-         
+       alias printenv "printenv | sort"  good idea to add to docs, the pastree alias also maybe
+       
+       for a slow device it makes more sense that /mnt/m2_filesystem/source
+       is instead put in /mnt/m2_filesystem/mnt/Lustucru/source where it
+       will have access speed of the main storage system.
