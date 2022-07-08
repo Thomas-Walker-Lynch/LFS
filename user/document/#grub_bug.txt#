@@ -1,0 +1,17 @@
+
+> sudo grub-install /dev/sdb
+sudo: grub-install: command not found
+
+> sudo grub2-install /dev/sdb
+grub2-install: error: /usr/lib/grub/x86_64-efi/modinfo.sh doesn't exist. Please specify --target or --directory.
+
+>  sudo bash
+
+# dnf install grub2-efi-x64-modules
+...
+Installed:
+  grub2-efi-x64-modules-1:2.06-11.fc35.noarch                                                                                 
+
+# grub2-install /dev/sdb
+grub2-install: error: this utility cannot be used for EFI platforms because it does not support UEFI Secure Boot.
+

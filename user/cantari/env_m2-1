@@ -24,7 +24,7 @@ mkdir -p $HOME
 cd "$HOME"
 
 # for our build scripts
-source "$REPO_DIR"/initialize
+source "$REPO_DIR"/activate
 export PATH="$REPO_USER_DIR/cantari:$PATH"
 
 $script

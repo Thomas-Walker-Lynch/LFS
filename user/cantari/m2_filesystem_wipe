@@ -33,6 +33,6 @@ find "$LFS_M2_FILESYSTEM" \
 rmdir -v "$LFS_M2_FILESYSTEM"/mnt
 
 chown "$USERNAME":"$USERNAME" "$LFS_M2_FILESYSTEM"
-chmod 0755 "$LFS_M2_FILESYSTEM"
+chmod 0777 "$LFS_M2_FILESYSTEM"
 
 # set +x

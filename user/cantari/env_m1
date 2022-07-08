@@ -8,7 +8,7 @@
 # REPO      - name of this repo, probably - given as argument to my 'repo' command when entering the repo (see resource repo)
 # these are then derived:
 # REPO_DIR  - set in the repo command script to $REPO_HOME/$REPO as a convenience
-# REPO_USER_DIR - set by the REPO_DIR/initialize to $REPO_DIR/user/, users should use this so they stay in the user dir
+# REPO_USER_DIR - set by the REPO_DIR/activate to $REPO_DIR/user/, users should use this so they stay in the user dir
 # PROJECT   - only used in the [] of the PS1 prompt, the 'repo' command sets it to $REPO, but may be set to anything
 #
 # set -x

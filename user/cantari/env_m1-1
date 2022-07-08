@@ -22,7 +22,7 @@ export LC_ALL LFS_TGT PATH CONFIG_SITE
 
 # for our build scripts
 export PATH="/usr/local/bin:$PATH"
-source "$REPO_DIR"/initialize
+source "$REPO_DIR"/activate
 
 # These are the REPO variables within the m2fs
 # used by the scripts 'book_m1_to_m2' and 'env_m2', or anywhere else they are useful
