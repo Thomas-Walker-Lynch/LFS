@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m1_root" ]];then
+  echo $(basename "$0") "must be run in env_m1_root"
+  exit 1
+fi
+
+mount -v --bind /dev "$LFS_M2_FILESYSTEM"/dev
+mount -v --bind /dev/pts "$LFS_M2_FILESYSTEM"/dev/pts
+mount -vt proc proc "$LFS_M2_FILESYSTEM"/proc 
+mount -vt sysfs sysfs "$LFS_M2_FILESYSTEM"/sys
+mount -vt tmpfs tmpfs "$LFS_M2_FILESYSTEM"/run
+
+# bind our sources directory
+repo_dir_target="$LFS_M2_FILESYSTEM""$M2FS_REPO_DIR"
+mkdir -p "$repo_dir_target"
+mount -v --bind "$REPO_DIR" "$repo_dir_target"
+
+

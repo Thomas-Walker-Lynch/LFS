@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ "$LFS_ENV" != "m1_root" ]];then
-  echo $(basename "$0") "only intended to be run in env_m1_root"
+  echo $(basename "$0") "must be run in env_m1_root"
   exit 1
 fi
 

@@ -15,3 +15,16 @@ Installed:
 # grub2-install /dev/sdb
 grub2-install: error: this utility cannot be used for EFI platforms because it does not support UEFI Secure Boot.
 
+# ls /usr/lib/grub
+i386-pc
+
+# grub2-install --target i386-pc /dev/sdb
+Installing for i386-pc platform.
+Installation finished. No error reported.
+
+# umount /dev/sdb1
+umount: /mnt/m2_filesystem: target is busy.
+
+#
+
+Book does not have us set bind and unbind scripts, but those would be useful

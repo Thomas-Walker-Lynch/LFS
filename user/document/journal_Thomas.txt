@@ -891,7 +891,7 @@
        missing some prerequisite programs, g++, tex, texinfo, info, grub2-install.  s2_check caught a
        coupld of others 
 
-       in docs will want to discuss HEREDOC   -EOF  "EOF"  -"EOF"
+       in final dock will want to discuss HEREDOC   -EOF  "EOF"  -"EOF"
 
        the chapter 2 discussion of swap is a bit quizzical.  surely the host systemn already runs
        swap. Apart from that swap is only mentioned in 10.2 when the fstab file is made.
@@ -899,4 +899,8 @@
        when making the /dev/m2_filesystem directory, be sure to get the ownership and perms right
        after fdisk don't forget m2fs.ext4
        
-      
+       grub2 requires option --target i386-pc.  Wonder if booting a modern machine can even work without EFI.
+       LFS does not cover EFI, rather they leave that to BLFS.
+
+       we really need a script to unmount the fstab stuff so that we can umount the media and remove it.
+   

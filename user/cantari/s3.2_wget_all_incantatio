@@ -4,7 +4,7 @@
 # from zlib.net.  .11 may be found elsewhere, but for now I fetch .12 instead.
 
 if [[ "$LFS_ENV" != "m1" ]];then
-  echo $(basename "$0") "only intended to be run in env_m1"
+  echo $(basename "$0") "must be run in env_m1"
   exit 1
 fi
 

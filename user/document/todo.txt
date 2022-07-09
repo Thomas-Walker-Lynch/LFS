@@ -85,3 +85,11 @@
       to be mounted again if it is not mounted.  Other stuff too.  note the /etc/fstab file created
       in c10.
 
+2022-07-08T12:41:51Z
+      need scripts to mount and unmount the stuff in m2 fstab
+
+      initial file with variables set for such things as the target, whether to wipe the disk first, etc
+      put in the build directory by the admin building linux, and if it is not there, it does not build.
+      perhaps an example in the library dir
+
+

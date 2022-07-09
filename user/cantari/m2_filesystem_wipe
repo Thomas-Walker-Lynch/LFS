@@ -4,23 +4,11 @@
 # set -x
 
 if [[ "$LFS_ENV" != "m1_root" ]];then
-  echo $(basename "$0") "only intended to be run in env_m1_root"
+  echo $(basename "$0") "must be run in env_m1_root"
   exit 1
 fi
 
-echo "\$LFS_M2_FILESYSTEM:" "$LFS_M2_FILESYSTEM"
-read -p "Remove all files on $LFS_M2_FILESYSTEM? [y|n]:" -n 1 -r
-echo    # (optional) move to a new line
-if [[ ! "$REPLY" =~ ^[y]$ ]];then
-  exit 1
-fi
-
-# found that the absolute pathname is necessary, independent of the current pwd
-umount /mnt/m2_filesystem/mnt/Lustucru || true
-rmdir -v /mnt/m2_filesystem/mnt/Lustucru || true
-
-umount -v $LFS_M2_FILESYSTEM/dev/pts || true
-umount -v $LFS_M2_FILESYSTEM/{sys,proc,run,dev} || true
+m2_unbind
 
 # skip /mnt just in case it did not unmount (has happened ...)
 echo "rm -rf the following:"
@@ -31,8 +19,5 @@ find "$LFS_M2_FILESYSTEM" \
   \( -exec rm -rf {} \; -o -quit \)
 
 rmdir -v "$LFS_M2_FILESYSTEM"/mnt
-
-chown "$USERNAME":"$USERNAME" "$LFS_M2_FILESYSTEM"
-chmod 0777 "$LFS_M2_FILESYSTEM"
 
 # set +x
