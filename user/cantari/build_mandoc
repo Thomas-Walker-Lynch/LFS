@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "must be run in env_m2"
+  exit 1
+fi
+
+./configure && make mandoc
+
+install -vm755 mandoc   /usr/bin &&
+install -vm644 mandoc.1 /usr/share/man/man1
+

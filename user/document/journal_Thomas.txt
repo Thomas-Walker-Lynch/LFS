@@ -904,3 +904,61 @@
 
        we really need a script to unmount the fstab stuff so that we can umount the media and remove it.
    
+2022-07-21T19:30:54Z
+
+       working on efi boot, mostly using blfs
+
+       apparently efi needs a disk partiation, so the disk must be repartitioned.  Would it not be
+       better to build LFS locally, then at the end deal with the external media?
+
+
+2022-07-22T18:50:52Z
+
+       The current build script takes us through chapter 9, then chapter 10,
+       compiling the kernel, and setting up the boot record is done manually.
+
+       https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
+
+       1. rebuild kernel with efi config s10.3.1
+
+         after the `make defconfig` a file called '.config' will appear. This
+         holds the kernel compile configuration options. Modify these as per
+         Beyond Linux From Scratch, Kernel Configuration for UEFI.
+
+         The kernel config options land in .config in the source directory.
+         If not already in env_m2,  then
+
+          If we need to configure the kernel, then instead
+          > frame env_incantatio linux  <- this might take a while as it is untaring
+          the incantatio ;-) 
+          .. then change .config, run the script.
+          If make menuconfig is to be used, then run the above in a vt terminal.
+
+          If no config needed:
+          > env_m1 env_root env_m2
+          > frame env_incantatio linux s10.3.1_linux
+
+          note BLFS Kernel Configuration for UEFI
+
+       2. build grub efi
+       https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-efi.html
+
+          > build_efi_boot
+          
+
+       3, install grub 
+        https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
+
+          target drive should be formated as:
+          sdb1 uefi 500M  (seems 100M would be more than enough)
+          sdb2 swap 16G
+          sdb3 linux reset
+
+          mkfs.ext4 /dev/sdb3
+          mkfs.vfat /dev/sdb2
+
+       Emergency boot disk of the build system not a bad idea. 
+       https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
+
+      
+        

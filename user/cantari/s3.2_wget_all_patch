@@ -5,7 +5,7 @@ if [[ "$LFS_ENV" != "m1" ]];then
   exit 1
 fi
 
-patch_dir="$REPO_DIR/user/build/upstream/patch"
+patch_dir="$REPO_USER_DIR/build/upstream/patch"
 mkdir -p "$patch_dir"
 pushd "$patch_dir"
 

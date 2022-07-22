@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "must be run in env_m2"
+  exit 1
+fi
+
+mkdir -pv /usr/share/fonts/unifont &&
+  gunzip -c "$REPO_USER_DIR"/build/upstream/incantatio/unifont-14.0.04.pcf.gz > /usr/share/fonts/unifont/unifont.pcf
+
+# see here for a 32 bit LFS:
+# https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-efi.html
+
+unset {C,CPP,CXX,LD}FLAGS
+
+./configure --prefix=/usr        \
+            --sysconfdir=/etc    \
+            --disable-efiemu     \
+            --enable-grub-mkfont \
+            --with-platform=efi  \
+            --target=x86_64      \
+            --disable-werror     &&
+unset TARGET_CC &&
+make
+
+make install &&
+  mv -v /etc/bash_completion.d/grub /usr/share/bash-completion/completions
+
+# finish
+# https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-efi.html

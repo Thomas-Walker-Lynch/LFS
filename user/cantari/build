@@ -14,7 +14,7 @@
 export LFS_M2_FILESYSTEM="/mnt/m2_filesystem"
 
 # can't frame this or the 'really?' prompt goes into the logs ...
-env_m1 env_m1_root m2_filesystem_wipe
+# env_m1 env_m1_root m2_filesystem_wipe
 
 env_m1 frame book
 

@@ -5,7 +5,7 @@ if [[ "$LFS_ENV" != "m1" ]];then
   exit 1
 fi
 
-document_dir="$REPO_DIR/user/build/upstream/document"
+document_dir="$REPO_USER_DIR/build/upstream/document"
 mkdir -p "$document_dir"
 pushd "$document_dir"
 

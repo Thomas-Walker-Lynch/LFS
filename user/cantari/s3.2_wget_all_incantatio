@@ -8,7 +8,7 @@ if [[ "$LFS_ENV" != "m1" ]];then
   exit 1
 fi
 
-incantatio_dir="$REPO_DIR/user/build/upstream/incantatio"
+incantatio_dir="$REPO_USER_DIR/build/upstream/incantatio"
 mkdir -p "$incantatio_dir"
 pushd "$incantatio_dir"
 

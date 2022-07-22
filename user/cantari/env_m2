@@ -18,7 +18,7 @@ if [[ "$LFS_ENV" != "m1_root" ]];then
 fi
 
 if [[ ! -d /mnt/m2_filesystem/mnt/Lustucru/user ]]; then
-  echo $(basename "$0") "repo not found on mount, have you run book_m1_to_m2?"
+  echo $(basename "$0") "repo not found on mount, have you run m2_bind?"
   exit 1
 fi
 

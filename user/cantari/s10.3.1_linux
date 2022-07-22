@@ -1,9 +1,3 @@
-#!/bin/bash
-
-if [[ "$LFS_ENV" != "m2" ]];then
-  echo $(basename "$0") "must be run in env_m2"
-  exit 1
-fi
 
 make mrproper
 
@@ -15,9 +9,6 @@ make defconfig
 # *** Default configuration is based on 'x86_64_defconfig'
 # # configuration written to .config
 # according to book, explained at https://www.linuxfromscratch.org/hints/downloads/files/kernel-configuration.txt
-
-# need to set .config file values if not defaults, make menuconfig will do this.  Can we just
-# put the values directly into .config?
 
 make
 make modules_install

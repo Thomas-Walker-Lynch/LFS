@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "must be run in env_m2"
+  exit 1
+fi
+
+
+./configure --prefix=/usr --disable-static && make
+
+# sed -i 's@\./@src/@' Doxyfile && doxygen
+
+
+make install
+
+# install -v -m755 -d /usr/share/doc/popt-1.18 &&
+# install -v -m644 doxygen/html/* /usr/share/doc/popt-1.18

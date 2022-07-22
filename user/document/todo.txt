@@ -93,3 +93,7 @@
       perhaps an example in the library dir
 
 
+2022-07-22T18:50:52Z
+
+     env_incantatio should add itself to the [] in the prompt
+     
