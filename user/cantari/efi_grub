@@ -1,4 +1,8 @@
 #!/bin/bash
+# https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-efi.html
+# required: efibootmgr-18
+# recommended: FreeType-2.12.1
+# optional: ...
 
 if [[ "$LFS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"

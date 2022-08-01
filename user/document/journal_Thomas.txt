@@ -914,12 +914,12 @@
 
 2022-07-22T18:50:52Z
 
-       The current build script takes us through chapter 9, then chapter 10,
+       The current build script takes us through chapter 9.  Then from chapter 10,
        compiling the kernel, and setting up the boot record is done manually.
 
        https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
 
-       1. rebuild kernel with efi config s10.3.1
+       1. rebuild kernel with efi config s10_linux
 
          after the `make defconfig` a file called '.config' will appear. This
          holds the kernel compile configuration options. Modify these as per
@@ -943,16 +943,16 @@
        2. build grub efi
        https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-efi.html
 
-          > build_efi_boot
+          > efi
           
 
-       3, install grub 
+       3, grub_install
         https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
 
           target drive should be formated as:
           sdb1 uefi 500M  (seems 100M would be more than enough)
           sdb2 swap 16G
-          sdb3 linux reset
+          sdb3 linux rest
 
           mkfs.ext4 /dev/sdb3
           mkfs.vfat /dev/sdb2

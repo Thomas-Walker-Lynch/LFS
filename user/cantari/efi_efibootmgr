@@ -1,0 +1,12 @@
+#!/bin/bash
+# https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/efibootmgr.html
+# required efivar-38, popt-1.18 
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "must be run in env_m2"
+  exit 1
+fi
+
+make EFIDIR=LFS_M2_FILESYSTEM EFI_LOADER=grubx64.efi
+make install EFIDIR=LFS_M2_FILESYSTEM
+

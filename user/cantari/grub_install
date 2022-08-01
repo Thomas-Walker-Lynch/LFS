@@ -1,0 +1,83 @@
+#!/bin/bash
+# called grub 'setup' in the book.
+# https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
+
+echo "currently done manually"
+exit 1
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "must be run in env_m2"
+  exit 1
+fi
+
+     target drive should be formated as:
+          sdx1 uefi 500M  (seems 100M would be more than enough)
+          sdx2 swap 16G
+          sdx3 linux rest
+
+     Seems that sdx1 should be much smaller, perhaps even as small as 1M:
+     grubx64.efi is very lightweight (136 KB with GRUB-2.06~rc1) so it will not use much space in the ESP. A typical ESP size
+     is 100 MB (for Windows boot manager, which uses about 50 MB in the ESP). Once grubx64.efi loaded by the firmware, it
+     will load GRUB modules in the boot partition. The default location is /boot/grub.
+
+
+     > sudo fdisk -l /dev/sda
+     Disk /dev/sda: 465,76 GiB, 500107862016 bytes, 976773168 sectors
+     Disk model: Portable SSD T5 
+     Units: sectors of 1 * 512 = 512 bytes
+     Sector size (logical/physical): 512 bytes / 512 bytes
+     I/O size (minimum/optimal): 512 bytes / 33553920 bytes
+     Disklabel type: dos
+     Disk identifier: 0x14fc2edf
+
+     Device     Boot    Start       End   Sectors   Size Id Type
+     /dev/sda1           2048   1026047   1024000   500M ef EFI (FAT-12/16/32)
+     /dev/sda2        1026048  34580479  33554432    16G 82 Linux swap / Solaris
+     /dev/sda3       34580480 976773167 942192688 449,3G 83 Linux
+
+# section starts describing how to make an emergency boot disk
+# that would be vary helpful if we accidentallyl were targetting the wrong device,
+# if there were an existing bootloader.  In this case we are donig a fresh install.
+
+# replace sdx wit the correct device,  we should set this in the initial
+# configuration file.
+LFS_M2_FILESYSTEM_DEVICE_ON_M1=/dev/sdx
+LFS_M2_EFI_PARTITION="$LFS_M2_FILESYSTEM_DEVICE_ON_M1"1
+mkdir -pv /boot/efi &&  
+mount -v -t vfat $LFS_M2_EFI_PARTITION /boot/efi
+
+# I had to edit fstab because /dev/sda1 was set to / while following the LFS11 directions
+# changed that to /dev/sda3.
+#
+# note that /dev/sda is referrs to the m2 device when it is being booted
+#
+cat >> /etc/fstab << EOF
+/dev/sda1 /boot/efi vfat defaults 0 1
+EOF
+
+# apparently we must have an efivarfs mounted
+# no devices are involved here ..
+# that mountpoint predicate sure looks useful, should add that to m2_bind maybe?
+#
+mountpoint /sys/firmware/efi/efivars || mount -v -t efivarfs efivarfs /sys/firmware/efi/efivars
+
+
+# now the drum roll! see if I can break two linux systems today ... lol
+grub-install --bootloader-id=LFS --recheck
+
+# Installing for x86_64-efi platform.
+# Installation finished. No error reported.
+
+# should add this to m2_unbind:
+umount /sys/firmware/efi/efivars
+
+why 'bind' ?
+m2_umount_all
+m2_mount_all
+missing unmount for /mnt/user/Lustucru, rather it deletes the mount point yikes
+
+cat /proc/mounts
+
+have to umount /dev/sdx1 before /dev/sdx3 because /dev/sdx1 is mounted into /dev/sdx3
+> sudo umount /dev/sdx1
+> sudo umount /dev/sdx3

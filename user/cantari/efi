@@ -1,4 +1,5 @@
 #!/bin/bash
+# https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/filesystems.html
 
 if [[ "$LFS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
@@ -6,14 +7,14 @@ if [[ "$LFS_ENV" != "m2" ]];then
 fi
 
 section="
-  mandoc
-  efivar
-  popt
-  freeteype
-  efibootmgr
-  grub
+mandoc
+efivar
+popt
+freeteype
+efibootmgr
+grub
 "
 
 IFS=$'\n'; for s in $section;do
-  frame env_incantatio $s build_$s
+  frame env_incantatio $s efi_$s
 done
