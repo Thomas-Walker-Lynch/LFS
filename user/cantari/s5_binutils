@@ -15,8 +15,8 @@ cd       build
 # x86_64-lfs-linux-gnu
 
 # configure exits with 1, which bash interprets as an error, then set -e stops the script
-../configure --prefix=$LFS_M2_FILESYSTEM/tools \
-             --with-sysroot=$LFS_M2_FILESYSTEM \
+../configure --prefix=$LFS_M2_FS/tools \
+             --with-sysroot=$LFS_M2_FS \
              --target=$LFS_TGT   \
              --disable-nls       \
              --disable-werror  

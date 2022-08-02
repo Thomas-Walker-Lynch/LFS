@@ -10,7 +10,7 @@ fi
             --host=$LFS_TGT                 \
             --without-bash-malloc
 make
-make DESTDIR=$LFS_M2_FILESYSTEM install
-ln -sv bash $LFS_M2_FILESYSTEM/bin/sh
+make DESTDIR=$LFS_M2_FS install
+ln -sv bash $LFS_M2_FS/bin/sh
 
 

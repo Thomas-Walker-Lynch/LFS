@@ -1,0 +1,19 @@
+# user build configuration example
+
+export MAKEFLAGS="-j12" 
+
+# where the target device is mounted on m1.
+# put the wrong device here and your m1 build system might be destroyed
+export LFSM1_M2_DEVICE=/dev/sda
+
+# these partitions are relative to where the target device is mounted on m1.
+export LFSM1_M2_DEVICE_EFI="$LFSM1_M2_DEVICE"1
+export LFSM1_M2_DEVICE_SWAP="$LFSM1_M2_DEVICE"2
+export LFSM1_M2_DEVICE_ROOT="$LFSM1_M2_DEVICE"3
+
+# where to mount the m2 target device
+export LFSM1_M2_BOOT="/mnt/m2_filesystem"
+export LFSM1_M2_FS="/mnt/m2_filesystem"
+
+
+

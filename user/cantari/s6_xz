@@ -11,5 +11,5 @@ fi
             --disable-static                  \
             --docdir=/usr/share/doc/xz-5.2.5
 make
-make DESTDIR=$LFS_M2_FILESYSTEM install
+make DESTDIR=$LFS_M2_FS install
 

@@ -1,0 +1,22 @@
+#!/bin/bash
+# run this once before any of the other scripts are run, or setup manually
+# > env_m1 env_m1_root setup
+
+if [[ "$LFS_ENV" != "m1_root" ]];then
+  echo $(basename "$0") "must be run in env_m1_root"
+  exit 1
+fi
+
+if [ ! -d "$LFS_M2_FS" ]; then
+  mkdir "$LFS_M2_FS"
+fi
+mountpoint "$LFS_M2_FS" || mount $LFS_M2_DEVICE_FS "$LFS_M2_FS"
+chmod ugo+rwxt  "$LFS_M2_FS"
+
+if [ ! -d "$LFS_M2_EFI" ]; then
+  mkdir "$LFS_M2_EFI"
+fi
+mountpoint "$LFS_M2_EFI" || mount $LFS_M2_DEVICE_EFI "$LFS_M2_EFI"
+
+
+

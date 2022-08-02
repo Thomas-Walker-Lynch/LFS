@@ -9,7 +9,7 @@ fi
 umount /mnt/m2_filesystem/mnt/Lustucru || true
 rmdir -v /mnt/m2_filesystem/mnt/Lustucru || true
 
-umount -v $LFS_M2_FILESYSTEM/dev/pts || true
-umount -v $LFS_M2_FILESYSTEM/{sys,proc,run,dev} || true
+umount -v $LFS_M2_FS/dev/pts || true
+umount -v $LFS_M2_FS/{sys,proc,run,dev} || true
 
 

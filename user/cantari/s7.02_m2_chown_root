@@ -7,10 +7,10 @@ fi
 
 # -h will change the owner of a symbolic link instead just changing the owner of the target
 # added tmp to the chrown list, book left it owned by lfs (or was it not created yet in the book?)
-# $LFS_M2_FILESYSTEM/source remains owned by lfs hmmm.
-chown -hR root:root $LFS_M2_FILESYSTEM/{tmp,usr,lib,var,etc,bin,sbin,tools}
+# $LFS_M2_FS/source remains owned by lfs hmmm.
+chown -hR root:root $LFS_M2_FS/{tmp,usr,lib,var,etc,bin,sbin,tools}
 case $(uname -m) in
-  x86_64) chown -hR root:root $LFS_M2_FILESYSTEM/lib64 ;;
+  x86_64) chown -hR root:root $LFS_M2_FS/lib64 ;;
 esac
 
 set +x

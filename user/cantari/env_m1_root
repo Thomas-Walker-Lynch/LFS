@@ -35,5 +35,5 @@ sudo -E \
     PS1="$PPS1"\
     PS2="$PPS2"\
     PROJECT="$PROJECT:env_m1_root"\
-    PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"\
+    PATH="$PATH":/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\
     $script

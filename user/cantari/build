@@ -11,7 +11,7 @@
 # sudo mkdir /mnt/m2_filesystem
 # sudo mount /dev/sdb1 /mnt/m2_filesystem
 # chown lfs:lfs /mnt/m2_filesystem
-export LFS_M2_FILESYSTEM="/mnt/m2_filesystem"
+export LFS_M2_FS="/mnt/m2_filesystem"
 
 # can't frame this or the 'really?' prompt goes into the logs ...
 # env_m1 env_m1_root m2_filesystem_wipe

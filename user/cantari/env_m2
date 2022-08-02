@@ -4,11 +4,11 @@
 script="$@"
 
 if [[ -z "$script" ]]; then
-  script=/bin/bash\ --init-file\ "$M2FS_REPO_USER_DIR"/library/bashrc_lfs
+  script=/bin/bash\ --init-file\ "$LFSM2_REPO_USER_DIR"/library/bashrc_lfs
 fi
 
-if [[ !  -x "$LFS_M2_FILESYSTEM"/usr/local/bin/Z ]]; then
-  echo $(basename "$0") "no \$LFS_M2_FILESYSTEM/usr/local/bin/Z, did you run 'book_m1_to_m2' ?"  > /dev/stderr
+if [[ !  -x "$LFS_M2_FS"/usr/local/bin/Z ]]; then
+  echo $(basename "$0") "no \$LFS_M2_FS/usr/local/bin/Z, did you run 'book_m1_to_m2' ?"  > /dev/stderr
   exit 1
 fi
 
@@ -22,8 +22,8 @@ if [[ ! -d /mnt/m2_filesystem/mnt/Lustucru/user ]]; then
   exit 1
 fi
 
-echo "chroot to"  "$LFS_M2_FILESYSTEM"
-chroot "$LFS_M2_FILESYSTEM" /usr/bin/env --ignore-environment \
+echo "chroot to"  "$LFS_M2_FS"
+chroot "$LFS_M2_FS" /usr/bin/env --ignore-environment \
   HOSTNAME="$HOSTNAME"\
   USERNAME="$USERNAME"\
   TMP="/tmp"\
@@ -35,13 +35,13 @@ chroot "$LFS_M2_FILESYSTEM" /usr/bin/env --ignore-environment \
   EDITOR="$EDITOR" \
   PPS1="$PPS1"\
   PPS2="$PPS2"\
-  REPO_HOME="$M2FS_REPO_HOME"\
+  REPO_HOME="$LFSM2_REPO_HOME"\
   REPO="$REPO"\
-  REPO_DIR="$M2FS_REPO_DIR"\
+  REPO_DIR="$LFSM2_REPO_DIR"\
   PROJECT="$PROJECT:env_m2"\
   LFS_ENV="m2"\
   LFS_LOG="$LFS_LOG"\
-  LFS_M2_FILESYSTEM="/"\
-  "$M2FS_REPO_DIR"/user/cantari/env_m2-1 $script
+  LFS_M2_FS="/"\
+  "$LFSM2_REPO_DIR/user/cantari/env_m2-1" $script
 
 #set +x

@@ -5,30 +5,27 @@
 
 script="$@"
 
-# requires custom configuration:
-export MAKEFLAGS="-j12" 
-
 # according to the book	   
 umask 022
-LC_ALL=POSIX
-LFS_TGT="$(uname -m)-lfs-linux-gnu"
-PATH="/usr/bin"
+export LC_ALL=POSIX
+export LFS_TGT="$(uname -m)-lfs-linux-gnu"
+export PATH="/usr/bin"
 if [ ! -L /bin ]; then 
-  export PATH="/bin:$PATH"
+  PATH=/bin:"$PATH"
 fi	 
-PATH="$LFS_M2_FILESYSTEM/tools/bin:$PATH"
-CONFIG_SITE="$LFS_M2_FILESYSTEM/usr/share/config.site"
-export LC_ALL LFS_TGT PATH CONFIG_SITE
+PATH="$LFS_M2_FS/tools/bin":"$PATH"
+PATH="$REPO_USER_DIR/cantari":/user/local/bin:"$PATH"
+export CONFIG_SITE="$LFS_M2_FS/usr/share/config.site"
 
 # for our build scripts
-export PATH="/usr/local/bin:$PATH"
-source "$REPO_DIR"/activate
+source "$REPO_DIR/activate"
+PATH="$REPO_USER_DIR/cantari":/usr/local/bin:"$PATH"
+source "$REPO_USER_DIR/build/configuration"
 
-# These are the REPO variables within the m2fs
-# used by the scripts 'book_m1_to_m2' and 'env_m2', or anywhere else they are useful
-export M2FS_REPO_HOME="/mnt"
-export M2FS_REPO_DIR="$M2FS_REPO_HOME"/"$REPO"
-export M2FS_REPO_USER_DIR="$M2FS_REPO_DIR"/user
+# These values to be used in the m2 environment for REPO_HOME etc.
+export LFSM2_REPO_HOME="/mnt"
+export LFSM2_REPO_DIR="$LFSM2_REPO_HOME/$REPO"
+export LFSM2_REPO_USER_DIR="$LFSM2_REPO_DIR/user"
 
 
 $script

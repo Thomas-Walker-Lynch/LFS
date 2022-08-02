@@ -12,9 +12,9 @@ fi
             --enable-no-install-program=kill,uptime
 
 make
-make DESTDIR=$LFS_M2_FILESYSTEM install
-mv -v $LFS_M2_FILESYSTEM/usr/bin/chroot              $LFS_M2_FILESYSTEM/usr/sbin
-mkdir -pv $LFS_M2_FILESYSTEM/usr/share/man/man8
-mv -v $LFS_M2_FILESYSTEM/usr/share/man/man1/chroot.1 $LFS_M2_FILESYSTEM/usr/share/man/man8/chroot.8
-sed -i 's/"1"/"8"/'                    $LFS_M2_FILESYSTEM/usr/share/man/man8/chroot.8
+make DESTDIR=$LFS_M2_FS install
+mv -v $LFS_M2_FS/usr/bin/chroot              $LFS_M2_FS/usr/sbin
+mkdir -pv $LFS_M2_FS/usr/share/man/man8
+mv -v $LFS_M2_FS/usr/share/man/man1/chroot.1 $LFS_M2_FS/usr/share/man/man8/chroot.8
+sed -i 's/"1"/"8"/'                    $LFS_M2_FS/usr/share/man/man8/chroot.8
 

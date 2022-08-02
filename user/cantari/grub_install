@@ -41,10 +41,8 @@ fi
 
 # replace sdx wit the correct device,  we should set this in the initial
 # configuration file.
-LFS_M2_FILESYSTEM_DEVICE_ON_M1=/dev/sdx
-LFS_M2_EFI_PARTITION="$LFS_M2_FILESYSTEM_DEVICE_ON_M1"1
 mkdir -pv /boot/efi &&  
-mount -v -t vfat $LFS_M2_EFI_PARTITION /boot/efi
+mount -v -t vfat $LFS_M2_EFI /boot/efi
 
 # I had to edit fstab because /dev/sda1 was set to / while following the LFS11 directions
 # changed that to /dev/sda3.

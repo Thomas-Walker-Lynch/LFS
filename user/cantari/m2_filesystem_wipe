@@ -12,12 +12,12 @@ m2_unbind
 
 # skip /mnt just in case it did not unmount (has happened ...)
 echo "rm -rf the following:"
-find "$LFS_M2_FILESYSTEM" \
+find "$LFS_M2_FS" \
   -maxdepth 1 -mindepth 1 \
   ! -name "mnt" \
   -print \
   \( -exec rm -rf {} \; -o -quit \)
 
-rmdir -v "$LFS_M2_FILESYSTEM"/mnt
+rmdir -v "$LFS_M2_FS"/mnt
 
 # set +x

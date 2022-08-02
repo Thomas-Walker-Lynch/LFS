@@ -8,5 +8,8 @@ export TZ=UTC
 export TIME_STYLE=long-iso
 
 export REPO_USER_DIR="$REPO_DIR/user"
-export PATH="$REPO_USER_DIR/cantari:$PATH"
-cd "$REPO_USER_DIR"
+export PATH="$REPO_USER_DIR/cantari:/user/local/bin:$PATH"
+
+cd "$REPO_USER_DIR/build"
+
+

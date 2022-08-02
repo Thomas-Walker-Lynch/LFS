@@ -15,8 +15,10 @@
 
 script="$@"
 
-# should be a parameter
-lfs_m2_filesystem="/mnt/m2_filesystem"
+if [[ ! -f "$REPO_USER_DIR/build/configuration" ]]; then
+  echo "build/configuration is missing.  See library/configuration for an example. Exiting."
+  exit 1
+fi
 
 if [[ -z "$script" ]]; then
   script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/library/bashrc_lfs
@@ -42,7 +44,6 @@ env --ignore-environment \
   PROJECT="$PROJECT:env_m1"\
   LFS_ENV="m1"\
   LFS_LOG="$LFS_LOG"\
-  LFS_M2_FILESYSTEM="$lfs_m2_filesystem"\
   "$REPO_USER_DIR"/cantari/env_m1-1 $script
   
 
