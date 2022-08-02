@@ -1,0 +1,10 @@
+#!/bin/bash
+# build configuration
+# this is sourced into the environment
+# perhpas add a flag for installing documenation or not
+
+export LFS_M2_FS="/"
+
+
+
+

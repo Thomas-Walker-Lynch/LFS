@@ -17,7 +17,7 @@ export INCANTATIO="$(basename "$INCANTATIO_PATH")"
 export SOURCE_DIR="${INCANTATIO%\.tar*}"
 # echo $(basename "$0") $INCANTATIO_PATH $INCANTATIO $SOURCE_DIR
 
-cd $LFS_M2_FS
+cd "$LFS_M2_FS"
 ! test -d source && mkdir source
 cd source
 

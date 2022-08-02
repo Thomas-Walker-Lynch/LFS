@@ -1,6 +1,10 @@
 #!/bin/bash
 # for legacy boot,  the EFI partition, if any, will be ignored
 
+see https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
+scroll down to section
+Kernel Configuration for UEFI support
+
 
 if [[ "$LFS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"

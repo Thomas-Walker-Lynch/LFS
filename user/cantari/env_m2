@@ -3,8 +3,9 @@
 
 script="$@"
 
-if [[ -z "$script" ]]; then
-  script=/bin/bash\ --init-file\ "$LFSM2_REPO_USER_DIR"/library/bashrc_lfs
+if [[ "$LFS_ENV" != "m1_root" ]];then
+  echo $(basename "$0") "must be run in env_m1 env_m1_root"
+  exit 1
 fi
 
 if [[ !  -x "$LFS_M2_FS"/usr/local/bin/Z ]]; then
@@ -12,20 +13,19 @@ if [[ !  -x "$LFS_M2_FS"/usr/local/bin/Z ]]; then
   exit 1
 fi
 
-if [[ "$LFS_ENV" != "m1_root" ]];then
-  echo $(basename "$0") "must be run in env_m1 env_m1_root"
+if [[ ! -d "$LFS_M2_FS"/mnt/Lustucru/user ]]; then
+  echo $(basename "$0") "repo not found on mount, have you run m2fs_bind?"
   exit 1
 fi
 
-if [[ ! -d /mnt/m2_filesystem/mnt/Lustucru/user ]]; then
-  echo $(basename "$0") "repo not found on mount, have you run m2_bind?"
-  exit 1
+if [[ -z "$script" ]]; then
+  script=/bin/bash\ --init-file\ "$LFSM2_REPO_USER_DIR"/library/bashrc_lfs
 fi
+
 
 echo "chroot to"  "$LFS_M2_FS"
 chroot "$LFS_M2_FS" /usr/bin/env --ignore-environment \
   HOSTNAME="$HOSTNAME"\
-  USERNAME="$USERNAME"\
   TMP="/tmp"\
   TZ="$TZ"\
   TIME_STYLE="$TIME_STYLE"\
@@ -35,13 +35,11 @@ chroot "$LFS_M2_FS" /usr/bin/env --ignore-environment \
   EDITOR="$EDITOR" \
   PPS1="$PPS1"\
   PPS2="$PPS2"\
-  REPO_HOME="$LFSM2_REPO_HOME"\
   REPO="$REPO"\
-  REPO_DIR="$LFSM2_REPO_DIR"\
+  LFSM2_REPO_DIR="$LFSM2_REPO_DIR"
   PROJECT="$PROJECT:env_m2"\
   LFS_ENV="m2"\
   LFS_LOG="$LFS_LOG"\
-  LFS_M2_FS="/"\
   "$LFSM2_REPO_DIR/user/cantari/env_m2-1" $script
 
 #set +x

@@ -1,0 +1,13 @@
+#!/bin/bash
+# build configuration
+# this is sourced into the environment
+# perhpas add a flag for installing documenation or not
+
+# where to mount the m2 target device
+export LFS_M2_EFI="/mnt/m2_efi"
+export LFS_M2_FS="/mnt/m2_fs"
+
+# where the repo will be mounted relative to the root of the m2 fs
+export LFSM2_REPO_DIR="/mnt"
+
+

@@ -8,7 +8,7 @@ if [[ "$LFS_ENV" != "m1_root" ]];then
   exit 1
 fi
 
-m2_unbind
+m2fs_unbind
 
 # skip /mnt just in case it did not unmount (has happened ...)
 echo "rm -rf the following:"

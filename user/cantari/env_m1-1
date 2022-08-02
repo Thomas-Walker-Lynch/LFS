@@ -18,14 +18,8 @@ PATH="$REPO_USER_DIR/cantari":/user/local/bin:"$PATH"
 export CONFIG_SITE="$LFS_M2_FS/usr/share/config.site"
 
 # for our build scripts
-source "$REPO_DIR/activate"
-PATH="$REPO_USER_DIR/cantari":/usr/local/bin:"$PATH"
-source "$REPO_USER_DIR/build/configuration"
-
-# These values to be used in the m2 environment for REPO_HOME etc.
-export LFSM2_REPO_HOME="/mnt"
-export LFSM2_REPO_DIR="$LFSM2_REPO_HOME/$REPO"
-export LFSM2_REPO_USER_DIR="$LFSM2_REPO_DIR/user"
+source "$REPO_USER_DIR/build/config"
+source "$REPO_USER_DIR/build/config_m1"
 
 
 $script

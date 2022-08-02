@@ -938,7 +938,8 @@
           > env_m1 env_root env_m2
           > frame env_incantatio linux s10.3.1_linux
 
-          note BLFS Kernel Configuration for UEFI
+          note BLFS Kernel Configuration for UEFI in:
+          https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
 
        2. build grub efi
        https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-efi.html

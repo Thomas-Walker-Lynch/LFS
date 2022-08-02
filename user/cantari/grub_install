@@ -55,7 +55,7 @@ EOF
 
 # apparently we must have an efivarfs mounted
 # no devices are involved here ..
-# that mountpoint predicate sure looks useful, should add that to m2_bind maybe?
+# that mountpoint predicate sure looks useful, should add that to m2fs_bind maybe?
 #
 mountpoint /sys/firmware/efi/efivars || mount -v -t efivarfs efivarfs /sys/firmware/efi/efivars
 
@@ -66,7 +66,7 @@ grub-install --bootloader-id=LFS --recheck
 # Installing for x86_64-efi platform.
 # Installation finished. No error reported.
 
-# should add this to m2_unbind:
+# should add this to m2fs_unbind:
 umount /sys/firmware/efi/efivars
 
 why 'bind' ?

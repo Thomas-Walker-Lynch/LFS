@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "must be run in env_m2"
+  exit 1
+fi
+
+cat > /etc/fstab << EOF
+# Begin /etc/fstab
+
+# file system  mount-point  type     options             dump  fsck
+#                                                              order
+$LFS_M2_DEVICE_EFI     /boot/efi    vfat    defaults             0     1
+$LFS_M2_DEVICE_SWAP    swap         swap     pri=1               0     0
+$LFS_M2_DEVICE_FS      /            ext4    defaults             1     1
+proc           /proc        proc     nosuid,noexec,nodev         0     0
+sysfs          /sys         sysfs    nosuid,noexec,nodev         0     0
+devpts         /dev/pts     devpts   gid=5,mode=620              0     0
+tmpfs          /run         tmpfs    defaults                    0     0
+devtmpfs       /dev         devtmpfs mode=0755,nosuid            0     0
+
+# End /etc/fstab
+EOF
