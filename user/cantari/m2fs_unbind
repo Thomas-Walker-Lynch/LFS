@@ -13,9 +13,5 @@ rmdir -v "$LFS_M2_FS$LFSM2_REPO_DIR"
 umount -v "$LFS_M2_FS"/dev/pts
 umount -v "$LFS_M2_FS"/{sys,proc,run,dev}
 
-umount -v "$LFS_M2_FS/boot"
-
-umount -v "$LFS_M2_FS"
-umount -v "$LFS_M2_EFI"
 
 
