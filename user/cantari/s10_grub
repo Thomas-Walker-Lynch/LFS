@@ -5,7 +5,10 @@ if [[ "$LFS_ENV" != "m2" ]];then
   exit 1
 fi
 
+# from section 10.4.3
+grub-install $LFS_M2_DEVICE
 
+# from section 10.4.4
 cat > /boot/grub/grub.cfg << "EOF"
 # Begin /boot/grub/grub.cfg
 set default=0

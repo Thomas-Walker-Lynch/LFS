@@ -1,5 +1,7 @@
 #!/bin/bash
 # for legacy boot,  the EFI partition, if any, will be ignored
+# make menuconfig is interactive,  there is also make oldconfig and make defconfig
+# the cp -iv at the bottom requests confirmation before overwriting
 
 
 if [[ "$LFS_ENV" != "m2" ]];then

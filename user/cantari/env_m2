@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -x
+# set -x
 
 script="$@"
 
@@ -36,7 +36,7 @@ chroot "$LFS_M2_FS" /usr/bin/env --ignore-environment \
   PPS1="$PPS1"\
   PPS2="$PPS2"\
   REPO="$REPO"\
-  LFSM2_REPO_DIR="$LFSM2_REPO_DIR"
+  LFSM2_REPO_DIR="$LFSM2_REPO_DIR"\
   PROJECT="$PROJECT:env_m2"\
   LFS_ENV="m2"\
   LFS_LOG="$LFS_LOG"\

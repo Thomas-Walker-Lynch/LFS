@@ -1,0 +1,13 @@
+#!/bin/bash
+set -x
+
+if [[ "$LFS_ENV" != "m1_root" ]];then
+ echo $(basename "$0") "must be run from env_m1_root"
+ exit 1
+fi
+
+m2fs_unbind
+
+umount -v "$LFS_M2_FS/boot"
+umount -v "$LFS_M2_FS"
+umount -v "$LFS_M2_EFI"
