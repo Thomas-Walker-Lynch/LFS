@@ -22,7 +22,6 @@ if [[ -z "$script" ]]; then
   script=/bin/bash\ --init-file\ "$LFSM2_REPO_USER_DIR"/library/bashrc_lfs
 fi
 
-
 echo "chroot to"  "$LFS_M2_FS"
 chroot "$LFS_M2_FS" /usr/bin/env --ignore-environment \
   HOSTNAME="$HOSTNAME"\
@@ -30,6 +29,7 @@ chroot "$LFS_M2_FS" /usr/bin/env --ignore-environment \
   TZ="$TZ"\
   TIME_STYLE="$TIME_STYLE"\
   LANG="$LANG"\
+  LC_ALL="$LC_ALL"\
   TERM="$TERM" \
   TERMCAP="$TERMCAP" \
   EDITOR="$EDITOR" \

@@ -99,10 +99,14 @@
      
 2022-08-02T23:24:13Z
 
-        Install script env_m1 is not cleaning up expanded tar files because
-        they have the user specified in the tar file rather than that of the
-        user who expande the tar file.  I will add sudo for now.  Better
-        solution needed.
-
         s2.2 check script is not complete, e.g. perl is missing
 
+        env_incatatio does not clean up source files because tar expands out
+        in the name of the original owners.  I added sudo as a quick fix,
+        now env_m2 fails on the line with sudo next recognized.
+
+
+2022-08-03T14:08:22Z
+
+        finish c10,  also get the software from BLF for making a rescue disk
+        

@@ -18,7 +18,12 @@ done
 # 
 s10.3.2_module_load_order
 
-# s10.4 book proposes to make a rescue copy of the boot record, but where to put it?
+# s10.4 book proposes to make a rescue copy of the boot record.  This could save
+# us if we have the wrong device in the configuration, perhaps the build machine's
+# device. (But then where do we store it? Probably need a config variable for
+# this) Or, if the target media is already bootable and we mess that up.  But this
+# requires getting some software from BLF, so I will leave this for later.
+#
+# s10.4.1_copy_boot_rec
 
-# next step is to install the boot record to the target device.  I will do that manually
-
+s10.4.3_grub_install

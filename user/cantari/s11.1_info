@@ -1,0 +1,23 @@
+#! /bin/bash
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "must be run in env_m2"
+  exit 1
+fi
+
+echo 11.1 > /etc/lfs-release
+
+cat > /etc/lsb-release << "EOF"
+DISTRIB_ID="Linux From Scratch"
+DISTRIB_RELEASE="11.1"
+DISTRIB_CODENAME="Lustucru"
+DISTRIB_DESCRIPTION="Linux From Scratch"
+EOF
+
+cat > /etc/os-release << "EOF"
+NAME="Linux From Scratch"
+VERSION="11.1"
+ID=lfs
+PRETTY_NAME="Linux From Scratch 11.1"
+VERSION_CODENAME="Lustucru"
+EOF

@@ -1,4 +1,5 @@
 #! /bin/bash
+# for grub build see s8_grub
 
 if [[ "$LFS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
@@ -6,7 +7,8 @@ if [[ "$LFS_ENV" != "m2" ]];then
 fi
 
 # from section 10.4.3
-grub-install $LFS_M2_DEVICE
+# looks like a small error in the book, grub-install assumed efi. Legacy boot requires a specific target
+grub-install --target=i386-pc $LFS_M2_DEVICE
 
 # from section 10.4.4
 cat > /boot/grub/grub.cfg << "EOF"

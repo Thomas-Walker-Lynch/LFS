@@ -30,6 +30,7 @@ env --ignore-environment \
   TZ="$TZ"\
   TIME_STYLE="$TIME_STYLE"\
   LANG="$LANG"\
+  LC_ALL="$LC_ALL"\
   TERM="$TERM" \
   TERMCAP="$TERMCAP" \
   EDITOR="$EDITOR" \
