@@ -108,5 +108,8 @@
 
 2022-08-03T14:08:22Z
 
-        finish c10,  also get the software from BLF for making a rescue disk
-        
+        -finish c10,  also get the software from BLF for making a rescue disk
+        -add / to double quote variable juxtaposition for LFS_M2_FS
+        -need config parameter for build, and config directory in build, library config
+         perhaps exmaple in name? - issue here is config files live in build, but
+         git does not put build stuff in the repo.

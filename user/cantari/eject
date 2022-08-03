@@ -7,6 +7,8 @@ if [[ "$LFS_ENV" != "m1_root" ]];then
 fi
 
 m2fs_unbind
-
 umount -v "$LFS_M2_FS/boot" "$LFS_M2_FS" "$LFS_M2_EFI"
-rmdir "$LFS_M2_FS" "$LFS_M2_EFI"
+
+rmdir -v "$LFS_M2_FS"/mnt && rmdir -v "$LFS_M2_FS" 
+rmdir -v "$LFS_M2_EFI"
+
