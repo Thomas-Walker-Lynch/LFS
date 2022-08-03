@@ -97,3 +97,12 @@
 
      env_incantatio should add itself to the [] in the prompt
      
+2022-08-02T23:24:13Z
+
+        Install script env_m1 is not cleaning up expanded tar files because
+        they have the user specified in the tar file rather than that of the
+        user who expande the tar file.  I will add sudo for now.  Better
+        solution needed.
+
+        s2.2 check script is not complete, e.g. perl is missing
+

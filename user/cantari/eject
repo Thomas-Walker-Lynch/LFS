@@ -8,6 +8,5 @@ fi
 
 m2fs_unbind
 
-umount -v "$LFS_M2_FS/boot"
-umount -v "$LFS_M2_FS"
-umount -v "$LFS_M2_EFI"
+umount -v "$LFS_M2_FS/boot" "$LFS_M2_FS" "$LFS_M2_EFI"
+rmdir "$LFS_M2_FS" "$LFS_M2_EFI"

@@ -961,5 +961,4 @@
        Emergency boot disk of the build system not a bad idea. 
        https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
 
-      
         

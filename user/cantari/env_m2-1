@@ -19,9 +19,11 @@ export REPO_HOME="/mnt"
 export REPO_DIR="$REPO_HOME/$REPO"
 export REPO_USER_DIR="$REPO_DIR/user"
 
-export PATH="$REPO_USER_DIR/cantari":/usr/local/bin:$PATH
 source "$REPO_USER_DIR/build/config"
 source "$REPO_USER_DIR/build/config_m2"
+
+export PATH="$REPO_USER_DIR/cantari":/usr/local/bin:$PATH
+
 
 $script
 

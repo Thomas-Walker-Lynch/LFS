@@ -1,6 +1,5 @@
 #!/bin/bash
 # this should be sourced from the calling script, not executed directly
-# this returns the variables: incantatio, SOURCE_DIR
 # set -x
 
 incantatio_stem="$1"

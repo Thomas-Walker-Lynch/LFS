@@ -1,5 +1,6 @@
 #!/bin/bash
 # Simple script to list version numbers of critical development tools
+# it doesn't check for perl
 
 if [[ "$LFS_ENV" != "m1" ]];then
   echo $(basename "$0") "must be run in env_m1"
