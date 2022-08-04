@@ -11,7 +11,7 @@ fi
 frame s7.05_mkdirs
 frame s7.06_essential
 
-frame env_incantatio "gcc" s7.07_libstdc++
+frame env_source "gcc" s7.07_libstdc++
 
 section="
 gettext
@@ -24,7 +24,7 @@ util-linux
 
 IFS=$'\n'; for s in $section;do
   # echo s7_$s
-  frame env_incantatio $s s7_$s
+  frame env_source $s s7_$s
 done
 
 #s7.14_checkpoint

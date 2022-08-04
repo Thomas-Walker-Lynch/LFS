@@ -10,7 +10,7 @@ lfs-bootscripts
 "
 
 IFS=$'\n'; for s in $section;do
-  frame env_incantatio $s s9_$s
+  frame env_source $s s9_$s
 done
 
 frame s9.5.1_eth0_exmaple

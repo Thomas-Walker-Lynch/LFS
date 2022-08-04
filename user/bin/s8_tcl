@@ -8,7 +8,7 @@ fi
 
 # install the documentation
 pushd /usr/share/doc
-#tar -xf "$(ls -d $REPO_USER_DIR/build/upstream/incantatio/tcl*-html.tar*)" --strip-components=1  # why strip-components=1 ??
+#tar -xf "$(ls -d $REPO_USER_DIR/build/upstream/source/tcl*-html.tar*)" --strip-components=1  # why strip-components=1 ??
 tar -xf "$(ls -d $REPO_USER_DIR/build/upstream/document/tcl-*.tar* | head -1)"
 popd
 
@@ -47,7 +47,7 @@ mkdir -v -p /usr/share/doc/tcl-8.6.12
 
 # I just expanded the html docs into usr/share/doc in the first place.
 # Note here they add the dash between tcl and the version.  hmmm. Perhaps
-# should fix the tcl and expect incantatios up front ...
+# should fix the tcl and expect sources up front ...
 #cp -v -r  ../html/* /usr/share/doc/tcl-8.6.12
 
 #set +x

@@ -16,5 +16,5 @@ grub
 "
 
 IFS=$'\n'; for s in $section;do
-  frame env_incantatio $s efi_$s
+  frame env_source $s efi_$s
 done

@@ -5,7 +5,7 @@ https://www.linuxfromscratch.org/patches/downloads/
 
 
 
- Download or otherwise obtain the following incantatio:
+ Download or otherwise obtain the following source:
 
 Acl (2.3.1) - 348 KB:
 
@@ -327,7 +327,7 @@ Linux (5.16.9) - 124,577 KB:
 
     The Linux kernel is updated relatively often, many times due to discoveries of security vulnerabilities. The latest available stable kernel version may be used, unless the errata page says otherwise.
 
-    For users with limited speed or expensive bandwidth who wish to update the Linux kernel, a baseline version of the incantatio and patches can be downloaded separately. This may save some time or cost for a subsequent patch level upgrade within a minor release.
+    For users with limited speed or expensive bandwidth who wish to update the Linux kernel, a baseline version of the source and patches can be downloaded separately. This may save some time or cost for a subsequent patch level upgrade within a minor release.
 M4 (1.4.19) - 1,617 KB:
 
     Home page: https://www.gnu.org/software/m4/
@@ -564,11 +564,11 @@ Zstd (1.5.2) - 1,892 KB:
 
     MD5 sum: 072b10f71f5820c24761a65f31f43e73
 
-Total size of these incantatio: about 446 MB
+Total size of these source: about 446 MB
 3.3. Needed Patches
 
 --------------------------------------------------------------------------------
-In addition to the incantatio, several patches are also required. These patches correct any mistakes in the incantatio that should be fixed by the maintainer. The patches also make small modifications to make the incantatio easier to work with. The following patches will be needed to build an LFS system:
+In addition to the source, several patches are also required. These patches correct any mistakes in the source that should be fixed by the maintainer. The patches also make small modifications to make the source easier to work with. The following patches will be needed to build an LFS system:
 
 Binutils LTO Fix Patch - 3.5 KB:
 

@@ -18,7 +18,7 @@ mkdir -pv /etc/udev/rules.d
 
 make check
 make install
-tar -xvf "$REPO_USER_DIR"/build/upstream/incantatio/udev-lfs-20171102.tar.xz
+tar -xvf "$REPO_USER_DIR"/build/upstream/source/udev-lfs-20171102.tar.xz
 make -f udev-lfs-20171102/Makefile.lfs install
 
 udevadm hwdb --update

@@ -10,7 +10,7 @@ if [[ "$LFS_ENV" != "m2" ]];then
 fi
 
 mkdir -pv /usr/share/fonts/unifont &&
-  gunzip -c "$REPO_USER_DIR"/build/upstream/incantatio/unifont-14.0.04.pcf.gz > /usr/share/fonts/unifont/unifont.pcf
+  gunzip -c "$REPO_USER_DIR"/build/upstream/source/unifont-14.0.04.pcf.gz > /usr/share/fonts/unifont/unifont.pcf
 
 # see here for a 32 bit LFS:
 # https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-efi.html

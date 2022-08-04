@@ -18,7 +18,7 @@ if [ ! -L /bin ]; then
   PATH=/bin:"$PATH"
 fi	 
 PATH="$LFS_M2_FS/tools/bin":"$PATH"
-PATH="$REPO_USER_DIR/cantari":/user/local/bin:"$PATH"
+PATH="$REPO_USER_DIR/bin":/user/local/bin:"$PATH"
 export CONFIG_SITE="$LFS_M2_FS/usr/share/config.site"
 
 

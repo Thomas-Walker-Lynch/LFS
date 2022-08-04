@@ -8,9 +8,9 @@ if [[ "$LFS_ENV" != "m1" ]];then
   exit 1
 fi
 
-incantatio_dir="$REPO_USER_DIR/build/upstream/incantatio"
-mkdir -p "$incantatio_dir"
-pushd "$incantatio_dir"
+source_dir="$REPO_USER_DIR/build/upstream/source"
+mkdir -p "$source_dir"
+pushd "$source_dir"
 
 link="
 https://download.savannah.gnu.org/releases/acl/acl-2.3.1.tar.xz

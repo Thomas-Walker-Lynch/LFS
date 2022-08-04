@@ -28,5 +28,5 @@ gcc
 
 IFS=$'\n'; for s in $section;do
   # echo s6_$s
-  eval frame env_incantatio $s s6_$s
+  eval frame env_source $s s6_$s
 done

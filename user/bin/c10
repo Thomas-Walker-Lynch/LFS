@@ -12,7 +12,7 @@ linux
 "
 
 IFS=$'\n'; for s in $section;do
-  frame env_incantatio $s s10_$s
+  frame env_source $s s10_$s
 done
 
 # 

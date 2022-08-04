@@ -15,9 +15,9 @@ glibc
 
 IFS=$'\n'; for s in $section;do
   # echo s6_$s
-  eval frame env_incantatio $s s5_$s
+  eval frame env_source $s s5_$s
 done
 
-# libstdc++ is found in the gcc incantatio:
-frame env_incantatio gcc s5_libstdc++
+# libstdc++ is found in the gcc source:
+frame env_source gcc s5_libstdc++
 

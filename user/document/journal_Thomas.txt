@@ -861,7 +861,7 @@
 
        Instead of requring to be sourced can these run a subshell?
          frame-initialize:test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
-         incantatio_untar:test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
+         source_untar:test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
 
        Roberts transcript ends with a call to an unknown bind-lfs script, and a call to chroot
        to run the system.  I.e. in this script he does not write boot record. As I recall,
@@ -929,14 +929,14 @@
          If not already in env_m2,  then
 
           If we need to configure the kernel, then instead
-          > frame env_incantatio linux  <- this might take a while as it is untaring
-          the incantatio ;-) 
+          > frame env_source linux  <- this might take a while as it is untaring
+          the source ;-) 
           .. then change .config, run the script.
           If make menuconfig is to be used, then run the above in a vt terminal.
 
           If no config needed:
           > env_m1 env_root env_m2
-          > frame env_incantatio linux s10.3.1_linux
+          > frame env_source linux s10.3.1_linux
 
           note BLFS Kernel Configuration for UEFI in:
           https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html

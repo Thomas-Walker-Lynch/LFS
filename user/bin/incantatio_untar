@@ -2,16 +2,16 @@
 # this should be sourced from the calling script, not executed directly
 # set -x
 
-incantatio_stem="$1"
-if [ -z "$incantatio_stem" ]; then
-  echo $(basename "$0") requires a first parameter for the incantatio_stem name > /dev/stderr
+source_stem="$1"
+if [ -z "$source_stem" ]; then
+  echo $(basename "$0") requires a first parameter for the source_stem name > /dev/stderr
   exit 1
 fi
 
 (return 0 2>/dev/null) && sourced=1 || sourced=0
 test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
 
-export INCANTATIO_PATH="$(ls -d "$REPO_USER_DIR"/build/upstream/incantatio/"$incantatio_stem"-*.tar* | head -1)"
+export INCANTATIO_PATH="$(ls -d "$REPO_USER_DIR"/build/upstream/source/"$source_stem"-*.tar* | head -1)"
 export INCANTATIO="$(basename "$INCANTATIO_PATH")"
 export SOURCE_DIR="${INCANTATIO%\.tar*}"
 # echo $(basename "$0") $INCANTATIO_PATH $INCANTATIO $SOURCE_DIR

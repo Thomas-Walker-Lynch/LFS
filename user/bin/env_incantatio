@@ -3,18 +3,18 @@
 # way to delete the entire machine.
 #set -x
 
-incantatio=$1
+source=$1
 script=${@:2}
 
-if [[ -z "$incantatio" ]]; then
-  echo $(basename "$0") "requires an incantatio as a first argument"
+if [[ -z "$source" ]]; then
+  echo $(basename "$0") "requires an source as a first argument"
   exit 1
 fi
 if [[ -z "$script" ]]; then
   script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/library/bashrc_lfs
 fi
 
-source incantatio_untar "$1"  
+source source_untar "$1"  
 
 $script 
 

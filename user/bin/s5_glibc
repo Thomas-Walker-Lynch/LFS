@@ -29,7 +29,7 @@ esac
 popd
 
 #--------------------------------------------------------------------------------
-# now we build the cantari
+# now we build the bin
 
 mkdir -v build
 cd build

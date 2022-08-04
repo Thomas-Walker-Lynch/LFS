@@ -40,6 +40,6 @@ chroot "$LFS_M2_FS" /usr/bin/env --ignore-environment \
   PROJECT="$PROJECT:env_m2"\
   LFS_ENV="m2"\
   LFS_LOG="$LFS_LOG"\
-  "$LFSM2_REPO_DIR/user/cantari/env_m2-1" $script
+  "$LFSM2_REPO_DIR/user/bin/env_m2-1" $script
 
 #set +x

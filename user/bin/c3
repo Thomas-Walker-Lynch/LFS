@@ -6,6 +6,6 @@ if [[ "$LFS_ENV" != "m1" ]];then
 fi
 
 frame s3.2_wget_all_document
-frame s3.2_wget_all_incantatio
+frame s3.2_wget_all_source
 frame s3.2_wget_all_patch
 

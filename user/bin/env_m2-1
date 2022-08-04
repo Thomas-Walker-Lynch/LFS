@@ -22,7 +22,7 @@ export REPO_USER_DIR="$REPO_DIR/user"
 source "$REPO_USER_DIR/build/config"
 source "$REPO_USER_DIR/build/config_m2"
 
-export PATH="$REPO_USER_DIR/cantari":/usr/local/bin:$PATH
+export PATH="$REPO_USER_DIR/bin":/usr/local/bin:$PATH
 
 
 $script

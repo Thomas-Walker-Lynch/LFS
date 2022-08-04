@@ -5,9 +5,9 @@ if [[ "$LFS_ENV" != "m1" ]];then
   exit 1
 fi
 
-tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/mpfr-*.tar.*
-tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/gmp-*.tar.*
-tar -xf "$REPO_USER_DIR"/build/upstream/incantatio/mpc-*.tar.*
+tar -xf "$REPO_USER_DIR"/build/upstream/source/mpfr-*.tar.*
+tar -xf "$REPO_USER_DIR"/build/upstream/source/gmp-*.tar.*
+tar -xf "$REPO_USER_DIR"/build/upstream/source/mpc-*.tar.*
 
 mv -v mpfr-* mpfr
 mv -v gmp-* gmp

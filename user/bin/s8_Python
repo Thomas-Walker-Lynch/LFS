@@ -22,6 +22,6 @@ make install
       --no-same-owner       \
       --no-same-permissions \
       -C /usr/share/doc/python-3.10.2/html \
-      -xvf "$REPO_USER_DIR"/build/upstream/incantatio_document/python-3.10.2-docs-html.tar.bz2
+      -xvf "$REPO_USER_DIR"/build/upstream/source_document/python-3.10.2-docs-html.tar.bz2
 
   

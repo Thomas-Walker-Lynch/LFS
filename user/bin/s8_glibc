@@ -56,7 +56,7 @@ rpc: files
 # End /etc/nsswitch.conf
 EOF
 
-tar -xf "$REPO_USER_DIR/build/upstream/incantatio/tzdata2021e.tar.gz"
+tar -xf "$REPO_USER_DIR/build/upstream/source/tzdata2021e.tar.gz"
 #tar -xf ../../tzdata2021e.tar.gz
 
 ZONEINFO=/usr/share/zoneinfo
