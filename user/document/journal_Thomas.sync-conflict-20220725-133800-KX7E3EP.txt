@@ -1,0 +1,906 @@
+
+2022-02-17
+  first meeting
+
+2022-02-22 [Tuesday]
+  Robert and Thomas discussed setting up the emulator and use of ssh, now on YouTube:
+    https://www.youtube.com/watch?v=X5_CRIbRjBo
+
+2022-02-24
+  set up an emulator first time in years, screwed up the disk while going through LFS book starting again
+
+  installed emulated debian11, got ssh running
+
+  ----------------------------------------
+  creating a new machine
+    because I screwed up the other one by removing package dependencies when removing python3 before
+    reinstalling it .., which deleted all sorts of stuff including apparently xfce4.
+
+  running virt-manager electing to create a new machine off the menus
+
+  machine name: debian11-2
+  network: bridge virbr0
+
+  Used browse option to select the install image from local lib.
+
+  Used the browse option to select already created disk located in lib.
+    Had one already, otherwise would have created a new one.  Should
+    go find where virt-manager stores those by default, and delete any
+    existing ones.
+
+  mem: 4096
+  secondary storage: 30G
+  cores: 12
+     Wonder if it is a bad idea to let is loose on all the cores on
+     the machine.  Funny, noticed in /proc/cpuinfo that only 11 cores
+     are listed ...
+
+  ----------------------------------------
+  Now installing Debian
+
+    graphical install 
+    hostname: debian11-2 (same as the machine name)
+    user: thomas
+    use entire disk, all files in single volume
+    no proxy info
+    window manager: xfce4 - perhaps save a little space
+    
+    ok finally it is install grub
+    it makes me click on and select /dev/sda1
+
+    ok, completed, what happens when I hit continue?
+    machine is booting, I have a grub boot menu, timed out while typing this booting debian
+    ok have a login window
+    logging in for the heck of it (i really just want to ssh in) yep, there is my desktop
+
+  ----------------------------------------
+  ssh into the emulator
+
+   > ip addr 
+
+    both my local network and virbr0 are 192.x.x.x/24 and they overlap. I wish they
+    were /8 don't know how routing will work, but I am using the full address of the
+    device so it will be ok.
+
+   > ssh thomas@192.168.122.1
+        ssh: connect to host 192.168.122.1 port 22: Connection refused
+
+   installing sshd on debian11-2:
+   https://techviewleo.com/install-configure-ssh-server-on-debian/
+
+   $ su -l
+   # apt update   <- strange all packages up to date from the install cdrom
+   # apt upgrade
+   # apt install openssh-server
+   # systemctl enable ssh
+   # systemctl start ssh
+   # ip a
+       -> 192.168.122.77
+
+   Oh gosh, had the wrong address, now I don't know if I really needed to
+   install sshd
+
+   > ssh thomas@192.168.122.77
+
+   yes I get a prompt and log in
+
+   ok back to emacs and back to the LFS book starting over ...
+   Find file: /ssh:thomas@192.168.122.77/~
+   <alt-x> shell
+   etc.
+   
+  ----------------------------------------
+  started on book - Linux from Scratch version 11.0  2021-09-01
+
+  installed LFS required packages, most already on the system by default
+  g++ was not listed as required by the check script complained it was missing
+  Xz is in xzutils (fedora at least)
+  
+  running the here-doc check script book page 14-15
+
+  creating a new partition
+
+  3 hours
+
+2022-03-03
+  meeting in a few hours, better make some progress ...
+
+  running virt-manager doing a new install with a 40G disk, 20G for each of mnt-LFS and Debian
+
+  create a virtual machine -> error no connections ah, same D got, what did we do ..
+  https://askubuntu.com/questions/932200/kvm-virt-manager-error-no-active-connection-to-installed-on
+  sudo usermod -a -G libvirt Thomas-repos
+  ^ this fixed the problem
+  lib-vert
+  new machine
+  had to browse to find image
+  it complains that it "might" not have search path, I ignored this
+  4G memory 12 processors (used all cores available, someday there will be thousands of them eh?)
+  network virbr0 it already exists
+  I get the install window for debian
+  graphical install
+  it is running
+  machine name: lfs0  domain: reasoningtechnology.com
+  see 'creds/LFS' for passwords (not the project)
+  user: thomas
+
+  partitioning disks
+    nope need manual -> guided entire disk (no LVM, no encryption)
+      virtual disk a shows as 42.9 GB, though I had speced 40GB
+      all files on partition
+      oops no options for creating /mnt-LFS .. going back
+
+    "partioning disks"
+    undo changes
+    unobvious has a ">"  device name shows  "FREE SPACE", __clicked on that__ and get a menu to create a partition
+
+    made it "14 GB"  then done setting up partition,
+    label: 2022-03-03 Debian 11
+    don't forget to set boot flag to true, also careful as the partioner flips this off every chance it gets
+    (wonder if we still need to do that, does grub check it?)
+
+    clicking on "FREE SPACE" again
+    8 GB
+    "Beginning"   beginning of free space, not beginning of disk
+    use as, clicked, swap area
+
+    clicking on "FREE SPACE" again
+    mount point - /mnt/LFS
+    label: 2022-03-03 LFS 11.1 build
+
+    write changes
+    journal_thomas.txt:  Xz is in xzutils (fedora at least)
+
+    people have their LFS mounts a little off. The 
+
+    it looks they are expecting $LFS to be owned by root, buy mine is owned by thomas .. hmmm by these directions
+    they mounted the LFS partition on /mnt/LFS/home   so /mnt/LFS/sources will end up on the host drive rather
+    than on the LFS drive, ah well, mine will end up on the LFS drive because I mounted it at /mnt/LFS (not /mnt/LFS/home)
+
+    ** foo -- sources list and packages list are the same  I downloaded both the wget list and the tar files
+
+    6 hours including talking with D
+
+2022-03-10
+
+    my virtual machine:
+    IP: 192.168.122.115.  (I wonder about overlapping route options, as my local network is also 192.168)
+    hostname: debian11
+
+    I. alright getting started:
+
+        1. start the emulator
+         > virt-manager  
+           - then the triangle ‘play’ button to run the deb 11 machine, it shows a load usage graph. 
+
+        2. emacs ssh
+           - haven't setup keys yet, so I will need the passwords.
+           - trick is to visit the home directory on the machine using tramp, then to launch a shell from there.
+             Apparently that is how people are doing it from the M-x line.  Think I will setup a function
+             to just shell in directly...
+           - the debian machine is not letting me ssh in as root, so:
+                   ssh as thomas@, then su -l to get a root shell
+           - can login on the console as root 
+
+        3. with shell on emulated machine
+
+           > ch_repo LFS
+           > pull
+
+           The pull change ch_repo_initialize, so I had to ch_repo again.
+           $LFS automounts
+
+    II. now continuing from where I left off last time, at the beginning of chapter 4.
+
+         > echo $LFS
+            yes, that is the mount point for the LFS partition
+
+         >  su -l root
+
+         > s4.2_create_dir_tree
+
+                ah great, now we have all the usual linux system directories
+
+         > s4.3_useradd_lfs
+
+                ** should have made the initial user lfs when installing debian
+
+                They want the work user's name to be ‘lfs’ mine is thomas,
+                I will change my username rather than setting up another user.
+
+                making use of the root console,
+
+                   killall -5 -u thomas
+                   groupmod -n lfs thomas
+                   usermod -l lfs -g lfs thomas
+                   mv /home/thomas /home/lfs
+                   usermod -d /home/lfs lfs
+                   usermod -aG sudo lfs
+
+                   changing my emacs function ...
+                   (defun shell-lfs    () (interactive) (shell-make "/ssh:lfs@192.168.122.115:~" "shell-lfs"))
+
+                   checking .bashrc
+                   updating ssh/config (has absolute pathnames)
+
+            when they say to make a 'build' directory they assume you are in the sources/<package expanded> directory.
+            i.e. sources/binutils/build  then ../configure  configure produces the makefile
+
+            one SBU
+
+            real	0m48.637s
+             user	3m19.919s
+             sys	0m46.193s
+ 
+            permission errors on installing bin utils
+
+2022-03-17T13:21:51Z [LFS]
+
+  I.
+      shell-lfs
+      > ch_repo LFS
+      > ./s4.2_create_dir_tree 
+        /mnt/lfs /home/lfs/repos/LFS/executable
+        mkdir: created directory '/mnt/lfs/etc' 
+        mkdir: created directory '/mnt/lfs/var'
+        mkdir: created directory '/mnt/lfs/usr'
+        mkdir: created directory '/mnt/lfs/usr/bin'
+        mkdir: created directory '/mnt/lfs/usr/lib'
+        mkdir: created directory '/mnt/lfs/usr/sbin'
+        ln: failed to create symbolic link '/mnt/lfs/usr': File exists
+        ln: failed to create symbolic link '/mnt/lfs/usr': File exists
+        ln: failed to create symbolic link '/mnt/lfs/usr': File exists
+        mkdir: created directory '/mnt/lfs/lib64'
+        mkdir: created directory '/mnt/lfs/tools'
+        /home/lfs/repos/LFS/executable
+
+      > 
+      
+     for some reason I am getting errors from the 4.2 script that directories already exist, I guess it is
+     a $LFS problem.  Anyway, so I am moving $LFS/packages  and $LFS/sources to /mnt to get them out of
+     /mnt/lfs == $LFS.  This makes it easier to blow away the mess made by the directory building 
+    .. ah solved  the hearedoc was expanding the for loop LCV
+
+   II. chapter 5.2
+                
+     for binutils ... configure ... make ...
+     libtool: link: warning: ignoring multiple `-rpath's for a libtool library
+
+     now for make install, this is where I had permission problems last time, surely this should be done
+     as root, but it does not say to do that
+
+     I am going to run it again with sudo ...
+
+**     sudo make install  <-- this ran without errors
+
+     there are patches in the sources directory which were not applied.
+
+   III. chapter 5.3
+
+      case $(uname -m) in
+        x86_64)
+          sed -e '/m64=/s/lib64/lib/' \
+              -i.orig gcc/config/i386/t-linux64
+       ;;
+      esac
+
+      There is no 'gcc' directory in sources ...
+      > ls -ld gcc*
+      drwxr-xr-x 38 lfs lfs 4096 2021-07-28 03:12 gcc-11.2.0
+
+     no i386 in gcc/config, breaking for dinner ...
+     2022-03-17T16:52:04Z [LFS-build-env]
+
+     2022-03-17T17:21:10Z [LFS-build-env]
+     "$SOURCES"/gcc-11.2.0/gcc
+
+     ah I see there is another layer, still why didn't find find this? 
+
+     2022-03-17T17:23:22Z [LFS-build-env]
+     lfs@debian11§/mnt/sources§
+     > ln -s gcc-11.2.0/ gcc
+
+     2022-03-17T17:23:30Z [LFS-build-env]
+     lfs@debian11§/mnt/sources§
+     > find gcc -iname 'i386'
+
+     2022-03-17T17:23:36Z [LFS-build-env]
+     lfs@debian11§/mnt/sources§
+     > find gcc-11.2.0/ -iname 'i386'
+     gcc-11.2.0/gcc/testsuite/g++.target/i386
+     gcc-11.2.0/gcc/testsuite/gcc.dg/vect/costmodel/i386
+     gcc-11.2.0/gcc/testsuite/gcc.target/i386
+     gcc-11.2.0/gcc/common/config/i386
+     gcc-11.2.0/gcc/config/i386
+     gcc-11.2.0/fixincludes/tests/base/i386
+     gcc-11.2.0/libstdc++-v3/config/cpu/i386
+     gcc-11.2.0/libgcc/config/i386
+
+     ... so find does not follow links by default, even as the sole directory specified
+
+     configure failed due to lack of g++, installing g++
+     still fails:
+       configure: error: Building GCC requires GMP 4.2+, MPFR 3.1.0+ and MPC 0.8.0+.
+       we have mpfr-4.11  ... gmp 6.2 ... mpc 1.2 .. hmmm
+       guess I should build those first?
+
+
+     2022-03-17T17:40:52Z [LFS-build-env]
+     lfs@debian11§/mnt/sources/gmp/build§
+     > ../configure                  \
+         --target=$LFS_TGT         \
+         --prefix=$LFS/tools       \
+         --with-glibc-version=2.35 \
+         --with-sysroot=$LFS       \
+         --with-newlib             \
+         --without-headers         \
+         --enable-initfini-array   \
+         --disable-nls             \
+         --disable-shared          \
+         --disable-multilib        \
+         --disable-decimal-float   \
+         --disable-threads         \
+         --disable-libatomic       \
+         --disable-libgomp         \
+         --disable-libquadmath     \
+         --disable-libssp          \
+         --disable-libvtv          \
+         --disable-libstdcxx       \
+         --enable-languages=c,c++
+
+     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>configure: WARNING: unrecognized options: --with-glibc-version, --with-newlib, --without-headers, --enable-initfini-array, --disable-nls, --disable-multilib, --disable-decimal-float, --disable-threads, --disable-libatomic, --disable-libgomp, --disable-libquadmath, --disable-libssp, --disable-libvtv, --disable-libstdcxx, --enable-languages
+     configure: error: --target is not appropriate for GMP
+     Use --build=CPU-VENDOR-OS if you need to specify your CPU and/or system
+     explicitly.  Use --host if cross-compiling (see "Installing GMP" in the
+     manual for more on this).
+
+     build bin utils (starting over again)
+     2022-03-17T19:48:50Z [LFS-build-env] finish
+     2022-03-17T19:47:22Z [LFS-build-env] start
+                    1:28
+     make and installed without errors
+
+2022-03-24T16:30:19Z
+
+     Alright, found the permissions problem.  The book has us first work as root, then shift to lfs.  When we
+     shift to lfs it wants to change the ownership to lfs.  I am just going to start as lfs in the first place ...
+
+     Robert pointed out the renaming of gmp etc. was to go into the gcc dir.
+     
+     2022-03-24T20:31
+     4 hours
+
+2022-03-31T14:08:08Z
+      
+     oh gosh, where the tar files in $LFS/packages come from?  Should have a script to populate that
+     directory
+
+      > ls $LFS/sources
+      africa		  etcetera	     less-590		SECURITY
+      antarctica	  eudev-3.2.11	     libffi-3.4.2	southamerica
+      asia		  europe	     libpipeline-1.5.5	sysklogd-1.5.1
+      ...
+
+      package tzdata2021e.tar.gz expands out without a directory ....
+
+    2022-03-31T16:09:28Z [LFS-build-env]
+    lfs@debian11§~/repos/LFS/executable§
+    > ./s5.2_binutils 
+    2022-03-31T16:10:22Z [LFS-build-env]
+    no errors   
+
+    2022-03-31T16:10:22Z [LFS-build-env]
+    2022-03-31T16:09:28Z [LFS-build-env]
+                    ;54
+
+    great, the chapter 5 C compile worked
+
+    make[2]: Leaving directory '/mnt/lfs/source/gcc-11.2.0/build/gcc'
+    make[1]: Leaving directory '/mnt/lfs/source/gcc-11.2.0/build'
+    + popd
+    ~/repos/LFS/executable
+    + set +x
+
+    2022-03-31T18:45:54Z [LFS-build-env]
+
+2022-04-07T15:22:57Z
+
+    apparently section 5.4 expects us to be in the source/linux* directory.
+
+    ask about package reject if Robert shows today
+
+    section 5.5.1 
+
+        no idea what directory we are supposed to be in.  I asks to make links to '../lib/ld-linux ...'  The
+        lib directory exists at $LFS but it has no such file.  source/linux also has a lib directory, but again there
+        is no such file.  Are we creating this for later?
+
+        now it asks us to make a build directory, then we must be in the source/glib directory, but then there is
+        no such ../lib directory.
+
+        Something is messed up with this section.
+
+        Is it normal to build sources in a build directory under the sources themselves?  I've always
+        had src as a subdirectory under the default directory which make is run in, with intermediate
+        files going to other directories.
+
+        wow the glib make runs for a long time ...
+
+          2022-04-07T17:39:14Z [LFS-build-env]
+          lfs@debian11§/mnt/lfs/source/glibc-2.35/build§
+          > make
+          ...
+             interesting to see python3 used:
+                python3 -B ../scripts/gen-as-const.py --cc="x86_64-lfs-linux-gnu-gcc -std=gnu11 -fgnu89-inline  -g -O2 -Wall -Wwrite-strings -Wundef -Werror -fmerge-all-constants -frounding-math -fno-stack-protector -fno-common -Wstrict-prototypes -Wold-style-definition -fmath-errno      -ftls-model=initial-exec      -I../include -I/mnt/lfs/source/glibc-2.35/build/nptl  -I/mnt/lfs/source/glibc-2.35/build  -I../sysdeps/unix/sysv/linux/x86_64/64  -I../sysdeps/unix/sysv/linux/x86_64  -I../sysdeps/unix/sysv/linux/x86/include -I../sysdeps/unix/sysv/linux/x86  -I../sysdeps/x86/nptl  -I../sysdeps/unix/sysv/linux/wordsize-64  -I../sysdeps/x86_64/nptl  -I../sysdeps/unix/sysv/linux/include -I../sysdeps/unix/sysv/linux  -I../sysdeps/nptl  -I../sysdeps/pthread  -I../sysdeps/gnu  -I../sysdeps/unix/inet  -I../sysdeps/unix/sysv  -I../sysdeps/unix/x86_64  -I../sysdeps/unix  -I../sysdeps/posix  -I../sysdeps/x86_64/64  -I../sysdeps/x86_64/fpu/multiarch  -I../sysdeps/x86_64/fpu  -I../sysdeps/x86/fpu  -I../sysdeps/x86_64/multiarch  -I../sysdeps/x86_64  -I../sysdeps/x86/include -I../sysdeps/x86  -I../sysdeps/ieee754/float128  -I../sysdeps/ieee754/ldbl-96/include -I../sysdeps/ieee754/ldbl-96  -I../sysdeps/ieee754/dbl-64  -I../sysdeps/ieee754/flt-32  -I../sysdeps/wordsize-64  -I../sysdeps/ieee754  -I../sysdeps/generic  -I.. -I../libio -I. -nostdinc -isystem /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/include -isystem /mnt/lfs/tools/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/include-fixed -isystem /mnt/lfs/usr/include -D_LIBC_REENTRANT -include /mnt/lfs/source/glibc-2.35/build/libc-modules.h -DMODULE_NAME=libc -include ../include/libc-symbols.h       -DTOP_NAMESPACE=glibc -DGEN_AS_CONST_HEADERS \
+
+
+         wonder how config parameters get into configure  (s5.5_1_Glibc)             
+            echo "rootsbindir=/usr/sbin" > configparms
+
+            ../configure                             \
+               --prefix=/usr                      \
+
+           crashed, out of diskspace, restarting make did not work ... redoing build ..
+
+        2022-04-07T18:43:48Z [LFS-build-env]
+        lfs@debian11§~/repos/LFS/executable§
+        > ./s5.5_1_Glibc 
+        2022-04-07T18:56:58Z
+        2022-04-07T18:43:48Z
+                      13:10 to compile Glibc
+
+        Chapter 5 done
+
+        2022-04-07T19:30:49Z
+        2022-04-07T15:22:57Z
+                    4:08    
+                 -    30  dinner
+                     3:30  three and half hour session today though probably come back and do chapter 6 tonight 
+
+2022-04-07T23:47:42Z 
+
+        2022-04-07T23:56:39Z [LFS-build-env]
+        lfs@debian11§~/repos/LFS/executable§
+        > ./s6
+        2022-04-08T00:09:52Z
+
+        chapter 6 done
+
+        session ~22 minutes
+
+2022-04-14T14:33:37Z
+
+        many updates to build scripts in general, resource and system, fix some nits.  Interesting
+        to be setting up projects on two systems, the usual one and now this emulated one.  I get
+        to see how the project management flow works out.
+
+        2022-04-14T16:01:49Z        
+        starting LFS chapter 7 finally..
+
+        2022-04-14T16:38:10Z
+        chapter 7 wants to run as root, my emulator was setup not to allow root, probably should
+        be writing scripts to do sudo, but following the book, have a root prompt with $LFS set.
+
+        Oh gee, sound problems for meeting, pulled away again, not getting much done on LFS
+        this afternoon!
+
+        2022-04-14T17:48:20Z
+        Getting back to, really starting, LFS session for today.  Turned out to be a repo organization
+        and sound fixing problem session...
+
+        
+        a couple of errors in the chapter 6 build script due to capital letters (package names were headings in the book).
+        should tee script output to grep for error and dump output into a log
+
+        stopping about 19:00Z  abt a 3 hour session
+
+2022-04-21T12:44:25Z
+
+         picking up with chapter 7
+         this chapter is slog going through package compiles
+         
+         RFC 2119 would be useful
+
+         really didn't do much after 17:00Z
+
+         Peter brought up ToyBox, looks like a good way to do.  Discussed licenses.
+
+2022-04-28T15:32:52Z
+
+          running into strange problems with devices, think it might be related to the mask setting difference on prior
+          install.  I had tried to fix it with a chmod -R.  Anyway, will run through it from the beginning today after
+          setting the umask to 022.
+
+          One thing for sure, tramp in emacs always fails with the first try for a password.  Really should setup ssh
+          for the virtual machine.
+
+          Apparently we are building tools the first time to be capable of doing a cross compile.  However we are not
+          really doing a cross compile, rather the cross compile' that we are doing is mainly just to separate the host
+          system from the target system.
+
+          cross linux from scratch for a true cross compile:
+          https://trac.clfs.org/
+
+          ended at about 20:00 as the meeting turned into a discussion
+
+2022-05-05T12:01:20Z
+
+          running the new binutils build script
+
+          binutils:
+          2022-05-05T12:10:02Z
+          2022-05-05T12:08:53Z
+                         1:07
+
+          2022-05-05T15:07:29Z
+          2022-05-05T15:06:15Z
+                         1:14 # perhaps some time passed before command entry ..
+
+          2022-05-05T16:24:54Z
+          2022-05-05T16:23:52Z
+                         1:02
+
+          gcc:
+          2022-05-05T15:15:08Z
+          2022-05-05T15:07:47Z
+                         7:21
+
+          2022-05-05T16:32:56Z
+          2022-05-05T16:26:25Z
+                         6:32
+          glibc:
+          2022-05-05T18:29:41Z
+          2022-05-05T18:10:08Z
+                        19:33
+
+          all in chapter 6:
+          2022-05-05T18:59:23Z
+          2022-05-05T19:17:04Z
+                        42:19
+
+          ending 17:00, 5 hours
+
+2022-05-06T14:14:51Z
+
+  Coming back today to make better progress on LFS
+
+  Now back to chapter 7.  Unlike last time, there are no errors when making devices.  I don't
+  understand why we are setting permissions to root at this point.  Surely changing permissions
+  to root should be the last step.
+
+  interesting observation about install and the race condition for cp and chmod.
+
+  -2:00 breaks
+  2022-05-06T22:56:52Z
+
+      22:56
+      14:14
+     ------
+       6:42
+      -2:00 dinner etc.
+    -------
+       4:42
+
+    I seem to be fairly consistent in putting in about 4 hours per session
+
+2022-05-07T15:59:09Z[LFS]
+
+  Making this transition to the chroot environment look simple and be executable from an m1 script has been a bit
+  difficult.  I think I have a new approach that makes it look cleaner, and will implement it today.  I will put the
+  scripts in an LFS directory in the execution PATH, so they will be found in either the m1 directory tree, or the m2
+  directory tree after a chroot.  Then I will call them without having state explicitly where they are found.
+
+  LFS is a system administration exercise. It is not computer science, OS science etc.
+
+  Every Bodhisattva has written a biography of the life of Buddha channeled from his or her enlightened state. Thus in
+  the West we Herman Hesse's Sidartha.  Similarly, everyone Linux administrator must write a paper with his or her
+  interpretation of Linux from Scratch.
+
+  clean_m2 script is not working, it umounted important dirs in m1 by accident.
+
+  spent about 5:30
+
+2022-05-08T12:39:27Z
+
+  clean_m2 -> wipe_m2 hopefully fixed. Issues with sudo, path, find -exec ..
+
+2022-05-12
+
+  /usr/bin/install -c -m 644 ../../gcc/wide-int-print.h /mnt/lfs/usr/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/plugin/include/wide-int-print.h
+  /usr/bin/install -c -m 644 ../../gcc/wide-int.h /mnt/lfs/usr/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/plugin/include/wide-int.h
+  /usr/bin/install -c -m 644 ../../gcc/xcoff.h /mnt/lfs/usr/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/plugin/include/xcoff.h
+  /usr/bin/install -c -m 644 ../../gcc/xcoffout.h /mnt/lfs/usr/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/plugin/include/xcoffout.h
+  /usr/bin/install -c -m 644 b-header-vars /mnt/lfs/usr/lib/gcc/x86_64-lfs-linux-gnu/11.2.0/plugin/include/b-header-vars
+  make[2]: Leaving directory '/mnt/lfs/source/gcc-11.2.0/build/gcc'
+  make[1]: Leaving directory '/mnt/lfs/source/gcc-11.2.0/build'
+  '/mnt/lfs/usr/bin/cc' -> 'gcc'
+  [sudo] password for lfs: 
+  Sorry, try again.
+  [sudo] password for lfs: 
+  sudo: s7.02_m2_directory_tree_chown_root: command not found
+
+  2022-05-12T17:31:39Z[LFS]
+  lfs@debian11§/home/lfs/repo/LFS/executable/LFS§
+  > 
+
+  long session
+
+2022-05-19
+
+   2022-05-19T15:57:12Z
+
+   Continuing the switch over from generated copied scripts using read, to just
+   copying all scripts to sbin/LFS
+
+   Talking with Mary, really where we lost folks is when the time changed due to
+   daylight savings time.  Daylight savings time was on different weeks in
+   Europe and US.  I'm not sure if mountain time has it.  We never seemed to
+   haver the whole group again after this.
+
+   Managed to mess up the permissions on the host system today by running
+       > sudo chown -hR root:root $M2_FILESYSTEM/{usr,lib,var,etc,bin,sbin,tools}
+    but root doesn't have $M2_FILESYSTEM defined so it expands to nothing then operates
+    on the root file system. Changed to:
+       > sudo M2_FILESYSTEM=$M2_FILESYSTEM chown -hR root:root $M2_FILESYSTEM/{usr,lib,var,etc,bin,sbin,tools}
+
+   debugging the as_su_chroot had a number of error for the new environment.  By setting
+   M2_FILESYSTEM to / in the as_su_chroot script, the called script will work in both the
+   host environment and the chroot environment. package_untar was an example script that
+   needed that.
+
+   2022-05-19T19:47:57Z[LFS] dinner ...
+   2022-05-19T23:27:59Z[LFS] .. fix the chapter 7 scripts ...
+
+   wonder why s7.14 cleanup deletes the docs
+   2022-05-20T00:53:01Z[LFS]
+
+2022-05-20T09:16:12Z[LFS]
+
+    made chapter
+
+    The as_su is misconceived.  sudo only works on stuff found in secure path.  if we add and LFS directory then
+    anything can be run sudo.  Gee, and I started the env discussion with the prompt bug report.  This only affects two
+    scripts in chapter 7 so will move sudo into them.  chroot script is still good because chroot is in the secure path.
+
+    2022-05-20T12:03:31Z[LFS]
+
+2022-06-06T20:13:27Z
+
+    truly a pain that bash erases PS1 unless -i is specified.  All the shebang scripts reset it.  had to
+    create PPS1 and PPS2
+
+    also truly a pain that sudo prompts for a password - and then times out if one is not typed for a long
+    time, as scripts that take more than 5 minutes then halt and catch fire.
+
+    the cat into a mktemp script, then env the script in the same file turns out to be really obnoxious
+    due to the quoting issues.  made separate _0 verison scripts and passed operands.  perhaps if I were
+    a better bash programmer I would have made functions.
+
+    each environment wants to be independent, but we want to share some things between environments.
+    environment variables can not be passed up, so should be created environment commands or things
+    sourced into them.  Perhaps frame-0 should be sourced in and create the frame logs.  Right
+    not environment_m1 creates them, but environment_m1 is called multiple times.  Before when exporting
+    scripts we had two sets of logs due to chroot forcing them m1 and m2 to be separate, now we have
+    the mount so this is not necessary ...
+
+    as a symptom of the environment problems,  from with a shell C-C wil not stop the shell - that only works
+    for applications.  Instead work one layer above, and launch the shell as a job, or use C-z to put it in
+    the background.  Now it can be killed kill %1 etc.  Otherwise pstree -p is a good way to find them.
+
+    heck of a time deleting the /mnt/m2_root directories.  Found an article from the LFS folks that suggested cat
+    /proc/mounts . which appears to be the same as /mnt/proc/mounts.  At the bottom there were m2_root things.  I
+    unmounted them with the absolute path instead of the relative path, and they unumounted this time.  It was suggested
+    that things mounted after the chroot have to be unmounted from the chroot.  Really? anyway I did not need to do
+    that, but it might be related to why the absolute path was needed.  That conversation was from 16 years
+    ago!  Peter is one of the posters!  LFS has a long history ...
+
+        Also this, will try next time:
+        Just to add, another useful command to determine what's holding on to
+        the mount point is to use the fuser command. E.g.
+
+        $ fuser -m /mnt/lfs
+   
+           # fuser -m /mnt/m2_root
+           /mnt/m2_root:         1471c
+
+     There can be very long test-debug-fix-test cycles.  It might help to create more checkpoints.  hmmm.
+
+     Interesting that we have so many problems because user 'lfs' has some random uid, and the only reliable
+     uid then becomes that for root, zero.  I see the same when doing archives.  Too bad ther is no concept
+     of namespace framing for uids.  Otherwise we could just do m2 in user lfs.  though there is another
+     difference, as root can ignore other permissions, but if everything is in lfs there are no other permissions.
+     hmmm.  Other systems have roles, we could then give adminitrator role to lfs ... but not unix.
+
+2022-06-09T11:58:52Z
+
+    Getting these, perhaps this is what Robert and Marty were referring to:
+      ‘warning: -jN forced in submake: disabling jobserver mode.’
+
+        according to https://www.gnu.org/software/make/manual/html_node/Error-Messages.html 
+          This warning and the next are generated if make detects error conditions related to parallel processing on systems where sub-makes can communicate (see Communicating Options to a Sub-make). This warning is generated if a recursive invocation of a make process is forced to have ‘-jN’ in its argument list (where N is greater than one). This could happen, for example, if you set the MAKE environment variable to ‘make -j2’. In this case, the sub-make doesn’t communicate with other make processes and will simply pretend it has two jobs of its own.
+
+        There is a lot of discussion about it on the Internet.  However noone says if it is harmful or
+        not.  It does say it is a 'warning' so I will ignore it.
+
+
+    /source/Python-3.10.2/Modules/_ctypes/_ctypes.c:107:10: fatal error: ffi.h: No such file or directory
+      107 | #include <ffi.h>
+          |          ^~~~~~~
+    compilation terminated.
+
+      Roberts log has this same error, with the same compilation terminated message.  I see nothing done to
+      fix this.
+
+      On a prior build I pulled 8.49 libffi back to get s7_Python to run  (in c8 libffi is built just before python)
+
+    zlibc1.2.11 has gone missing, looked at the website, there is now a version 12, and I downloaded it
+    #wget https://zlib.net/zlib-1.2.11.tar.xz
+    wget https://zlib.net/zlib-1.2.12.tar.xz
+    find it here: https://ftp.osuosl.org/pub/lfs/lfs-packages/ [gratis Marty]
+
+    in s8_zstd frame, also in Robert's log:
+    error: numeric value overflows 32-bit unsigned int 
+    s8_zstd spews a stupid amount of stuff to stdout
+
+    s8_tcl
+    added package link, see the s3 that does the wget
+    for the docs
+    tar -xf "$(ls -d $LFS_BUILD_DIR/package/tcl*-html.tar*)" --strip-components=1  # why strip-components=1 ??
+    seems doc packages should have their own directory, tcl tar files are missing a dash before the version
+    number so I added a symbolic link of the correct form. Ack but that did not work because when we
+    untar it makes the tcl8.. directory and the script tries to cd to tcl-8....  also note that tcl uses
+    'src'  and 'html'  .. the html doc package should go into a different directory ...
+
+    emacs dirtack is confused by chroot. Sees it stops working in all shells, not just the chroot shell. In
+    a non chroot shell, to get it back do pwd, then cd to the resulting pwd string.  If it is too work after
+    the chroot, we must modify the prompt to show the path relative to root rather than the new chroot.
+
+    LFS11 -> build_dir,   add $LFS_BUILD_DIR to bashrc, update build script     
+
+    m2_root -> m2_filesystem
+
+    note, 8.25.3. Setting the root password 
+    
+2022-06-10T13:51:36Z
+
+    started potential next steps list
+
+2022-06-11T14:24:59Z
+
+    move the next steps list to its own file
+
+2022-06-12T12:21:57Z
+
+    note in the 'experience' doc that tamp emacs could not auto update buffer, had to use tail -f in a shell
+
+    in doc when discussing bash:  spaces and quotes, redirect, inside $() quoting is reset, ${ } regex match
+    
+    in doc be sure to mention about using c-c c-z and background and not using c-c to kill a job,  also use pstree -p
+
+2022-06-16T14:55:12Z
+
+    lfs-bootscripts is advertised as installing checkfs, but as far as I can tell
+    it doesn't do this.
+
+    LFS really starts wtih chapter 9, up to this point is has been a pile of
+    esoteric knowledge about which switches to give config before calling make.  In
+    Chapter 9 we start hearing how linux works, specifically how it boots.
+    
+    Robert left type as <fff> in his /etc/fstab initial configuration
+
+2022-06-20T16:45:17
+
+     Interesting pattern that keeps comging up.  Really what want is that if a bash variable
+     is udpated, that those derived from it also update.  I.e. lazy evaluation.  The exception
+     then being when a variable value is explictly 'sampled'.  Intersting argument for
+     lazy evaluation being the default, and other types of evaluation being optimizations.
+
+2022-06-21T10:15:39Z
+
+     perhaps add to doc definitions for 'dir' 'home' ..  basename ...
+     
+2022-06-22T21:14:33Z
+
+      screwed up .gitignore excluding /usr/build instead of /user/build.  These were useful commands;
+      git rm --cached with relative path
+      "git commit --amend -C HEAD --reset-author", that will skip the commit message editor and use the old message
+      needed user/build, i.e. a relative path, dunno why, also needed to skip the commit message because
+      git does not like the emacs terminal
+
+      if the HOME variable is not set, git freaks.  thus git after env -i was a problem
+
+      rm -r a directory rather than using a wild card (mkdir followed by rm if necessary)
+
+      due to using a repo for Lustucru and accidentally checking in the upstream, then
+      making a copy of the repo as backup while trying to fix it
+      > df -h .
+      Filesystem      Size  Used Avail Use% Mounted on
+      /dev/vda1        13G   12G  506M  96% /
+      
+      Also had disks space problems due to saving checkpoints
+
+      be careful about running git from with the env_ environments.  env_m1 seems ok, but
+      env_m1_root and env_m2 wouild be bad, perhaps block git from env environments?
+
+      wget is a confused program, it prints information to stderr, need to fix this or use curl
+
+      funny behavior after running out of disk space.  Made space, but things still ain't right, rebooting.
+
+      the extended scripts like 'build'  or 'book'  are very difficult to kill with cntrl-c, I am not
+      sure why.  c-z bg kill %job works better, but still does not always seem to work.  The best
+      seems to be to exit the shell.  given we use env_m1 etc. exiting the shell then re-entering
+      the environment is straightforward.
+
+      moved to using curl, had to install it first, it is now a required program, due wegst dumping
+      info to stderr - wget was not exactly clean but seems to work with -LOfsS options.
+
+      in s7.02 chown, the source dir remains owned by lfs, problem, correct?
+      # $LFS_M2_FILESYSTEM/source remains owned by lfs hmmm.
+
+2022-06-23T17:06:58Z
+
+      s8_tcl failed due to the -src on the tar name but not on the expanded dir name,
+      so changed the tar name (added that to the fetch script)
+
+      the build continued to run after s8_tcl failed.  So ... I restarted the scripts
+      from s8_tcl.  s8_tcl ran fine, but later I got the error "out of PTYs".  So
+      rebooted, wiped, and started again. It would be nice if builds were idempotent,
+      but apparently they are not.
+
+2022-07-06T13:58:31Z
+
+      dirtrack does not follow chroot, and it will just stay in the directory we were in when env_m2 was run.
+      in 10.3.1 they ask us to do:
+         make menuconfig
+
+       but that requires a terminal.  perhpas emacs eshell would do it?  Robert instead did:
+         make defconfig
+       make deconfig writes the file '.config' with a list of variables said to be set
+       or not set.  I wonder how to manually set or unset those variables. The book references
+        https://www.linuxfromscratch.org/hints/downloads/files/kernel-configuration.txt. 
+
+       Instead of requring to be sourced can these run a subshell?
+         frame-initialize:test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
+         incantatio_untar:test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
+
+       Roberts transcript ends with a call to an unknown bind-lfs script, and a call to chroot
+       to run the system.  I.e. in this script he does not write boot record. As I recall,
+       he mentioned simply adding the LFS particition as a boot option to the existing boot
+       loader. The book does suggest that a person might want to do that. I am left wondering if
+       a modern system will insist upon an EFI boot, so to make this really work, we will need
+       to look at the BLFS book for EFI boot.
+
+       alias printenv "printenv | sort"  good idea to add to docs, the pastree alias also maybe
+       
+       for a slow device it makes more sense that /mnt/m2_filesystem/source
+       is instead put in /mnt/m2_filesystem/mnt/Lustucru/source where it
+       will have access speed of the main storage system.
+
+2022-07-08T00:24:14Z
+
+       Building binutils with m2_filesystem as the USB stick took 17 minutes or longer
+       building it with the SSD drive took 38 seconds
+       in the emulator writing to a virtual image via cow was about 1 minutes
+       wonder if it makes more sense to mount --bind m2_filesystem and then to dd the completed image
+       to a real device after the build is done, especially if the device is slow
+
+2022-07-08T02:40:29Z[Lustucru]
+
+       book calls for grub-install, I have grub2-install
+
+       missing some prerequisite programs, g++, tex, texinfo, info, grub2-install.  s2_check caught a
+       coupld of others 
+
+       in final dock will want to discuss HEREDOC   -EOF  "EOF"  -"EOF"
+
+       the chapter 2 discussion of swap is a bit quizzical.  surely the host systemn already runs
+       swap. Apart from that swap is only mentioned in 10.2 when the fstab file is made.
+
+       when making the /dev/m2_filesystem directory, be sure to get the ownership and perms right
+       after fdisk don't forget m2fs.ext4
+       
+       grub2 requires option --target i386-pc.  Wonder if booting a modern machine can even work without EFI.
+       LFS does not cover EFI, rather they leave that to BLFS.
+
+       we really need a script to unmount the fstab stuff so that we can umount the media and remove it.
+   

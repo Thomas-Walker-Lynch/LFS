@@ -1,0 +1,45 @@
+#!/bin/bash
+
+if [[ "$LFS_ENV" != "m1" ]];then
+  echo $(basename "$0") "must be run in env_m1"
+  exit 1
+fi
+
+document_dir="$REPO_DIR/user/build/upstream/document"
+mkdir -p "$document_dir"
+pushd "$document_dir"
+
+# 2022-06-22T22:33:16Z got a 'resourced moved' error today, moved to the link shown below
+# https://downloads.sourceforge.net/tcl/tcl8.6.12-html.tar.gz
+# "https://freefr.dl.sourceforge.net/project/tcl/Tcl/8.6.12/tcl8.6.12-html.tar.gz"
+# <center><h1>301 Moved Permanently</h1></center>
+
+link="
+https://www.kernel.org/pub/linux/docs/man-pages/man-pages-5.13.tar.xz
+https://www.python.org/ftp/python/doc/3.10.2/python-3.10.2-docs-html.tar.bz2
+https://downloads.sourceforge.net/tcl/tcl8.6.12-html.tar.gz
+"
+
+IFS=$'\n'; for l in $link;do
+  #   wget -nv $l
+  curl -LOfsS $l
+done
+
+# apply patches here?
+# do docs have patches?
+
+# version number should be prefixed by a dash
+tcl_0=tcl8.6.12-html.tar.gz
+tcl_1=tcl-8.6.12-html.tar.gz
+if [ -f $tcl_0  ] && [ ! -f $tcl_1 ];then
+  tar --transform s/tcl8.6.12/tcl-8.6.12/ -xf $tcl_0
+  tar  -cf $tcl_1 tcl-8.6.12
+  rm -r tcl-8.6.12
+#  rm $tcl_0
+fi
+
+
+popd
+
+
+
