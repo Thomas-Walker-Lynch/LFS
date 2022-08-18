@@ -11,7 +11,7 @@ export LFS_BUILD_DIR="$REPO_DIR/user/build"
 
 # where the target device is mounted on m1.
 # put the wrong device here and your m1 build system might be destroyed
-export LFS_M2_DEVICE=/dev/sda
+export LFS_M2_DEVICE=/dev/sdX
 
 # these partitions are relative to where the target device is mounted on m1.
 export LFS_M2_DEVICE_EFI="$LFS_M2_DEVICE"1
