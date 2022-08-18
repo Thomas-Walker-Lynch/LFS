@@ -1,0 +1,22 @@
+# note ssh will fail if bashrc writes to stdout
+
+export TZ=UTC
+export TIME_STYLE=long-iso
+umask 0007
+export HOME=$(/usr/local/bin/home)
+export EDITOR=emacs
+alias emacs="emacs --title='$(/usr/local/bin/user-subu $(/usr/local/bin/user))'"
+export PS_FORMAT=user:15,pid,%cpu,%mem,vsz,rss,tty,stat,start,time,command
+alias pstree="pstree -lp"
+
+# without -i bash clears PS1, just because, so we keep a copy
+# using $(pwd) instead of \w, because \w will prefix a '~' and that confuses emacs dirtrack
+export PPS1='\n$(/usr/local/bin/Z)[$PROJECT]\n\u@\h§$(pwd)§\n> '
+export PPS2='>> '
+export PS1="$PPS1"
+export PS2="$PPS2"
+
+export REPO_HOME="$HOME/user"
+source "$REPO_HOME/resource/initialize"
+
+

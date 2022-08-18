@@ -1,0 +1,162 @@
+
+;;--------------------------------------------------------------------------------
+;; turn off the annoying bell
+;;
+
+  (setq ring-bell-function
+       (lambda ()
+	 (call-process-shell-command "xset led named 'Scroll Lock'")
+	 (call-process-shell-command "xset -led named 'Scroll Lock'")))
+
+;;--------------------------------------------------------------------------------
+;; set the title at the top of the frame
+;;
+  (defun frame-title (s)
+    "sets the frame title"
+    (interactive "stitle: ")
+    (setq frame-title-format s)
+    )
+
+;;--------------------------------------------------------------------------------
+;; shell scripting
+;;
+  (setq sh-basic-offset 2)
+
+;;--------------------------------------------------------------------------------
+;; dirtrack
+;;
+;; get the pwd in shell mode from the prompt rather than guessing by
+;; watching the commands typed .. yes! now shell variables and source
+;; scripts will work
+;;   in bashrc: export PS1='\n$(/usr/local/bin/Z)\u@\h§\w§\n> '
+;;
+  (add-hook 'shell-mode-hook
+           (lambda ()
+             (shell-dirtrack-mode -1)
+             (dirtrack-mode 1)))
+
+  (add-hook 'dirtrack-directory-change-hook
+            (lambda ()
+              (message default-directory)))
+
+;; this one keeps getting lost
+;;  (setq dirtrack-list '("§\\(.*\\)§\n[>#] " 1))
+;; I thought it had to match to the end of the prompt, but apparently it scans back, so simpler is better:
+    (setq dirtrack-list '("§\\([^§]*\\)§" 1))
+
+;;--------------------------------------------------------------------------------
+;; get buffer filename -- emacs does not have a builtin functin for this.
+;;
+  (defun filename-get ()
+    "Gets the name of the file the current buffer is based on."
+    (buffer-file-name (window-buffer (minibuffer-selected-window))))
+    
+  (defun filename-insert ()
+    "Inserts the name of the file the current buffer is based on."
+    (interactive)
+    (insert (filename-get)))
+
+  (global-set-key (kbd "C-c f") 'filename-insert)
+
+  (defun filename ()
+    "Gets the name of the file the current buffer is based on."
+    (interactive)
+    (message (filename-get))
+    )
+
+;;--------------------------------------------------------------------------------
+;; emacs 
+
+  (setq inhibit-startup-screen t)
+
+  ;; use a backrevs dir rather than leaving ~file droppings everywhere
+  ;;
+    (setq backup-directory-alist `(("." . "~/emacs_backrevs")))
+    (setq backup-by-copying t)
+
+  ;; stop the 'tab' character polution
+  ;;
+    (setq-default indent-tabs-mode nil)
+
+  ;; turn off the poison C-z key.  Use C-x C-z or the command suspend-emacs
+  ;;
+    (global-set-key (kbd "C-z") nil)
+
+  ;; truncate rather than wrapping lines (use horizontal scroll to see to the right)
+  ;;
+    (set-default 'truncate-lines t)
+    (setq truncate-partial-width-windows nil)
+    (setq-default fill-column 120)
+    (setq fill-column 120)
+
+  ;; recover some window real estate - note also F11 to rid of the top window splash bar
+  ;;
+    ;;(set-face-attribute 'mode-line nil  :height 75)
+
+    ;; c-x mode-line to toggle the mode-line on and off
+    (defun mode-line () "toggles the modeline on and off"
+      (interactive) 
+      (setq mode-line-format
+        (if (equal mode-line-format nil)
+            (default-value 'mode-line-format)) )
+      (redraw-display))
+
+    ;(setq-default mode-line-format nil) 
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
+
+;(setq browse-url-browser-function 'browse-url-firefox)
+(setq browse-url-browser-function 'browse-url-chrome)
+;(setq browse-url-browser-function 'browse-url-chromium)
+
+;;--------------------------------------------------------------------------------
+;; direx
+;;
+;;  (add-to-list 'load-path "~/.emacs.d/lisp/direx")
+;;  (require 'direx)
+;;  (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
+;; (push '(direx:direx-mode :position left :width 75 :dedicated t)
+;;      popwin:special-display-config)
+(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
+
+    ;; (define-key map (kbd "R") 'direx:do-rename-file)
+    ;; (define-key map (kbd "C") 'direx:do-copy-files)
+    ;; (define-key map (kbd "D") 'direx:do-delete-files)
+    ;; (define-key map (kbd "+") 'direx:create-directory)
+    ;; (define-key map (kbd "M") 'direx:do-chmod-file)
+    ;; (define-key map (kbd "L") 'direx:do-load-file)
+    ;; (define-key map (kbd "B") 'direx:do-byte-compile-file)
+    ;; (define-key map (kbd "G") 'direx:do-chgrp)
+    ;; (define-key map (kbd "O") 'direx:do-chown)
+    ;; (define-key map (kbd "T") 'direx:do-touch)
+
+;;--------------------------------------------------------------------------------
+;; gdb
+;; use gud-gdb instead of gdb and we won't need this.
+;; fix 'feature' of broken gdb where it takes control of an
+;; emacs window, and locks the user out from switching from it
+;;
+  (defun unlock-window ()
+    "Turns off window dedication."
+    (interactive)
+    (set-window-dedicated-p (get-buffer-window (current-buffer)) nil)
+    )
+
+;;--------------------------------------------------------------------------------
+;; Lisp
+;;
+  (setq lisp-indent-offset 2)
+  (setq inferior-lisp-program "sbcl")      
+
+  (modify-syntax-entry ?\[ "(]" lisp-mode-syntax-table)
+  (modify-syntax-entry ?\] ")[" lisp-mode-syntax-table)
+  (modify-syntax-entry ?{ "(}" lisp-mode-syntax-table)
+  (modify-syntax-entry ?} "){" lisp-mode-syntax-table)
+
+;;--------------------------------------------------------------------------------
+;; C
+;;
+  (add-hook 'c-mode-hook (lambda () (modify-syntax-entry ?· "_")))
+  ; in customer variables '(c-offsets-alist (quote ((label . 2))))
+
+
