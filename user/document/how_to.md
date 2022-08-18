@@ -12,7 +12,7 @@
   of the example bashrc will be required.  In any case Z will be needed, a copy
   is also in the Lustucru repo.
 
-  It is not necessary, but will be helpful to first set up my repo and system scripts, or
+  It is not necessary, but will be helpful to first set up my repo scripts, or
   at least the 'repo' commmand.  These are found at
   https://github.com/Thomas-Walker-Lynch/resource  These also make use of the aforementioned
   system scripts.
@@ -45,30 +45,40 @@
    > repo Lustucru
    ```
 
-   After that is typed you will be in the $REPO_USER_DIR/build directory and read
+   After that is typed you will be in the $REPO_USER_DIR/build directory and ready
    to work.
 
-   The repo command and related scripts are found at 
-   That repo also makes use of things found at https://github.com/Thomas-Walker-Lynch/system.
+3b. cd to the repo directory created by the git clone.
 
-3b. cd to the repo directory created by the git clone. Type these commands:
-
-   Setup your .bashrc file.  Find a
+   Set these variables:
 
    ```
    > PROJECT=Lustucru
    > REPO_DIR="$(pwd)" 
    ```
 
-   The repo directory is only for the repo management files.  The the files created by the
-   developers are in the $REPO_DIR/user  directory.
+   If the present working directory has spaces in any of its components, $REPO_DIR
+   must be put in quotes when it is used.
+
+   Setup your .bashrc file.  Find an the exmaple bashrc in
+   $REPODIR/user/library/bashrc_example. Add the definitions shown above to either
+   the .bashrc or to the activate scripts found in $REPODIR.
 
    ```
-    > ls "$REPO_DIR"/user
-    bin  build  deprecated  dcument  experiment lib
+    > ls $REPO_DIR/user
+    bin  build  deprecated  document  experiment lib
    ```
 
-   Quotes are required around $REPO_DIR only if there are spaces in the directory path.
+   The $REPO_DIR directory is only for overhead files for managing the project. Do
+   not add to this directory.  The files created by the developers are in the
+   $REPO_DIR/user directory.  
+
+   You should put your work in the $REPO_DIR/build directory.  Note that the
+   contents of the $REPO_DIR/build director is *not* saved by git, the contents of
+   the build directory are not part of the Lustucru project.  You will need to make
+   your own copies if you want to keep them.
+   
+
 
 4. set up .bashrc
 
