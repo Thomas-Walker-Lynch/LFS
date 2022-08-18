@@ -1,4 +1,4 @@
-2022-06-10T13:51:36Z
+ 2022-06-10T13:51:36Z
 
      pull wipe out of build, have build first check that m2_filesystem is empty
 
@@ -118,3 +118,9 @@
 
          be sure to integrate the build directory variable into the scripts,
          right now we just build in 'build'.
+
+         Also need to add a config variable or other means to tell the system
+         to downloaded sources that it needs.  Right now I just comment out
+         the buld of the relevant section if I do not want to download from
+         the upstream again.
+

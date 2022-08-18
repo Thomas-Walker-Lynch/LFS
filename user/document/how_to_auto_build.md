@@ -84,21 +84,53 @@
 
 
 4. Copy config* files from $REPO_DIR/user/lib/ to $REPO_DIR/user/lib/build.
+
+  If per chance you create additional build directories, be sure to add them to .gitignore.
+
   There are three config files.  As I used the repo script (3a above), my present working
   directory is $REPO_DIR/user/build, so I type:
 
-   ```
-    > cp $REPO_DIR/user/lib/config* .
-    > ls $REPO_DIR/user
-    config config_m1 config_m2
-   ```
+  ```
+   > cp $REPO_DIR/user/lib/config* .
+   > ls $REPO_DIR/user
+   config config_m1 config_m2
+  ```
 
-   If you have already run the scripts you will also see `log` and `upstream` in that listing.
-   Build lot files will be put in  `log`, and the downloaded tar files will be put in `upstream`.
+  If you have already run the scripts you will also see `log` and `upstream` in that listing.
+  Build lot files will be put in  `log`, and the downloaded tar files will be put in `upstream`.
 
-   If per chance you create additional build directories, be sure to add them to .gitignore.
+  The `config' file is for configuration variables that are in common to the various stages
+  of the build.  `config_m1' are for those that are specific to the m1 stage.  And, you
+  guessed it, `config_m2` is for those specifically related to the m2 stage.
+
+  Edit these files for your configuration.  The scripts will run without querying you
+  for any further information, so this is your one chance to configure the build.
+
+  *Be especially careful with the LFS_M2_DEVICE* variable.  If you put the wrong value
+  there you can wipeout your system.
+
+  The scripts assume that the destination media has already been low level formatted,
+  high level formatted, and that it is already plugged into the system.
+
+  Currently I comment out or do not comment out the frame c3 line in the bin/book_m1
+  script to control the download of upstream tar files.
+
+5. for an automatic copmlete build
+
+  The target media is plugged into the computer, and it has been wiped clean.
+
+  ```
+   > pwd
+   $REPO_DIR/user/build
+   > build
+  ```
+
+  Build will print the location of the log files.  Tail these to follow the build.
+  The frame log is a log of stderr.  The build log is all the output.  Note in
+  emacs the auto-revert-tail-mode command.
 
 
+  
 
    
 
