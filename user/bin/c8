@@ -73,7 +73,16 @@ diffutils
 gawk
 findutils
 groff
-grub
+"
+IFS=$'\n'; for s in $section;do
+  frame env_source $s s8_$s
+done
+
+if [[ "$LFS_BOOT_STYLE" == "legacy" ]]; then
+  frame env_source grub s8_grub
+fi
+
+section="
 gzip
 iproute2
 kbd

@@ -17,6 +17,5 @@ export PS1="$PPS1"
 export PS2="$PPS2"
 
 export REPO_HOME="$HOME/user"
-source "$REPO_HOME/resource/initialize"
 
 

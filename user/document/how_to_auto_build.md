@@ -1,8 +1,23 @@
 
-0.  The Lustucru build scripts are designed to run from the command line in a bash shell.
+0. Required preparation.
+
+ Yes, there is a chance this will break your system.
+
+ The Lustucru build scripts are designed to run from the command line in a unix bash shell, so
+ you will need to be able to run a unix bash shell.  This is the version of bash that I am running:
+
+ GNU bash, version 5.1.16(1)-release (x86_64-redhat-linux-gnu)
+
+ The user running the scripts will have to be able to sudo. I highly recommend to
+ add the user to the now password required for sudo in /etc/sudoers otherwise
+ scripts might stop and then timeout while waiting for a sudo password.  My build
+ takes over an hour.  Depending on the platform it can take much longer.  I saw
+ one build take 6 hours. Who would want to monitor for a sudo password that long?
+
+ Be sure to grep the scripts for sudo to be confortable with the calls.
 
 
-1. Suggested prep
+1. Suggested preparation.
 
 
   It is not necessary, but consider installing my system scripts,
