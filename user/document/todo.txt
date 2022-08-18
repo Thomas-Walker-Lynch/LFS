@@ -113,3 +113,8 @@
         -need config parameter for build, and config directory in build, library config
          perhaps exmaple in name? - issue here is config files live in build, but
          git does not put build stuff in the repo.
+
+2022-08-18T13:20:42Z
+
+         be sure to integrate the build directory variable into the scripts,
+         right now we just build in 'build'.

@@ -50,8 +50,6 @@
 
 3b. If you are not using my repo scripts:
 
-
-
    Set these variables:
 
    ```
@@ -86,5 +84,21 @@
 
 
 4. Copy config* files from $REPO_DIR/user/lib/ to $REPO_DIR/user/lib/build.
-  There are three config files.
+  There are three config files.  As I used the repo script (3a above), my present working
+  directory is $REPO_DIR/user/build, so I type:
+
+   ```
+    > cp $REPO_DIR/user/lib/config* .
+    > ls $REPO_DIR/user
+    config config_m1 config_m2
+   ```
+
+   If you have already run the scripts you will also see `log` and `upstream` in that listing.
+   Build lot files will be put in  `log`, and the downloaded tar files will be put in `upstream`.
+
+   If per chance you create additional build directories, be sure to add them to .gitignore.
+
+
+
+   
 
