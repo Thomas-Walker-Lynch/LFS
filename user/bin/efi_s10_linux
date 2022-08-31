@@ -1,33 +1,46 @@
 #!/bin/bash
-# for legacy boot,  the EFI partition, if any, will be ignored
-
-see https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
-scroll down to section
-Kernel Configuration for UEFI support
-
+# https://linuxfromscratch.org/blfs/downloads/stable/BLFS-BOOK-11.1-nochunks.html#grub-efi
+#    chatper: Using GRUB to Set Up the Boot Process with UEFI 
+#    second section: Kernel Configuration for UEFI support
 
 if [[ "$LFS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
   exit 1
 fi
 
-make mrproper
 
+make mrproper
 #see LFS book for LANG variable
 
-# make menuconfig
-make defconfig
-# it printed:
-# *** Default configuration is based on 'x86_64_defconfig'
-# # configuration written to .config
-# according to book, explained at https://www.linuxfromscratch.org/hints/downloads/files/kernel-configuration.txt
+make menuconfig
 
-# need to set .config file values if not defaults, make menuconfig will do this.  Can we just
-# put the values directly into .config?
+# make these selections
+# Processor type and features --->
+#   [*] EFI runtime service support                              [CONFIG_EFI]
+#   [*]   EFI stub support                                       [CONFIG_EFI_STUB]
+# Firmware Drivers --->
+#   EFI (Extensible Firmware Interface) Support --->
+#     < > EFI Variable Support via sysfs                         [CONFIG_EFI_VARS]
+#     [*] Export efi runtime maps to sysfs                       [CONFIG_EFI_RUNTIME_MAP]
+# Enable the block layer --->
+#   Partition Types --->
+#     [*] Advanced partition selection                           [CONFIG_PARTITION_ADVANCED]
+#     [*] EFI GUID Partition support                             [CONFIG_EFI_PARTITION]
+# Device Drivers --->
+#   Graphics support --->
+#     Frame buffer Devices --->
+#       Support for frame buffer devices --->                    [CONFIG_FB]
+#         [*] EFI-based Framebuffer support                      [CONFIG_FB_EFI]
+#     Console display driver support --->
+#       [*] Framebuffer Console support                          [CONFIG_FRAMEBUFFER_CONSOLE]
+# File systems --->
+#   Pseudo filesystems --->
+#     <*/M> EFI Variable filesystem                              [CONFIG_EFIVAR_FS]
 
 make
 make modules_install
 
+# the bind step is done the m2fs_bind script
 # if there is a separate /boot directory
 # mount --bind /boot /mnt/lfs/boot
 

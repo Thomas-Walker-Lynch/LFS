@@ -97,7 +97,6 @@
    the build directory are not part of the Lustucru project.  You will need to make
    your own copies if you want to keep them.
 
-
 4. Copy config* files from $REPO_DIR/user/lib/ to $REPO_DIR/user/lib/build.
 
   If per chance you create additional build directories, be sure to add them to .gitignore.
@@ -129,6 +128,13 @@
 
   Currently I comment out or do not comment out the frame c3 line in the bin/book_m1
   script to control the download of upstream tar files.
+
+5. mount the target device
+
+  ```
+   > m2fs_mount
+  ```
+
 
 5. for an automatic copmlete build
 

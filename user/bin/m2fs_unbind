@@ -1,17 +1,25 @@
 #!/bin/bash
-set -x
+# just goes backwards from m2fs_bind
 
 if [[ "$LFS_ENV" != "m1_root" ]];then
  echo $(basename "$0") "must be run from env_m1_root"
  exit 1
 fi
 
+# set -x
+
 # found that the absolute pathname is necessary, independent of the current pwd
+
+
+echo "Careful! Any umount failure followed by an rm -r on m2fs will delete things from the mounted device or directory! This is the most common way to kill the build system or ruin the boot partition." 
 umount -v "$LFS_M2_FS$LFSM2_REPO_DIR"
-rmdir -v "$LFS_M2_FS$LFSM2_REPO_DIR"
+umount -v "$LFS_M2_FS/boot"
+umount -v "$LFS_M2_FS/run"
+umount -v "$LFS_M2_FS/sys"
+umount -v "$LFS_M2_FS/proc"
+umount -v "$LFS_M2_FS/dev/pts"
+umount -v "$LFS_M2_FS/dev" 
 
-umount -v "$LFS_M2_FS"/dev/pts
-umount -v "$LFS_M2_FS"/{sys,proc,run,dev}
-
-
-
+# for efi builds:
+mountpoint "$LFS_M2_FS/sys/firmware/efi/efivars" && unmount -v "$LFS_M2_FS/sys/firmware/efi/efivars"
+mountpoint "$LFS_M2_FS/boot/efi" && umount -v "$LFS_M2_FS/boot/efi"

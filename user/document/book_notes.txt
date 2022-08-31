@@ -15,8 +15,9 @@ General Comments
 
     1. The book does not follow RFC2119, and this might cause some ambiguity.
 
-    2. My top level script is currently 'book', and then there are scripts for chapters,  c2, c3, ... and for
-       sections.
+    2. The BLFS chapter on grub, in the second subsection describes compiling the kernel with EFI,
+       seems this should be a chapter of its own.
+       https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
 
 
 Build Environment

@@ -1,0 +1,24 @@
+
+1. A usb stick that would boot on just about any platform, and then characterize the
+   hardware
+
+   It could even return the kernel config tailored for that platform.  The config
+   could then be included in the build directory and the construction of a system
+   would run automatically. 
+
+   The system booted by the usb stick need not have a monitor, but it does have one
+   the user may be informed and asked questions about options.
+
+   iso images for said usb stick could be included in the lib of the Lustucru distribution.
+   that we know the configuration made by our hardware expert is compatible with our
+   Lustucru distribution.
+
+   Most all systems have usb these days, but such an iso could also be written to
+   other media types.  Perhaps booted over the network.
+
+   Perhaps a small expert system and a database of hardware knowledge could be included.
+
+   It would be a separate hardware expert project.
+
+
+

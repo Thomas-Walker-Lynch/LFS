@@ -11,9 +11,16 @@ mount -vt proc proc "$LFS_M2_FS/proc"
 mount -vt sysfs sysfs "$LFS_M2_FS/sys"
 mount -vt tmpfs tmpfs "$LFS_M2_FS/run"
 
+mkdir -p "$LFS_M2_FS/boot"
+mount --bind /boot  "$LFS_M2_EFI"
+
 # bind our sources directory
 repo_dir_target="$LFS_M2_FS$LFSM2_REPO_DIR"
 mkdir -p "$repo_dir_target"
 mount -v --bind "$REPO_DIR" "$repo_dir_target"
 
+if [[ "$LFS_BOOT_STYLE" == "UEFI" ]]; then
+  mkdir -pv "$LFS_M2_FS/sys/firmware/efi/efivars" && mount -v -t efivarfs efivarfs "$LFS_M2_FS/sys/firmware/efi/efivars"
+  mkdir -pv "$LFS_M2_FS/boot/efi" &&  mount -v --bind "$LFS_M2_EFI" "$LFS_M2_FS/boot/efi"
+fi
 

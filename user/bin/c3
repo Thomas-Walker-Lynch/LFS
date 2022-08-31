@@ -9,6 +9,6 @@ frame s3.2_wget_all_document
 frame s3.2_wget_all_source
 frame s3.2_wget_all_patch
 
-if [[ "$LFS_BOOT_STYLE" == "EFI" ]]; then
+if [[ "$LFS_BOOT_STYLE" == "UEFI" ]]; then
   frame efi_download
 fi

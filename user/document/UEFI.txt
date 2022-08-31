@@ -1,0 +1,40 @@
+
+1. does the UEFI partition have to have a bootable flag?
+
+    https://unix.stackexchange.com/questions/620657/do-you-need-to-set-bootable-flag-when-installing-linux-in-uefi-mode
+
+    "This flag is irrelevant when an UEFI partitioning scheme is used. You only need
+    an "EFI system partition" to be able to boot successfully."
+
+2.
+
+In chapter 5 we install kernel headers. We do build nor configure the kernel for that, so that
+is unrelated.
+
+There appear to be three steps:
+   1. build software builds used by grub and the kernel
+   2. manually configure the kernel
+   3. different grub configuration
+
+The software used by grub and the kernel is compiled before the configuration stoppage.
+
+The kernel config interrupts our otherwise beautiful automatic install.  Though this 
+interruption comes very late in the process.  The user will only be forced to sit and
+wait through the kernel build and the grub build after the configure step.
+
+We do a menuconfig, that must run in a terminal. That is too bad as I had used
+emacs to ssh into my emulator.  Well there is ecurses.  See kernel_config.txt
+
+Do we really need to do the grub build after the kernel build? If it could be done before that
+would be one less thing to have to watch.
+
+All the action happens in chapter 10, c10.  Note we still must run c11 afterward. Seems like
+c11 can be done before c10 and thus be automatic.  Probably make that change after I see this
+go.
+
+
+   
+
+
+
+

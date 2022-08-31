@@ -3,6 +3,7 @@
 # required: efibootmgr-18
 # recommended: FreeType-2.12.1
 # optional: ...
+# https://linuxfromscratch.org/blfs/downloads/stable/BLFS-BOOK-11.1-nochunks.html#grub-efi
 
 if [[ "$LFS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
@@ -30,5 +31,4 @@ make
 make install &&
   mv -v /etc/bash_completion.d/grub /usr/share/bash-completion/completions
 
-# finish
-# https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-efi.html
+
