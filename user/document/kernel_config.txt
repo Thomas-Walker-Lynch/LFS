@@ -1,0 +1,34 @@
+https://www.linux.org/threads/the-linux-kernel-configuring-the-kernel-part-1.8745/
+
+make config - Plain text interface (most commonly used choice)
+
+make menuconfig - Text-based with colored menus and radiolists. This options allows developers to save their progress. ncurses must be installed (sudo apt-get install libncurses5-dev).
+
+make nconfig - Text-based colored menus - curses (libcdk5-dev) must be installed
+
+make xconfig - QT/X-windows interface – QT is required
+
+make gconfig - Gtk/X-windows interface – GTK is required
+
+make oldconfig - Plain-text interface that updates a config file (that may have been copied from another system) to be compatible with the newer kernel source code.
+
+make silentoldconfig - This is the same as oldconfig except the questions answered by the config file will not be shown
+
+make olddefconfig - This is like silentoldconfig except some questions are answered by their defaults
+
+make defconfig - This option creates a config file that uses default settings based on the current system's architecture.
+
+make ${PLATFORM}_defconfig - Creates a config file using values from arch/$ARCH/configs/${PLATFORM}_defconfig.
+
+make allyesconfig - This option creates a config file that will answer yes to as many questions as possible.
+
+make allmodconfig - This option creates a config file that will make as many parts of the kernel a module as possible
+
+make allnoconfig - This option creates a config file that will only add essential code to the kernel; this answers no to as many questions as possible. This can sometimes make a kernel that does not work on the hardware it was compiled on.
+
+make randconfig - This option makes random choices for the kernel  [!!lol]
+
+make localmodconfig - This option creates a config file based on the current list of loaded modules and system configuration.
+
+make localyesconfig - This will set all module options to yes - most (or all) of the kernel will not be in modules
+

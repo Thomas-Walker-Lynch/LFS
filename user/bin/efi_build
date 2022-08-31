@@ -5,9 +5,15 @@ if [[ "$LFS_ENV" != "m2" ]];then
   exit 1
 fi
 
-efi_mandoc
-efi_efivar
-efi_popt
-efi_bootmgr
-efi_freetype
-efi_grub
+section="
+mandoc
+efivar
+popt
+freeteype
+efibootmgr
+grub
+"
+
+IFS=$'\n'; for s in $section;do
+  frame env_source $s efi_$s
+done

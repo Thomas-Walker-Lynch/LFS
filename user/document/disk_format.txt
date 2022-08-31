@@ -1,0 +1,12 @@
+
+After experimenting ended up with this:
+
+          sdb1 uefi 500M  (seems 100M would be more than enough)
+          sdb2 swap 16G  (2 or 3 times system memory, or at least equal to it)
+          sdb3 linux rest  at least 20G
+
+Ran out of disk space due to saving checkpoints, but I stopped making those.  They
+can also be stored on the build machine.
+
+For a real build sdb3 ended up being about 1T, as that is the size of the SSD
+
