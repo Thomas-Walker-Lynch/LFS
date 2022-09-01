@@ -21,6 +21,10 @@ mount -v --bind "$REPO_DIR" "$repo_dir_target"
 
 if [[ "$LFS_BOOT_STYLE" == "UEFI" ]]; then
   mkdir -pv "$LFS_M2_FS/sys/firmware/efi/efivars" && mount -v -t efivarfs efivarfs "$LFS_M2_FS/sys/firmware/efi/efivars"
-  mkdir -pv "$LFS_M2_FS/boot/efi" &&  mount -v --bind "$LFS_M2_EFI" "$LFS_M2_FS/boot/efi"
+  efi="$LFS_M2_FS/boot/efi"
+  if [ ! -d  "$efi" ]; then
+    mkdir "$efi"
+  fi
+  mountpoint -q "$efi" || mount -v -t vfat $LFS_M2_DEVICE_EFI "$efi"
 fi
 

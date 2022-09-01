@@ -1,12 +1,20 @@
 #!/bin/bash
-# https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/efibootmgr.html
-# required efivar-38, popt-1.18 
+#
+# https://linuxfromscratch.org/blfs/downloads/stable/BLFS-BOOK-11.1-nochunks.html#efibootmgr
+#    uses efibootmgr-17.tar.gz
+#    requires efivar-38, popt-1.18    
+#
+# note # https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/efibootmgr.html
+#    uses efibootmgr-18.tar.gz
+#    requires efivar-38, popt-1.18  (same)
+#    directions are simpler, and do not have the sed replacement lines, will use this instead
+# 
 
 if [[ "$LFS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
   exit 1
 fi
-
+   
 make EFIDIR=LFS_M2_FS EFI_LOADER=grubx64.efi
 make install EFIDIR=LFS_M2_FS
 

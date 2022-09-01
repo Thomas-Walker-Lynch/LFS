@@ -1,0 +1,63 @@
+#!/bin/bash
+# https://linuxfromscratch.org/blfs/downloads/stable/BLFS-BOOK-11.1-nochunks.html#grub-efi
+
+if [[ "$LFS_ENV" != "m2" ]];then
+  echo $(basename "$0") "must be run in env_m2"
+  exit 1
+fi
+
+# section: turn off secure boot
+echo "make sure secure boot is turned off in the bios settings before booting the m2 device"   
+
+# section: Create an Emergency Boot Disk
+# a great idea to protect the build system boot, we should do this.
+# requires making a partition on a usb flash drive etc.
+
+# section: Kernel Configuration for UEFI support
+#   see efi_linux we build the kernel like this in the first place
+
+# section: Find or Create the EFI System Partition
+#   the partitioning stuff is alredy done way up front
+#   the mount is part of the script m2fs_mount, so should already be mounted by now
+#   mount efi variable fs also already done in m2fs_mount
+
+# section: Setting Up the Configuration
+#  rather redundant section title no?  isn't this also the chapter title?
+
+# this puts files into /boot. This does not written the boot sector, which is
+# good because we never told it which device we are targetting.
+grub-install --bootloader-id=FS --recheck
+
+# echo comforting information for the user:
+efibootmgr
+
+# section: Creating the GRUB Configuration File
+#   when grub runs this becomes a boot menu entry
+#
+
+cat > /boot/grub/grub.cfg << EOF
+# Begin /boot/grub/grub.cfg
+set default=0
+set timeout=5
+
+insmod part_gpt
+insmod ext2
+set root=(hd0,3)
+
+if loadfont /boot/grub/fonts/unicode.pf2; then
+  set gfxmode=auto
+  insmod all_video
+  terminal_output gfxterm
+fi
+
+menuentry "GNU/Linux, Linux 5.16.9-lfs-11.1"  {
+  linux   /boot/vmlinuz-5.16.9-lfs-11.1 root=/dev/sda2 ro
+}
+
+menuentry "Firmware Setup" {
+  fwsetup
+}
+EOF
+
+# section Dual-booting with Windows
+# info in book, perhaps add this later

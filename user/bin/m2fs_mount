@@ -1,6 +1,5 @@
 #!/bin/bash
-# run this once before any of the other scripts are run, or setup manually
-# > env_m1 env_m1_root setup
+# If the mount does not work, the build will end up on the local disk.
 
 if [[ "$LFS_ENV" != "m1_root" ]];then
   echo $(basename "$0") "must be run in env_m1_root"
@@ -13,11 +12,6 @@ fi
 mountpoint -q "$LFS_M2_FS" || mount -v $LFS_M2_DEVICE_FS "$LFS_M2_FS"
 chmod ugo+rwxt  "$LFS_M2_FS"
 
-if [ ! -d "$LFS_M2_EFI" ]; then
-  mkdir "$LFS_M2_EFI"
-fi
-
-mountpoint -q "$LFS_M2_EFI" || mount -v -t vfat $LFS_M2_DEVICE_EFI "$LFS_M2_EFI"
 
 
 

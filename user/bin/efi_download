@@ -33,6 +33,7 @@ source_dir="$REPO_USER_DIR/build/upstream/source"
 mkdir -p "$source_dir"
 pushd "$source_dir"
 
+# note efi_grub and unwind dependencies will result in this:
 link="
 https://ftp.gnu.org/gnu/grub/grub-2.06.tar.xz
 https://unifoundry.com/pub/unifont/unifont-14.0.04/font-builds/unifont-14.0.04.pcf.gz

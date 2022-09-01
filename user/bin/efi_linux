@@ -14,28 +14,51 @@ make mrproper
 
 make menuconfig
 
-# make these selections
+
+
+# make these selections:
+
+
+#* do not forget to scoll off the bottom, note the green v+
+
+#* they were set by default
 # Processor type and features --->
 #   [*] EFI runtime service support                              [CONFIG_EFI]
 #   [*]   EFI stub support                                       [CONFIG_EFI_STUB]
+
+#* found this under Device Drivers then Firware Drivers
+#* EFI Variable Spoort and runtime maps were set by default.
+#* I do not know if I should turn off the Variable support,  what does < > mean?
+#* I turned it off.
 # Firmware Drivers --->
 #   EFI (Extensible Firmware Interface) Support --->
 #     < > EFI Variable Support via sysfs                         [CONFIG_EFI_VARS]
 #     [*] Export efi runtime maps to sysfs                       [CONFIG_EFI_RUNTIME_MAP]
-# Enable the block layer --->
+
+#* not finding this
+#* Enable the block layer --->
 #   Partition Types --->
 #     [*] Advanced partition selection                           [CONFIG_PARTITION_ADVANCED]
 #     [*] EFI GUID Partition support                             [CONFIG_EFI_PARTITION]
+
+
 # Device Drivers --->
 #   Graphics support --->
 #     Frame buffer Devices --->
 #       Support for frame buffer devices --->                    [CONFIG_FB]
+#* no such option 
 #         [*] EFI-based Framebuffer support                      [CONFIG_FB_EFI]
 #     Console display driver support --->
+#* no such option
 #       [*] Framebuffer Console support                          [CONFIG_FRAMEBUFFER_CONSOLE]
+
+#* was already set to M
 # File systems --->
 #   Pseudo filesystems --->
 #     <*/M> EFI Variable filesystem                              [CONFIG_EFIVAR_FS]
+
+#** only change from defults I made was deselecting the EFI Variable Suppo5rt via sysf,
+# defaults probably were fine
 
 make
 make modules_install
@@ -44,6 +67,8 @@ make modules_install
 # if there is a separate /boot directory
 # mount --bind /boot /mnt/lfs/boot
 
+# it prompts if I want to ovrerwrite the prior kernel
+# probably do not need the prompts
 cp -iv arch/x86/boot/bzImage /boot/vmlinuz-5.16.9-lfs-11.1
 cp -iv System.map /boot/System.map-5.16.9
 

@@ -124,3 +124,19 @@
          the buld of the relevant section if I do not want to download from
          the upstream again.
 
+2022-09-01T13:28:02Z
+
+          add the rescue disk option to efi_grub_setup, note comments there
+
+          perhpas add the dual booting with Windows so efi_grub_setup
+
+          source directory in m2 should be on the mount, i.e. actually living on the
+          build machine.  though we would prefer using a ramdisk, then copying that
+          over when done.  sources are deleted after built, so source on the ram disk
+          would be a performance advantage in one sense, though not if we have to
+          wait to load them every time ... which brings up another issue, we should
+          not be loading sources we already have, though we should be able to do
+          checksums on them.
+
+           is grub being compiled with pxe?  that might be a security issue
+           

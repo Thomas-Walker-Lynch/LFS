@@ -9,7 +9,7 @@ section="
 mandoc
 efivar
 popt
-freeteype
+freetype
 efibootmgr
 grub
 "

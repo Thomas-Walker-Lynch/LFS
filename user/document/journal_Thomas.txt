@@ -962,3 +962,10 @@
        https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-setup.html
 
         
+2022-09-01T15:13:10Z
+
+        None of the kernel configuration options required for EFI boot accroding to the book
+        are present as 5.6 kernel configuation options.  see efi_linux .. ah wait, must arrow
+        down off the bottom, note the little v+ at the bottom.  mouse scrolling does not
+        scroll the options.  EFI already set by default under processor type by default.
+

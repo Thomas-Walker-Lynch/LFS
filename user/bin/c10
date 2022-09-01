@@ -5,23 +5,23 @@ if [[ "$LFS_ENV" != "m2" ]];then
   exit 1
 fi
 
-s10.2_fstab
-
-if [[ "$LFS_LFS_BOOT_STYLE" != "UEFI" ]];then
-  frame env_source linux efi_s10_linux
+if [[ "$LFS_LFS_BOOT_STYLE" == "UEFI" ]];then
+  frame efi_build
+  frame efi_fstab
+  frame env_source linux efi_linux
 else
+  frame s10.2_fstab
   frame env_source linux s10_linux
 fi
 
-# 
+# could this not be done before s10_linux?
 s10.3.2_module_load_order
 
-# s10.4 book proposes to make a rescue copy of the boot record.  This could save
-# us if we have the wrong device in the configuration, perhaps the build machine's
-# device. (But then where do we store it? Probably need a config variable for
-# this) Or, if the target media is already bootable and we mess that up.  But this
-# requires getting some software from BLF, so I will leave this for later.
-#
-# s10.4.1_copy_boot_rec
+# BLFS called it grub_setup,  LFS calls it grub_install
+if [[ "$LFS_LFS_BOOT_STYLE" == "UEFI" ]];then
+  efi_grub_setup
+else
+  s10.4_grub_install
+fi
 
-s10.4.3_grub_install
+

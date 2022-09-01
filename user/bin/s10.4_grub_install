@@ -6,6 +6,14 @@ if [[ "$LFS_ENV" != "m2" ]];then
   exit 1
 fi
 
+# section 10.4.1: Create an Emergency Boot Disk
+# a great idea, we should do this, but we do not have xorriso yet ..
+#     though why put it in /tmp ?  This will need to be moved off the build system to somewhere safe
+# pushd /tmp
+# grub-mkrescue --output=grub-img.iso
+# xorriso -as cdrecord -v dev=/dev/cdrw blank=as_needed grub-img.iso
+# popd
+
 # from section 10.4.3
 # looks like a small error in the book, grub-install assumed efi. Legacy boot requires a specific target
 grub-install --target=i386-pc $LFS_M2_DEVICE

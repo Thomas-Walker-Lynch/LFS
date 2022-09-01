@@ -1,5 +1,5 @@
 #!/bin/bash
-# https://www.linuxfromscratch.org/blfs/view/systemd/postlfs/grub-efi.html
+# https://linuxfromscratch.org/blfs/downloads/stable/BLFS-BOOK-11.1-nochunks.html#grub-efi
 # required: efibootmgr-18
 # recommended: FreeType-2.12.1
 # optional: ...
