@@ -143,3 +143,17 @@
 2022-09-02T16:13:10Z
 
            why is env_m1 not showing my prompt anymore??
+
+2022-09-05T19:38:22Z
+
+           Move man pages from source to document, currnetly it is in source
+           because in c8 it is built like other packages.
+
+           efi_linux
+             using make defconfig
+
+             .. still hangs .. on the install step because of the overwrite confirm, should remove those.
+
+             cp: overwrite '/boot/vmlinuz-5.16.9-lfs-11.1'?
+
+             cp: overwrite '/boot/System.map-5.16.9'? 

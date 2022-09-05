@@ -5,7 +5,7 @@ if [[ "$LFS_ENV" != "m2" ]];then
   exit 1
 fi
 
-if [[ "$LFS_LFS_BOOT_STYLE" == "UEFI" ]];then
+if [[ "$LFS_BOOT_STYLE" == "UEFI" ]];then
   frame efi_build
   frame efi_fstab
   frame env_source linux efi_linux
@@ -15,13 +15,13 @@ else
 fi
 
 # could this not be done before s10_linux?
-s10.3.2_module_load_order
+frame s10.3.2_module_load_order
 
 # BLFS called it grub_setup,  LFS calls it grub_install
-if [[ "$LFS_LFS_BOOT_STYLE" == "UEFI" ]];then
-  efi_grub_setup
+if [[ "$LFS_BOOT_STYLE" == "UEFI" ]];then
+  frame efi_grub_setup
 else
-  s10.4_grub_install
+  frame s10.4_grub_install
 fi
 
 

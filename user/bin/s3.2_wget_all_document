@@ -1,4 +1,5 @@
 #!/bin/bash
+# man-pages has a makefile so I moved it to sources
 
 if [[ "$LFS_ENV" != "m1" ]];then
   echo $(basename "$0") "must be run in env_m1"
@@ -15,7 +16,6 @@ pushd "$document_dir"
 # <center><h1>301 Moved Permanently</h1></center>
 
 link="
-https://www.kernel.org/pub/linux/docs/man-pages/man-pages-5.13.tar.xz
 https://www.python.org/ftp/python/doc/3.10.2/python-3.10.2-docs-html.tar.bz2
 https://downloads.sourceforge.net/tcl/tcl8.6.12-html.tar.gz
 "

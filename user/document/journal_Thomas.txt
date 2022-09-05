@@ -969,3 +969,12 @@
         down off the bottom, note the little v+ at the bottom.  mouse scrolling does not
         scroll the options.  EFI already set by default under processor type by default.
 
+2022-09-05T16:15:38Z
+
+         Misplaced quote in m2fs_bind created a strange directory name on m2fs *and*
+         mounted it bound to /dev.  When I deleted the directory it deleted device files
+         on m0.
+         
+         ^ Turns out to be an interesting problem because unix commands will not recognize
+         the created file name.  Even the trick of selecting it in dired does not work. I will
+         mkfs on the partition to get rid of it.
