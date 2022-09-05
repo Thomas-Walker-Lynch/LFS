@@ -1,0 +1,12 @@
+#!/bin/bash
+# If the mount does not work, the build will end up on the local disk.
+
+if [[ "$LFS_ENV" != "m1_root" ]];then
+  echo $(basename "$0") "must be run in env_m1_root"
+  exit 1
+fi
+
+mountpoint -q "$LFS_M2_EFI" && umount -v "$LFS_M2_EFI" && rmdir "$LFS_M2_EFI"
+mountpoint -q "$LFS_M2_FS" && umount -v "$LFS_M2_FS" && rmdir "$LFS_M2_FS"
+
+

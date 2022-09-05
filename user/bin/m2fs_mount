@@ -6,12 +6,12 @@ if [[ "$LFS_ENV" != "m1_root" ]];then
   exit 1
 fi
 
-if [ ! -d "$LFS_M2_FS" ]; then
-  mkdir "$LFS_M2_FS"
-fi
+mkdir -p "$LFS_M2_FS"
 mountpoint -q "$LFS_M2_FS" || mount -v $LFS_M2_DEVICE_FS "$LFS_M2_FS"
 chmod ugo+rwxt  "$LFS_M2_FS"
 
+mkdir -p "$LFS_M2_EFI"
+mountpoint -q "$LFS_M2_EFI" || mount -v -t vfat $LFS_M2_DEVICE_EFI "$LFS_M2_EFI"
 
 
 

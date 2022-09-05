@@ -1,0 +1,20 @@
+#!/bin/python
+# deletes all files on LFS_M2_FS that are not under a mount point other than LFS_M2_EFI
+#
+
+import os
+import stat
+
+def pev(name, value):
+  if value is None:
+    print(name ," is undefined")
+  else:
+    print(name ,":" ,value)
+
+env_pwd = os.environ.get('PWD')
+env_ne = os.environ.get('R2JcU-M_g')
+
+pev("env_pwd" ,env_pwd)
+pev("env_ne" ,env_ne)
+
+

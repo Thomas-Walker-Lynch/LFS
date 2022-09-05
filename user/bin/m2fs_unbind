@@ -18,8 +18,5 @@ umount -v "$LFS_M2_FS/proc"
 umount -v "$LFS_M2_FS/dev/pts"
 umount -v "$LFS_M2_FS/dev" 
 
-# for efi builds:
 mountpoint -q "$LFS_M2_FS/sys/firmware/efi/efivars" && umount -v "$LFS_M2_FS/sys/firmware/efi/efivars"
-mountpoint -q "$LFS_M2_FS/boot/efi" && umount -v "$LFS_M2_FS/boot/efi"
-
 umount -v "$LFS_M2_FS/sys"

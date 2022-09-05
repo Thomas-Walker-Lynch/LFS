@@ -1,5 +1,8 @@
 
-1. A usb stick that would boot on just about any platform, and then characterize the
+
+1. built to ramdisk, then copy to target device
+
+2. A usb stick that would boot on just about any platform, and then characterize the
    hardware
 
    It could even return the kernel config tailored for that platform.  The config
@@ -20,5 +23,5 @@
 
    It would be a separate hardware expert project.
 
-
+3. too bad that shell aliases are not inherited into environments
 

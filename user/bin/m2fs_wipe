@@ -1,23 +1,126 @@
-#!/bin/bash
-# This might require sudo_LFS depending on the stage in the build that it is run at.
-# This is dangerous. This is the kind of thing that causes a person to use an emulated m1 machine.
-# set -x
+#!/bin/python
+#
+# Deletes all files under LFS_M2_FS including those under LFS_M2_EFI if it is
+# mounted (typically under /boot/efi)
+#
+# First scans the tree for off device directories and bails if it finds any. I
+# wanted to just unmount these, but it is possible that they are nested and thus
+# would be 'busy'.  We can not traverse into them because we do not know what
+# they contain. So we leave it to the user to call m2fs_unbind before calling
+# wipe.
+# 
 
-if [[ "$LFS_ENV" != "m1_root" ]];then
-  echo $(basename "$0") "must be run in env_m1_root"
-  exit 1
-fi
+import sys
+import os
+import stat
 
-m2fs_unbind
+env_list = ['HOME' ,'LFS_ENV' ,'LFS_M2_FS']
+error = {'code':0 ,'error_env':0x01 ,'error_not_dir':0x02 ,'error_diff_dev':0x04}
 
-# skip /mnt just in case it did not unmount (has happened ...)
-echo "rm -rf the following:"
-find "$LFS_M2_FS" \
-  -maxdepth 1 -mindepth 1 \
-  ! -name "mnt" \
-  -print \
-  \( -exec rm -rf {} \; -o -quit \)
+# --------------------------------------------------------------------------------
+# this script uses these from the environment:
+#
+def getenv(k):
+  global env_list
+  if not k in env_list:
+    print("internal script error, use of undeclared environment variable:" ,k)
+  return os.environ.get(k)
 
-rmdir -v "$LFS_M2_FS"/mnt
+# --------------------------------------------------------------------------------
+# parse the environment
+#
 
-# set +x
+def check_env():
+  global error, env_list
+  for k in env_list:
+    val = getenv(k)
+    if val is None or val == '':
+      error['code'] |= error['error_env']
+      print(k ,"not found in the environment")
+      continue
+
+  lfs_env = getenv('LFS_ENV')
+  if not lfs_env or lfs_env != 'm1_root':
+    error['code'] |= error['error_env']
+    print("must be run in environment env_m1_root")
+
+  lfs_m2_fs = getenv('LFS_M2_FS')
+  if not lfs_m2_fs or not os.path.isdir(lfs_m2_fs):
+    error['code'] |= error['error_not_dir']
+    print("LFS_MS_FS is not a directory")
+
+  return [lfs_m2_fs]
+
+# --------------------------------------------------------------------------------
+# check that the tree is on the device
+#
+#  Currently m2fs should be on the target device, and HOME should be on our an m1
+#  build machine device, so they will be different devices.
+#
+#  All the directories in the tree should be on the LFS_M2_FS device
+#
+#  It is possible that these expectations about devices are overly protective and that
+#  we will want to change this section in the future.
+
+def check_device(lfs_m2_fs):
+  global error
+
+  # lets make sure the device of the tree we are to wipe is on a different device from our home directory
+  device_home = os.stat(getenv('HOME')).st_dev
+  device_m2_fs = os.stat(getenv('LFS_M2_FS')).st_dev
+
+  print("home device:" ,oct(device_home))
+  print("device_m2_fs:" ,oct(device_m2_fs))  
+
+  # presumably the home device and the mount device are different
+  if device_home == device_m2_fs:
+    error['code'] |= error['error_dev']
+    print("hmmm .. LFS_M2_FS is on the same device as HOME")
+
+  # list of directories that are not on the same device as m2fs
+  diff_dev_dir_list = []
+  for root, dir_list, file_list in os.walk(lfs_m2_fs):
+    diff_dev_dir_list_delta = []
+    for i ,d in enumerate(dir_list):
+      print("index:" ,i)
+      d_full_path = os.path.join(root,d)
+      d_dev = os.stat(d_full_path).st_dev
+#      print("dev d" ,oct(d_dev) ,d_full_path)
+      if len(d.split('\n')) > 1:
+        print("length:" ,len(d))
+      print("dev d" ,oct(d_dev) ,"|" ,d ,"|")
+      if d_dev != device_m2_fs:
+        diff_dev_dir_list_delta.append(d_full_path)
+        del dir_list[i]
+    diff_dev_dir_list.extend(diff_dev_dir_list_delta)
+
+  if len(diff_dev_dir_list) > 0:
+    error['code'] |= error['error_diff_dev']
+    print("These subdirectories are on a different device then that of LFS_M2_FS:")
+    for d in diff_dev_dir_list:
+      print("    " ,d)
+
+def wipe():
+  global error
+
+  [lfs_m2_fs] = check_env()
+  if error['code'] > 0:
+    print("Exiting with no actions taken.")
+    return
+
+  check_device(lfs_m2_fs)
+  if error['code'] > 0:
+    print("Exiting with no actions taken.")
+    return
+
+  for root, dir_list, file_list in os.walk(lfs_m2_fs ,topdown=False):
+    for file in files_list:
+      print("os.remove" ,file);
+      #os.remove(os.path.join(root ,file))
+    for dir in dir_list:
+      print("os.rmdir" ,dir);
+      #os.rmdir(os.path.join(root ,dir))
+
+wipe()
+exit(error['code'])
+

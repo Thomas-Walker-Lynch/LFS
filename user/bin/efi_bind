@@ -1,6 +1,0 @@
-#!/bin/bash
-
-mkdir -pv "$LFS_M2_FS/boot/efi" &&
-mount -v --bind "$LFS_M2_EFI" "$LFS_M2_FS/boot/efi" 
-
-

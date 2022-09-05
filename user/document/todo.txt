@@ -140,3 +140,6 @@
 
            is grub being compiled with pxe?  that might be a security issue
            
+2022-09-02T16:13:10Z
+
+           why is env_m1 not showing my prompt anymore??
