@@ -13,3 +13,7 @@ mount: /mnt/m2_fs does not contain SELinux labels.
        this file system.  For more details see restorecon(8) and mount(8).
 mount: /dev/sdb3 mounted on /mnt/m2_fs.
 mount: /dev/sdb1 mounted on /mnt/m2_efi.
+
+----
+https://dump.4network.org/2018/12/10/mounted-disk-does-not-contain-selinux-labels/
+The SELinux warning is fixed by “restorecon -R /mnt/backup“.

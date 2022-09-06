@@ -157,3 +157,8 @@
              cp: overwrite '/boot/vmlinuz-5.16.9-lfs-11.1'?
 
              cp: overwrite '/boot/System.map-5.16.9'? 
+
+           a script for partitioning the device and formatting the partitions
+
+           rename the frame log to the stderr log, finish the telltales log, perhaps add a times log
+           with just the frames

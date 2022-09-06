@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+if [[ "$LFS_ENV" != "m1_root" ]];then
+  echo $(basename "$0") "must be run in env_m1_root"
+  exit 1
+fi
+
+m2fs_unmount
+if test $? -ne 0; then
+  echo "m2fs_unmount failed, no wipe done"
+  exit 1
+fi
+
+mkfs.ext4 $LFS_M2_DEVICE_FS
+mkfs.msdos $LFS_M2_DEVICE_EFI
+
+
+

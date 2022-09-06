@@ -9,19 +9,21 @@ export MAKEFLAGS="-j12"
 # future we will be able to set this variable
 export LFS_BUILD_DIR="$REPO_DIR/user/build"
 
-# EFI or legacy boot
-export LFS_BOOT_STYLE=legacy
+# boot style is either UEFI or legacy
+# export LFS_BOOT_STYLE=legacy
+export LFS_BOOT_STYLE=UEFI
 
 # where the target device is mounted on m1.
 # put the wrong device here and your m1 build system might be destroyed
-export LFS_M2_DEVICE=/dev/sdX
+export LFS_M2_DEVICE=/dev/sdb
 
 # these partitions are relative to where the target device is mounted on m1.
 export LFS_M2_DEVICE_EFI="$LFS_M2_DEVICE"1
 export LFS_M2_DEVICE_SWAP="$LFS_M2_DEVICE"2
 export LFS_M2_DEVICE_FS="$LFS_M2_DEVICE"3
 
-
+# put true here if the build system has selinux
+export LFS_M1_SELINUX=true
 
 
 
