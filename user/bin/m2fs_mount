@@ -13,9 +13,4 @@ chmod ugo+rwxt  "$LFS_M2_FS"
 mkdir -p "$LFS_M2_EFI"
 mountpoint -q "$LFS_M2_EFI" || mount -v -t vfat $LFS_M2_DEVICE_EFI "$LFS_M2_EFI"
 
-# perhaps this should be done after formatting,  add formatting script?
-# but the formatting script does not mount the device .. seems no way
-# to avoid the initial error message
-"$LFS_M1_SELINUX" && restorecon -R "$LFS_M2_FS"
-
 

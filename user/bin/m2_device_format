@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 if [[ "$LFS_ENV" != "m1_root" ]];then
   echo $(basename "$0") "must be run in env_m1_root"
   exit 1
@@ -13,11 +12,38 @@ if test $? -ne 0; then
 fi
 
 mkfs.ext4 $LFS_M2_DEVICE_FS
+err_mkm2fs=$?
+
 mkfs.msdos $LFS_M2_DEVICE_EFI
+err_mkfsefi=$?
 
-# can not do this here because the device is not mounted, if we mount it, then it will print the error,
-# suppose that could be sent to /dev/null
-# "$LFS_M1_SELINUX" && restorecon -R "$LFS_M2_FS"
+# mount $LFS_M2_DEVICE_FS then initialize its selinx labels, unmount it
+err_test_umount=0
+err_sel_label=0
+if test $err_mkm2fs -eq 0 && test $err_mkfsefi -eq 0 && $LFS_M2_SELINUX;then
+  if tmp_mnt=$(mktemp -d) && mount $LFS_M2_DEVICE_SF $tmp_mnt >& /dev/null && restorecon -R $tmp_mnt;then
+    umount $LFS_M2_DEVICE_SF
+    err_test_umount=$?
+  else
+    err_sel_label=1     
+  fi
+fi
 
-
-
+if test $err_mkm2fs -ne 0;then
+  echo "mkfs.ext4 LFS_M2_DEVICE_FS, $LFS_M2_DEVICE_FS, failed"
+  exit 1
+fi
+if test $err_mkfsefi -ne 0;then
+  echo "mkfs.msdos LFS_M2_DEVICE_EFI, $LFS_M2_DEVICE_EFI, failed"
+  exit 2
+fi
+if test $err_sel_label -ne 0;then
+  echo "could not set selinux labels for file system"
+  exit 3
+fi
+if test $err_test_umount -ne 0;then
+  echo "umount of $tmp_mnt failed"
+  exit 4
+fi
+exit 0
+   
