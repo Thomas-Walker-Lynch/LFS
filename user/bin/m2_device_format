@@ -15,5 +15,9 @@ fi
 mkfs.ext4 $LFS_M2_DEVICE_FS
 mkfs.msdos $LFS_M2_DEVICE_EFI
 
+# can not do this here because the device is not mounted, if we mount it, then it will print the error,
+# suppose that could be sent to /dev/null
+# "$LFS_M1_SELINUX" && restorecon -R "$LFS_M2_FS"
+
 
 
