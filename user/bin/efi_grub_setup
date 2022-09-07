@@ -21,15 +21,28 @@ echo "make sure secure boot is turned off in the bios settings before booting th
 #   the mount is part of the script m2fs_mount, so should already be mounted by now
 #   mount efi variable fs also already done in m2fs_mount
 
-# section: Setting Up the Configuration
-#  rather redundant section title no?  isn't this also the chapter title?
+# section Minimal Boot Configuation
+#   seems this does not apply to us
 
-# this puts files into /boot. This does not written the boot sector, which is
+# section Mount the EFI Variable File System
+# m2fs_bind also does this, but m2fs_bind will not have run as part of a normal build,
+# we only run that if we come back later and need to mount an existing build.  I wonder
+# if m2fs_bind will mess up if we haven't build efivars yet.
+#
+mountpoint /sys/firmware/efi/efivars || mount -v -t efivarfs efivarfs /sys/firmware/efi/efivars
+
+# fstab entry for the efi partition was already made with efi_fstab
+
+# section: Setting Up the Configuration
+# this puts files into /boot. This does not write the boot sector, which is
 # good because we never told it which device we are targetting.
 grub-install --bootloader-id=FS --recheck
+# if this works it will say:
+# Installing for x86_64-efi platform.
+# Installation finished. No error reported.
 
 # echo comforting information for the user:
-efibootmgr
+efibootmgr | cut -f 1
 
 # section: Creating the GRUB Configuration File
 #   when grub runs this becomes a boot menu entry
@@ -51,7 +64,19 @@ if loadfont /boot/grub/fonts/unicode.pf2; then
 fi
 
 menuentry "GNU/Linux, Linux 5.16.9-lfs-11.1"  {
+  linux   /boot/vmlinuz-5.16.9-lfs-11.1 root=PARTUUID=14fc2edf-03
+}
+
+menuentry "GNU/Linux, Linux 5.16.9-lfs-11.1"  {
   linux   /boot/vmlinuz-5.16.9-lfs-11.1 root=/dev/sda3 ro
+}
+
+menuentry "GNU/Linux, Linux 5.16.9-lfs-11.1"  {
+  linux   /boot/vmlinuz-5.16.9-lfs-11.1 root=/dev/sda3
+}
+
+menuentry "GNU/Linux, Linux 5.16.9-lfs-11.1"  {
+  linux   /boot/vmlinuz-5.16.9-lfs-11.1 root=/dev/sdb3 
 }
 
 menuentry "Firmware Setup" {

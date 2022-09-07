@@ -162,3 +162,22 @@
 
            rename the frame log to the stderr log, finish the telltales log, perhaps add a times log
            with just the frames
+
+2022-09-06T21:44:08Z
+
+   DHCP or some fix for networking.
+   see s9.5.1, s9.5.2, s9.5.4
+
+   when the m2 device is plugged into the m1 build machine, it will appear at
+   /dev/sdb3 on my system.  However when it is booted, it might actually be at
+   /dev/sda3. The generated m2fs/etc/fstab file uses the environment variables
+   for the device from the config file, which would be /dev/sdb3 here, and thus
+   possibly create an incorrect fstab file. .. we really need a better way to
+   do this.  I belive my fedora boot device makes use of UUIDs.
+
+   see ef_grub_setup .. might be problem here with trying to mount efivars before
+   we build that package
+   # m2fs_bind also does this, but m2fs_bind will not have run as part of a normal build,
+   # we only run that if we come back later and need to mount an existing build.  I wonder
+   # if m2fs_bind will mess up if we haven't build efivars yet.
+

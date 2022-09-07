@@ -1,4 +1,7 @@
 #!/bin/bash
+#  In section 9.2.2 we will install LFS-Bootscripts, among those scripts
+#  is a program mountvirtfs, which does pretty much what this script does.
+#  Maybe we should copy that into our bin directory and invoke that.
 
 if [[ "$LFS_ENV" != "m1_root" ]];then
   echo $(basename "$0") "must be run in env_m1_root"

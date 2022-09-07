@@ -2,6 +2,10 @@
 # https://linuxfromscratch.org/blfs/downloads/stable/BLFS-BOOK-11.1-nochunks.html#grub-efi
 #    chatper: Using GRUB to Set Up the Boot Process with UEFI 
 #    second section: Kernel Configuration for UEFI support
+#
+# apart from the selection of EFI variables in the make menuconfig, this build
+# looks just like the s10_linux.  Those are selected by default anyway.  Do they
+# hurt a legacy boot?  Seems we do not need a separate efi_linux build file
 
 if [[ "$LFS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
@@ -68,9 +72,22 @@ make modules_install
 
 # it prompts if I want to ovrerwrite the prior kernel
 # probably do not need the prompts
-cp -iv arch/x86/boot/bzImage /boot/vmlinuz-5.16.9-lfs-11.1
-cp -iv System.map /boot/System.map-5.16.9
+# was cp -iv, but the -i interrupts the automatic build
+#
+cp -v arch/x86/boot/bzImage /boot/vmlinuz-5.16.9-lfs-11.1
+cp -v System.map /boot/System.map-5.16.9
 
 # documentation
 install -d /usr/share/doc/linux-5.16.9
 cp -r Documentation/* /usr/share/doc/linux-5.16.9
+
+# Configuring Linux Module Load Order
+install -v -m755 -d /etc/modprobe.d
+cat > /etc/modprobe.d/usb.conf << "EOF"
+# Begin /etc/modprobe.d/usb.conf
+
+install ohci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i ohci_hcd ; true
+install uhci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i uhci_hcd ; true
+
+# End /etc/modprobe.d/usb.conf
+EOF
