@@ -7,7 +7,7 @@ fi
 
 m2fs_unmount
 if test $? -ne 0; then
-  echo "m2fs_unmount failed, no wipe done"
+  echo "m2fs_unmount failed, no format done"
   exit 1
 fi
 
@@ -20,13 +20,18 @@ err_mkfsefi=$?
 # mount $LFS_M2_DEVICE_FS then initialize its selinx labels, unmount it
 err_test_umount=0
 err_sel_label=0
-if test $err_mkm2fs -eq 0 && test $err_mkfsefi -eq 0 && $LFS_M2_SELINUX;then
-  if tmp_mnt=$(mktemp -d) && mount $LFS_M2_DEVICE_SF $tmp_mnt >& /dev/null && restorecon -R $tmp_mnt;then
-    umount $LFS_M2_DEVICE_SF
-    err_test_umount=$?
+if $LFS_M2_SELINUX && test $err_mkm2fs -eq 0 && test $err_mkfsefi -eq 0;then
+  pushd /mnt >& /dev/null
+  if tmp_mnt=$(mktemp -d --tmpdir=/mnt);then
+    if mount $LFS_M2_DEVICE_FS $tmp_mnt >& /dev/null && restorecon -R $tmp_mnt;then
+      umount $LFS_M2_DEVICE_FS
+      err_test_umount=$?
+    fi
+    rmdir "$tmp_mnt"
   else
     err_sel_label=1     
   fi
+  popd >& /dev/null
 fi
 
 if test $err_mkm2fs -ne 0;then

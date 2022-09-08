@@ -55,7 +55,7 @@ set timeout=5
 
 insmod part_gpt
 insmod ext2
-set root=(hd0,3)
+set root=UUID=50e1671c-335a-4289-bc41-c1ddbe3b85cf
 
 if loadfont /boot/grub/fonts/unicode.pf2; then
   set gfxmode=auto
@@ -64,19 +64,7 @@ if loadfont /boot/grub/fonts/unicode.pf2; then
 fi
 
 menuentry "GNU/Linux, Linux 5.16.9-lfs-11.1"  {
-  linux   /boot/vmlinuz-5.16.9-lfs-11.1 root=PARTUUID=14fc2edf-03
-}
-
-menuentry "GNU/Linux, Linux 5.16.9-lfs-11.1"  {
-  linux   /boot/vmlinuz-5.16.9-lfs-11.1 root=/dev/sda3 ro
-}
-
-menuentry "GNU/Linux, Linux 5.16.9-lfs-11.1"  {
-  linux   /boot/vmlinuz-5.16.9-lfs-11.1 root=/dev/sda3
-}
-
-menuentry "GNU/Linux, Linux 5.16.9-lfs-11.1"  {
-  linux   /boot/vmlinuz-5.16.9-lfs-11.1 root=/dev/sdb3 
+  linux  /boot/vmlinuz-5.16.9-lfs-11.1 root=UUID=50e1671c-335a-4289-bc41-c1ddbe3b85cf
 }
 
 menuentry "Firmware Setup" {

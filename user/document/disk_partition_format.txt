@@ -1,0 +1,31 @@
+
+
+Use gdisk.  gdisk is specified in the EFI manual.  Do not use fdisk.
+
+          sdx1 uefi 100M ef00 EFI system partition
+          sdx2 swap +32G 8200 Linux swap
+          sdx3 linux rest 8300 Linux filesystem
+
+d   delete partition
+o   create a new empty GUID partion table
+n   add partion
+l   list partition types, though the need GUID codes are given above
+
+sdx3 at 20G I did run out of disk space after saving some checkpoints and
+storing upstream. The scripts no longer do checkpoints, and upstream has
+been moved to the build stream, so 20G should be enough even when working
+on the build for a long time.
+
+Machines that hibernate write core memory to swap, so the swap partition must
+be at least equal to the core size.  Swap is convnetionally set to
+2x or 3x the amount of core.
+
+For a real build sdx3 ended up being about 1T, as that is the size of the SSD
+
+          > mkfs.ext4 /dev/sdx3
+          > mkfs.vfat /dev/sdx2
+
+Note Linux LUKS is a partition type.  Type command 'l' then search for
+linux to see the linux partition types.
+
+

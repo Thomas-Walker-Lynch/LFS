@@ -25,9 +25,9 @@ set default=0
 set timeout=5
 
 insmod ext2
-set root=(hd0,2)
+set root=UUID=50e1671c-335a-4289-bc41-c1ddbe3b85cf
 
 menuentry "GNU/Linux, Linux 5.16.9-lfs-11.1" {
-        linux   /boot/vmlinuz-5.16.9-lfs-11.1 root=/dev/sda2 ro
+        linux   /boot/vmlinuz-5.16.9-lfs-11.1 root=UUID=50e1671c-335a-4289-bc41-c1ddbe3b85cf ro
 }
 EOF

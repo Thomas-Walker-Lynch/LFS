@@ -14,9 +14,6 @@ else
   frame env_source linux s10_linux
 fi
 
-# could this not be done before s10_linux?
-frame s10.3.2_module_load_order
-
 # BLFS called it grub_setup,  LFS calls it grub_install
 if [[ "$LFS_BOOT_STYLE" == "UEFI" ]];then
   frame efi_grub_setup

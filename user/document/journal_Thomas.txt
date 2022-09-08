@@ -1021,3 +1021,50 @@
 
        note also, https://wiki.gentoo.org/wiki/GRUB/Configuration_variables
        also modified efi_grub_setup - which strangely writes the grub.cfg file directly, there is no /etc/default/grub
+
+2022-09-07T23:21:09Z
+
+       Reading the GNU GRUB manual.  https://www.gnu.org/software/grub/manual/grub/grub.html
+
+       "Only kernels loaded at 1 megabyte or above are presently supported" .. so that /dev/sdx1 EFI partition best be
+       more than 1 megabyte.  What about multidisk systems, with a whole disk system, might be that the kernel happens
+       to get a low number inode ...  so we are to waste 1 meg from the front of such disks with a padding partition?
+       ah here is the answer section 4.4: area between the MBR and the first partition (called by various names, such as
+       the "boot track", "MBR gap", or "embedding area", and which is usually at least 1000 KiB) ...  Historically many
+       tools left only 31 KiB of space.
+
+       linux <kernel> root=  options 
+
+       end of chapter 4 good notes on gpt
+
+       chapter 6.1 has the valid keys for /etc/default/grub
+
+       GRUB_VIDEO_BACKEND .. by default all are loaded.
+
+       16.3 commands
+       16.3.19 cyptomount - Works with LUKS LUKS2 geli. It will prompt for passwd.
+       16.3.38 keeps saying that on x86 systems that it boots in 32-bit boot
+               protocol.  wonder what of amd64?
+       16.3.49 module - command for loading a module
+         .. parttool for modifying partitions
+       16.3.57 play - plays a sound file, would be great for video error messages
+
+       Note hints on efi boot: 
+         https://www.linuxfromscratch.org/hints/downloads/files/lfs-uefi.txt
+         mentions gpt partitioning
+
+2022-09-08T15:26:00Z
+
+       after deleting disk fdisk partition table, and recreating the partion
+       table with gdisk:
+       /dev/sdb: PTUUID="cefe3005-a0dc-475c-b207-cd2156063a8e" PTTYPE="gpt"
+
+    before mkfs
+    /dev/sdb1: SEC_TYPE="msdos" UUID="34E0-32FF" BLOCK_SIZE="512" TYPE="vfat" PARTLABEL="EFI system partition" PARTUUID="37e29258-6546-434a-9f00-6b4a7eafafb1"
+    /dev/sdb2: PARTLABEL="Linux swap" PARTUUID="8ad79902-652e-4b2b-915f-73b0796377d5"
+    /dev/sdb3: PARTLABEL="Linux filesystem" PARTUUID="0b876225-0f2b-46d9-84c3-80b7f69ba39c"
+
+    after mkfs
+    /dev/sdb1: SEC_TYPE="msdos" UUID="2EB3-448D" BLOCK_SIZE="512" TYPE="vfat" PARTLABEL="EFI system partition" PARTUUID="37e29258-6546-434a-9f00-6b4a7eafafb1"
+    /dev/sdb2: PARTLABEL="Linux swap" PARTUUID="8ad79902-652e-4b2b-915f-73b0796377d5"
+    /dev/sdb3: UUID="bca1a266-feed-4634-b01f-e4d45ed7083f" BLOCK_SIZE="4096" TYPE="ext4" PARTLABEL="Linux filesystem" PARTUUID="0b876225-0f2b-46d9-84c3-80b7f69ba39c"
