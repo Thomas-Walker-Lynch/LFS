@@ -15,12 +15,14 @@ export LFS_BOOT_STYLE=UEFI
 
 # where the target device is mounted on m1.
 # put the wrong device here and your m1 build system might be destroyed
+# this is only used when calling gdisk and blkid
 export LFS_M2_DEVICE=/dev/sdb
 
 # these partitions are relative to where the target device is mounted on m1.
-export LFS_M2_DEVICE_EFI="$LFS_M2_DEVICE"1
-export LFS_M2_DEVICE_SWAP="$LFS_M2_DEVICE"2
-export LFS_M2_DEVICE_FS="$LFS_M2_DEVICE"3
+# gotten from blkid | grep $LFS_M2_DEVICE | sort
+export LFS_M2_DEVICE_EFI="UUID=2EB3-448D"
+export LFS_M2_DEVICE_SWAP="PARTUUID=8ad79902-652e-4b2b-915f-73b0796377d5"
+export LFS_M2_DEVICE_FS="UUID=bca1a266-feed-4634-b01f-e4d45ed7083f"
 
 # put true here if the build system has selinux
 export LFS_M1_SELINUX=true
