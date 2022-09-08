@@ -1,30 +1,43 @@
 #!/bin/bash
+# The UUID of the partition changes after formatting, but its device node will be the same.  Hence I use the device node to find the new UUID.
+# This script must be sourced because it changes the UUID envrionment variables.  Those are needed when making fstab and the grub configuration.
+
+if ! (return 0 2>/dev/null); then
+  echo $(basename "$0") must be sourced, not executed, so that it may update LFS_M2_EFI_UUID and LFS_M2_FS_UUID.
+  exit 1
+fi
 
 if [[ "$LFS_ENV" != "m1_root" ]];then
-  echo $(basename "$0") "must be run in env_m1_root"
-  exit 1
+  echo $(basename "$0") must be run in env_m1_root
+  return 1
 fi
 
 m2fs_unmount
 if test $? -ne 0; then
-  echo "m2fs_unmount failed, no format done"
-  exit 1
+  echo m2fs_unmount failed, no format done
+  return 1
 fi
 
-mkfs.ext4 $LFS_M2_DEVICE_FS
+lfs_m2_efi_node=$(blkid --uuid $LFS_M2_EFI_UUID)
+lfs_m2_fs_node=$(blkid --uuid $LFS_M2_FS_UUID)
+
+echo found lfs_m2_efi_node: $lfs_m2_efi_node
+echo found lfs_m2_fs_node: $lfs_m2_fs_node
+
+mkfs.ext4 $lfs_m2_fs_node
 err_mkm2fs=$?
 
-mkfs.msdos $LFS_M2_DEVICE_EFI
+mkfs.msdos $lfs_m2_efi_node
 err_mkfsefi=$?
 
-# mount $LFS_M2_DEVICE_FS then initialize its selinx labels, unmount it
+# mount $lfs_m2_fs_node then initialize its selinx labels, unmount it
 err_test_umount=0
 err_sel_label=0
 if $LFS_M2_SELINUX && test $err_mkm2fs -eq 0 && test $err_mkfsefi -eq 0;then
   pushd /mnt >& /dev/null
   if tmp_mnt=$(mktemp -d --tmpdir=/mnt);then
-    if mount $LFS_M2_DEVICE_FS $tmp_mnt >& /dev/null && restorecon -R $tmp_mnt;then
-      umount $LFS_M2_DEVICE_FS
+    if mount $lfs_m2_fs_node $tmp_mnt >& /dev/null && restorecon -R $tmp_mnt;then
+      umount $lfs_m2_fs_node
       err_test_umount=$?
     fi
     rmdir "$tmp_mnt"
@@ -35,20 +48,27 @@ if $LFS_M2_SELINUX && test $err_mkm2fs -eq 0 && test $err_mkfsefi -eq 0;then
 fi
 
 if test $err_mkm2fs -ne 0;then
-  echo "mkfs.ext4 LFS_M2_DEVICE_FS, $LFS_M2_DEVICE_FS, failed"
-  exit 1
+  echo mkfs.ext4 lfs_m2_fs_node, $lfs_m2_fs_node, failed
+  return 1
 fi
 if test $err_mkfsefi -ne 0;then
-  echo "mkfs.msdos LFS_M2_DEVICE_EFI, $LFS_M2_DEVICE_EFI, failed"
-  exit 2
+  echo mkfs.msdos lfs_m2_efi_node, $lfs_m2_efi_node, failed
+  return 2
 fi
 if test $err_sel_label -ne 0;then
-  echo "could not set selinux labels for file system"
-  exit 3
+  echo could not set selinux labels for file system
+  return 3
 fi
 if test $err_test_umount -ne 0;then
-  echo "umount of $tmp_mnt failed"
-  exit 4
+  echo umount of $tmp_mnt failed
+  return 4
 fi
-exit 0
+
+export LFS_M2_EFI_UUID=$(blkid -s UUID $lfs_m2_efi_node | awk '{print $2}' | awk -F  '"' '{print $2}' )
+export LFS_M2_FS_UUID=$(blkid -s UUID $lfs_m2_fs_node | awk '{print $2}' | awk -F  '"' '{print $2}' )
+
+echo new LFS_M2_EFI_UUID: $LFS_M2_EFI_UUID
+echo new LFS_M2_FS_UUID: $LFS_M2_FS_UUID
+
+return 0
    

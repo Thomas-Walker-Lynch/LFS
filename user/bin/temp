@@ -1,0 +1,7 @@
+(return 0 2>/dev/null) && echo "sourced" || echo "executed"
+
+if ! (return 0 2>/dev/null); then
+  echo "executed"
+else
+  echo "sourced"
+fi
