@@ -15,5 +15,5 @@ pushd build
 popd
 ./configure --prefix=/usr --host=$LFS_TGT --build=$(./config.guess)
 make FILE_COMPILE=$(pwd)/build/src/file
-make DESTDIR=$LFS_M2_FS install
+make DESTDIR=$LFS_M2_FS_MP install
 

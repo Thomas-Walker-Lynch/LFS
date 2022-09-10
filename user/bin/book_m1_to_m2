@@ -8,9 +8,9 @@ fi
 frame s7.02_m2_chown_root
 frame s7.03_devices
 
-mkdir -p "$LFS_M2_FS"/usr/local/bin
+mkdir -p "$LFS_M2_FS_MP"/usr/local/bin
 
 # not from the book, but we need the time stamp
-cp "$REPO_USER_DIR"/bin/Z  "$LFS_M2_FS"/usr/local/bin
+cp "$REPO_USER_DIR"/bin/Z  "$LFS_M2_FS_MP"/usr/local/bin
 
 

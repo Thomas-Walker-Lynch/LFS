@@ -8,20 +8,20 @@ if [[ "$LFS_ENV" != "m1_root" ]];then
   exit 1
 fi
 
-mkdir -p "$LFS_M2_FS/dev" 
-mount -v --bind /dev "$LFS_M2_FS/dev"
+mkdir -p "$LFS_M2_FS_MP/dev" 
+mount -v --bind /dev "$LFS_M2_FS_MP/dev"
 
-mkdir -p "$LFS_M2_FS/dev/pts"
-mount -v --bind /dev/pts "$LFS_M2_FS/dev/pts"
+mkdir -p "$LFS_M2_FS_MP/dev/pts"
+mount -v --bind /dev/pts "$LFS_M2_FS_MP/dev/pts"
 
-mkdir -p "$LFS_M2_FS/proc"
-mount -vt proc proc "$LFS_M2_FS/proc"
+mkdir -p "$LFS_M2_FS_MP/proc"
+mount -vt proc proc "$LFS_M2_FS_MP/proc"
 
-mkdir -p "$LFS_M2_FS/sys"
-mount -vt sysfs sysfs "$LFS_M2_FS/sys"
+mkdir -p "$LFS_M2_FS_MP/sys"
+mount -vt sysfs sysfs "$LFS_M2_FS_MP/sys"
 
-mkdir -p "$LFS_M2_FS/run"
-mount -vt tmpfs tmpfs "$LFS_M2_FS/run"
+mkdir -p "$LFS_M2_FS_MP/run"
+mount -vt tmpfs tmpfs "$LFS_M2_FS_MP/run"
 
 # bind our sources directory
 repo_dir_target="$LFS_M2_FS$LFSM2_REPO_DIR"
@@ -29,6 +29,6 @@ mkdir -p "$repo_dir_target"
 mount -v --bind "$REPO_DIR" "$repo_dir_target"
 
 if [[ "$LFS_BOOT_STYLE" == "UEFI" ]]; then
-  mkdir -pv "$LFS_M2_FS/sys/firmware/efi/efivars" && mount -v -t efivarfs efivarfs "$LFS_M2_FS/sys/firmware/efi/efivars"
+  mkdir -pv "$LFS_M2_FS_MP/sys/firmware/efi/efivars" && mount -v -t efivarfs efivarfs "$LFS_M2_FS_MP/sys/firmware/efi/efivars"
 fi
 

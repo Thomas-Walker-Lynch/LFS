@@ -4,16 +4,16 @@
 script="$@"
 
 if [[ "$LFS_ENV" != "m1_root" ]];then
-  echo $(basename "$0") "must be run in env_m1 env_m1_root"
+  echo $(basename "$0") must be run in env_m1 env_m1_root
   exit 1
 fi
 
-if [[ !  -x "$LFS_M2_FS"/usr/local/bin/Z ]]; then
-  echo $(basename "$0") "no \$LFS_M2_FS/usr/local/bin/Z, did you run 'book_m1_to_m2' ?"  > /dev/stderr
+if [[ !  -x "$LFS_M2_FS_MP"/usr/local/bin/Z ]]; then
+  echo $(basename "$0") "no \$LFS_M2_FS_MP/usr/local/bin/Z, did you run 'book_m1_to_m2' ?"  > /dev/stderr
   exit 1
 fi
 
-if [[ ! -d "$LFS_M2_FS"/mnt/Lustucru/user ]]; then
+if [[ ! -d "$LFS_M2_FS_MP"/mnt/Lustucru/user ]]; then
   echo $(basename "$0") "repo not found on mount, have you run m2_fs_bind?"
   exit 1
 fi
@@ -22,8 +22,8 @@ if [[ -z "$script" ]]; then
   script=/bin/bash\ --init-file\ "$LFSM2_REPO_USER_DIR"/library/bashrc_lfs
 fi
 
-echo "chroot to"  "$LFS_M2_FS"
-chroot "$LFS_M2_FS" /usr/bin/env --ignore-environment \
+echo "chroot to"  "$LFS_M2_FS_MP"
+chroot "$LFS_M2_FS_MP" /usr/bin/env --ignore-environment \
   HOSTNAME="$HOSTNAME"\
   TMP="/tmp"\
   TZ="$TZ"\

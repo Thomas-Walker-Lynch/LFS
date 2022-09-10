@@ -30,7 +30,7 @@ ln -s ../../../libgcc/gthr-posix.h "$LFS_TGT"/libgcc/gthr-default.h
     --host=$LFS_TGT                                \
     --prefix=/usr                                  \
     CC_FOR_TARGET="$LFS_TGT"-gcc                     \
-    --with-build-sysroot="$LFS_M2_FS"                \
+    --with-build-sysroot="$LFS_M2_FS_MP"                \
     --enable-initfini-array                        \
     --disable-nls                                  \
     --disable-multilib                             \
@@ -44,6 +44,6 @@ ln -s ../../../libgcc/gthr-posix.h "$LFS_TGT"/libgcc/gthr-default.h
     --enable-languages=c,c++
 
 make
-make DESTDIR="$LFS_M2_FS" install
-ln -sv gcc "$LFS_M2_FS"/usr/bin/cc
+make DESTDIR="$LFS_M2_FS_MP" install
+ln -sv gcc "$LFS_M2_FS_MP"/usr/bin/cc
 

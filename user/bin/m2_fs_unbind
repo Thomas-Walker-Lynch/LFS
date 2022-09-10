@@ -13,10 +13,10 @@ fi
 
 echo "Careful! Any umount failure followed by an rm -r on m2fs will delete things from the mounted device or directory! This is the most common way to kill the build system or ruin the boot partition." 
 umount -v "$LFS_M2_FS$LFSM2_REPO_DIR"
-umount -v "$LFS_M2_FS/run"
-umount -v "$LFS_M2_FS/proc"
-umount -v "$LFS_M2_FS/dev/pts"
-umount -v "$LFS_M2_FS/dev" 
+umount -v "$LFS_M2_FS_MP/run"
+umount -v "$LFS_M2_FS_MP/proc"
+umount -v "$LFS_M2_FS_MP/dev/pts"
+umount -v "$LFS_M2_FS_MP/dev" 
 
-mountpoint -q "$LFS_M2_FS/sys/firmware/efi/efivars" && umount -v "$LFS_M2_FS/sys/firmware/efi/efivars"
-umount -v "$LFS_M2_FS/sys"
+mountpoint -q "$LFS_M2_FS_MP/sys/firmware/efi/efivars" && umount -v "$LFS_M2_FS_MP/sys/firmware/efi/efivars"
+umount -v "$LFS_M2_FS_MP/sys"

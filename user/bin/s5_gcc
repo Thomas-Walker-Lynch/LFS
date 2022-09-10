@@ -25,9 +25,9 @@ cd build
 
 ../configure                  \
     --target=$LFS_TGT         \
-    --prefix=$LFS_M2_FS/tools       \
+    --prefix="$LFS_M2_FS_MP"/tools       \
     --with-glibc-version=2.35 \
-    --with-sysroot=$LFS_M2_FS       \
+    --with-sysroot=$LFS_M2_FS_MP       \
     --with-newlib             \
     --without-headers         \
     --enable-initfini-array   \

@@ -14,9 +14,9 @@ if test $? -eq 0 ;then
 fi
 
 err1=0
-mountpoint -q "$LFS_M2_FS"
+mountpoint -q "$LFS_M2_FS_MP"
 if test $? -eq 0 ;then
-  umount -v "$LFS_M2_FS" && rmdir "$LFS_M2_FS"
+  umount -v "$LFS_M2_FS_MP" && rmdir "$LFS_M2_FS_MP"
   err1=$?
 fi
 

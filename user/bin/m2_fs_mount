@@ -6,9 +6,9 @@ if [[ "$LFS_ENV" != "m1_root" ]];then
   exit 1
 fi
 
-mkdir -p "$LFS_M2_FS"
-mountpoint -q "$LFS_M2_FS" || mount -v $LFS_M2_FS_NODE "$LFS_M2_FS"
-chmod ugo+rwxt  "$LFS_M2_FS"
+mkdir -p "$LFS_M2_FS_MP"
+mountpoint -q "$LFS_M2_FS_MP" || mount -v $LFS_M2_FS_NODE "$LFS_M2_FS_MP"
+chmod ugo+rwxt  "$LFS_M2_FS_MP"
 
 mkdir -p "$LFS_M2_EFI"
 mountpoint -q "$LFS_M2_EFI" || mount -v -t vfat $LFS_M2_EFI_NODE "$LFS_M2_EFI"

@@ -17,10 +17,9 @@ export PATH="/usr/bin"
 if [ ! -L /bin ]; then 
   PATH=/bin:"$PATH"
 fi	 
-PATH="$LFS_M2_FS/tools/bin":"$PATH"
+PATH="$LFS_M2_FS_MP"/tools/bin:"$PATH"
 PATH="$REPO_USER_DIR/bin":/user/local/bin:"$PATH"
-export CONFIG_SITE="$LFS_M2_FS/usr/share/config.site"
-
+export CONFIG_SITE="$LFS_M2_FS_MP"/usr/share/config.site
 
 $script
 #set +x

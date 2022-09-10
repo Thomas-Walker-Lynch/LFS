@@ -1,4 +1,8 @@
-sed -i -e 's/m2_fs_bind/m2_fs_bind/g'  *
-sed -i -e 's/m2_fs_mount/m2_fs_mount/g' *
-sed -i -e 's/m2_fs_unbind/m2_fs_unbind/g' *
-sed -i -e 's/m2_fs_unmount/m2_fs_unmount/g' * 
+s7.02_m2_chown_root:# $LFS_M2_FS_MP/source remains owned by lfs hmmm.
+s7.02_m2_chown_root:chown -hR root:root $LFS_M2_FS_MP/{tmp,usr,lib,var,etc,bin,sbin,tools}
+s7.02_m2_chown_root:  x86_64) chown -hR root:root $LFS_M2_FS_MP/lib64 ;;
+s7.03_devices:mkdir -pv $LFS_M2_FS_MP/{dev,proc,sys,run}
+s7.03_devices:mknod -m 600 $LFS_M2_FS_MP/dev/console c 5 1
+s7.03_devices:mknod -m 666 $LFS_M2_FS_MP/dev/null c 1 3
+s7.03_devices:if test -h $LFS_M2_FS_MP/dev/shm; then
+s7.03_devices:   mkdir -pv $LFS_M2_FS_MP/$(readlink $LFS_M2_FS_MP/dev/shm)

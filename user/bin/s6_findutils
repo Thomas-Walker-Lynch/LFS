@@ -10,5 +10,5 @@ fi
             --host=$LFS_TGT                 \
             --build=$(build-aux/config.guess)
 make
-make DESTDIR=$LFS_M2_FS install
+make DESTDIR=$LFS_M2_FS_MP install
 
