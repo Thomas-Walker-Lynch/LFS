@@ -6,21 +6,21 @@
 export MAKEFLAGS="-j12" 
 
 # put true here if the build system has selinux
-export LFS_M1_SELINUX=true
+export LUS_M1_SELINUX=true
 
 # currently the scripts just build into the $REPO_DIR/user/build directory, but in the near
 # future we will be able to set this variable
-export LFS_BUILD_DIR="$REPO_DIR/user/build"
+export LUS_BUILD_DIR="$REPO_DIR/user/build"
 
 # boot style is either UEFI or legacy
-# export LFS_BOOT_STYLE=legacy
-export LFS_BOOT_STYLE=UEFI
+# export LUS_BOOT_STYLE=legacy
+export LUS_BOOT_STYLE=UEFI
 
 # these partitions are relative to where the target device is mounted on m1.
-# gotten from blkid | grep $LFS_M2_DEVICE | sort
-export LFS_M2_EFI_UUID="CE45-1D5C"
-export LFS_M2_FS_UUID="2f37e5c5-cc1d-418c-9647-bcb67f60589d"
-export LFS_M2_SWAP_PARTUUID="8ad79902-652e-4b2b-915f-73b0796377d5"
+# if you have the device node, then:  blkid | grep $LUS_M2_DEVICE_NODE | sort to get the UUIDs
+export LUS_M2_EFI_UUID="CE45-1D5C"
+export LUS_M2_FS_UUID="2f37e5c5-cc1d-418c-9647-bcb67f60589d"
+export LUS_M2_SWAP_PARTUUID="8ad79902-652e-4b2b-915f-73b0796377d5"
 
 
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$LFS_ENV" != "m1" ]];then
+if [[ "$LUS_ENV" != "m1" ]];then
   echo $(basename "$0") "must be run in env_m1"
   exit 1
 fi
@@ -22,15 +22,15 @@ esac
 mkdir -v build
 cd       build
 
-mkdir -pv "$LFS_TGT"/libgcc
-ln -s ../../../libgcc/gthr-posix.h "$LFS_TGT"/libgcc/gthr-default.h
+mkdir -pv "$LUS_TGT"/libgcc
+ln -s ../../../libgcc/gthr-posix.h "$LUS_TGT"/libgcc/gthr-default.h
 
 ../configure                                       \
     --build=$(../config.guess)                     \
-    --host=$LFS_TGT                                \
+    --host=$LUS_TGT                                \
     --prefix=/usr                                  \
-    CC_FOR_TARGET="$LFS_TGT"-gcc                     \
-    --with-build-sysroot="$LFS_M2_FS_MP"                \
+    CC_FOR_TARGET="$LUS_TGT"-gcc                     \
+    --with-build-sysroot="$LUS_M2_FS_MP"                \
     --enable-initfini-array                        \
     --disable-nls                                  \
     --disable-multilib                             \
@@ -44,6 +44,6 @@ ln -s ../../../libgcc/gthr-posix.h "$LFS_TGT"/libgcc/gthr-default.h
     --enable-languages=c,c++
 
 make
-make DESTDIR="$LFS_M2_FS_MP" install
-ln -sv gcc "$LFS_M2_FS_MP"/usr/bin/cc
+make DESTDIR="$LUS_M2_FS_MP" install
+ln -sv gcc "$LUS_M2_FS_MP"/usr/bin/cc
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$LFS_ENV" != "m2" ]];then
+if [[ "$LUS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
   exit 1
 fi
@@ -10,9 +10,9 @@ cat > /etc/fstab << EOF
 
 # file system  mount-point  type     options             dump  fsck
 #                                                              order
-$LFS_M2D_EFI_UUID     /boot/efi    vfat    defaults             0     1
-$LFS_M2D_SWAP_PARTUUID   swap         swap     pri=1               0     0
-$LFS_M2D_FS_UUID      /            ext4    defaults             1     1
+$LUS_M2D_EFI_UUID     /boot/efi    vfat    defaults             0     1
+$LUS_M2D_SWAP_PARTUUID   swap         swap     pri=1               0     0
+$LUS_M2D_FS_UUID      /            ext4    defaults             1     1
 proc           /proc        proc     nosuid,noexec,nodev         0     0
 sysfs          /sys         sysfs    nosuid,noexec,nodev         0     0
 devpts         /dev/pts     devpts   gid=5,mode=620              0     0

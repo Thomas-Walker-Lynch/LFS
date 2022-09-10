@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$LFS_ENV" != "m1" ]];then
+if [[ "$LUS_ENV" != "m1" ]];then
   echo $(basename "$0") "must be run in env_m1"
   exit 1
 fi
@@ -9,6 +9,6 @@ make mrproper
 make headers
 find usr/include -name '.*' -delete
 rm usr/include/Makefile
-cp -rv usr/include "$LFS_M2_FS_MP"/usr
+cp -rv usr/include "$LUS_M2_FS_MP"/usr
 
 

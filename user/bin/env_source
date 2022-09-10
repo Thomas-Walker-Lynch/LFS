@@ -11,18 +11,18 @@ if [[ -z "$source" ]]; then
   exit 1
 fi
 if [[ -z "$script" ]]; then
-  script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/library/bashrc_lfs
+  script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/lib/bashrc_lfs
 fi
 
 source source_untar "$1"  
 
 $script 
 
-if [[ ! -z "$LFS_M2_FS_MP"  && ! -z "$SOURCE_DIR" ]]; then
+if [[ ! -z "$LUS_M2_FS_MP"  && ! -z "$SOURCE_DIR" ]]; then
   if [[ $(id -u) -eq 0 ]];then
-    rm -rf "$LFS_M2_FS_MP/source/$SOURCE_DIR"
+    rm -rf "$LUS_M2_FS_MP/source/$SOURCE_DIR"
   else
-    sudo rm -rf "$LFS_M2_FS_MP/source/$SOURCE_DIR"
+    sudo rm -rf "$LUS_M2_FS_MP/source/$SOURCE_DIR"
   fi
 fi
 

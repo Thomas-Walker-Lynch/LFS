@@ -1,16 +1,16 @@
 #!/bin/bash
 
-if [[ "$LFS_ENV" != "m1_root" ]];then
+if [[ "$LUS_ENV" != "m1_root" ]];then
   echo $(basename "$0") "must be run in env_m1_root"
   exit 1
 fi
 
 # -h will change the owner of a symbolic link instead just changing the owner of the target
 # added tmp to the chrown list, book left it owned by lfs (or was it not created yet in the book?)
-# "$LFS_M2_FS_MP"/source remains owned by lfs hmmm.
-chown -hR root:root "$LFS_M2_FS_MP"/{tmp,usr,lib,var,etc,bin,sbin,tools}
+# "$LUS_M2_FS_MP"/source remains owned by lfs hmmm.
+chown -hR root:root "$LUS_M2_FS_MP"/{tmp,usr,lib,var,etc,bin,sbin,tools}
 case $(uname -m) in
-  x86_64) chown -hR root:root "$LFS_M2_FS_MP"/lib64 ;;
+  x86_64) chown -hR root:root "$LUS_M2_FS_MP"/lib64 ;;
 esac
 
 set +x

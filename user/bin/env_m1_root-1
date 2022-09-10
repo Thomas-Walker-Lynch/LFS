@@ -5,13 +5,13 @@
 
 script="$@"
 
-export LFS_M2_EFI_NODE=$(blkid --uuid $LFS_M2_EFI_UUID)
-export LFS_M2_FS_NODE=$(blkid --uuid $LFS_M2_FS_UUID)
-export LFS_M2_DEVICE_NODE=$(sed -e 's/\([a-zA-Z/]*\).*/\1/' <<< $LFS_M2_EFI_NODE )
+export LUS_M2_EFI_NODE=$(blkid --uuid $LUS_M2_EFI_UUID)
+export LUS_M2_FS_NODE=$(blkid --uuid $LUS_M2_FS_UUID)
+export LUS_M2_DEVICE_NODE=$(sed -e 's/\([a-zA-Z/]*\).*/\1/' <<< $LUS_M2_EFI_NODE )
 
-echo LFS_M2_EFI_NODE: $LFS_M2_EFI_NODE
-echo LFS_M2_FS_NODE: $LFS_M2_FS_NODE
-echo LFS_M2_DEVICE_NODE: $LFS_M2_DEVICE_NODE
+echo LUS_M2_EFI_NODE: $LUS_M2_EFI_NODE
+echo LUS_M2_FS_NODE: $LUS_M2_FS_NODE
+echo LUS_M2_DEVICE_NODE: $LUS_M2_DEVICE_NODE
 
 $script
 #set +x

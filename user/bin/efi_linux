@@ -7,7 +7,7 @@
 # looks just like the s10_linux.  Those are selected by default anyway.  Do they
 # hurt a legacy boot?  Seems we do not need a separate efi_linux build file
 
-if [[ "$LFS_ENV" != "m2" ]];then
+if [[ "$LUS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
   exit 1
 fi

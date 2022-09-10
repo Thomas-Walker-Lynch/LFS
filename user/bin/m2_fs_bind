@@ -3,32 +3,32 @@
 #  is a program mountvirtfs, which does pretty much what this script does.
 #  Maybe we should copy that into our bin directory and invoke that.
 
-if [[ "$LFS_ENV" != "m1_root" ]];then
+if [[ "$LUS_ENV" != "m1_root" ]];then
   echo $(basename "$0") "must be run in env_m1_root"
   exit 1
 fi
 
-mkdir -p "$LFS_M2_FS_MP/dev" 
-mount -v --bind /dev "$LFS_M2_FS_MP/dev"
+mkdir -p "$LUS_M2_FS_MP/dev" 
+mount -v --bind /dev "$LUS_M2_FS_MP/dev"
 
-mkdir -p "$LFS_M2_FS_MP/dev/pts"
-mount -v --bind /dev/pts "$LFS_M2_FS_MP/dev/pts"
+mkdir -p "$LUS_M2_FS_MP/dev/pts"
+mount -v --bind /dev/pts "$LUS_M2_FS_MP/dev/pts"
 
-mkdir -p "$LFS_M2_FS_MP/proc"
-mount -vt proc proc "$LFS_M2_FS_MP/proc"
+mkdir -p "$LUS_M2_FS_MP/proc"
+mount -vt proc proc "$LUS_M2_FS_MP/proc"
 
-mkdir -p "$LFS_M2_FS_MP/sys"
-mount -vt sysfs sysfs "$LFS_M2_FS_MP/sys"
+mkdir -p "$LUS_M2_FS_MP/sys"
+mount -vt sysfs sysfs "$LUS_M2_FS_MP/sys"
 
-mkdir -p "$LFS_M2_FS_MP/run"
-mount -vt tmpfs tmpfs "$LFS_M2_FS_MP/run"
+mkdir -p "$LUS_M2_FS_MP/run"
+mount -vt tmpfs tmpfs "$LUS_M2_FS_MP/run"
 
 # bind our sources directory
-repo_dir_target="$LFS_M2_FS$LFS_M2_REPO_DIR"
+repo_dir_target="$LUS_M2_FS$LUS_M2_REPO_DIR"
 mkdir -p "$repo_dir_target"
 mount -v --bind "$REPO_DIR" "$repo_dir_target"
 
-if [[ "$LFS_BOOT_STYLE" == "UEFI" ]]; then
-  mkdir -pv "$LFS_M2_FS_MP/sys/firmware/efi/efivars" && mount -v -t efivarfs efivarfs "$LFS_M2_FS_MP/sys/firmware/efi/efivars"
+if [[ "$LUS_BOOT_STYLE" == "UEFI" ]]; then
+  mkdir -pv "$LUS_M2_FS_MP/sys/firmware/efi/efivars" && mount -v -t efivarfs efivarfs "$LUS_M2_FS_MP/sys/firmware/efi/efivars"
 fi
 

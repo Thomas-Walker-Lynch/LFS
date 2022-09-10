@@ -9,15 +9,15 @@ if [[ -z "REPO_USER_DIR" ]];then
   exit 1
 fi
 
-if [[ -z "LFS_LOG" ]];then
-  echo $(basename "$0") "no \$LFS_LOG"  > /dev/stderr
+if [[ -z "LUS_LOG" ]];then
+  echo $(basename "$0") "no \$LUS_LOG"  > /dev/stderr
   exit 1
 fi
 
 log_dir="$REPO_USER_DIR/build/log"
-frame="$log_dir/$LFS_LOG/frame"
-build="$log_dir/$LFS_LOG/build"
-telltale="$log_dir/$LFS_LOG/telltale"
+frame="$log_dir/$LUS_LOG/frame"
+build="$log_dir/$LUS_LOG/build"
+telltale="$log_dir/$LUS_LOG/telltale"
 stamp=$(Z)
 cat <<EOF | tee -a "$frame" >> "$build"
 

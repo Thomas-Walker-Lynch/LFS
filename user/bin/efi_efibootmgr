@@ -10,11 +10,11 @@
 #    directions are simpler, and do not have the sed replacement lines, will use this instead
 # 
 
-if [[ "$LFS_ENV" != "m2" ]];then
+if [[ "$LUS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
   exit 1
 fi
    
-make EFIDIR=LFS_M2_FS EFI_LOADER=grubx64.efi
-make install EFIDIR=LFS_M2_FS
+make EFIDIR=LUS_M2_FS EFI_LOADER=grubx64.efi
+make install EFIDIR=LUS_M2_FS
 

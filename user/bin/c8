@@ -3,7 +3,7 @@
 # section 8.25.3 has us set root password, but I don't want to stop the script, so skipped it for now
 # passwd root
 
-if [[ "$LFS_ENV" != "m2" ]];then
+if [[ "$LUS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
   exit 1
 fi
@@ -78,7 +78,7 @@ IFS=$'\n'; for s in $section;do
   frame env_source $s s8_$s
 done
 
-if [[ "$LFS_BOOT_STYLE" == "legacy" ]]; then
+if [[ "$LUS_BOOT_STYLE" == "legacy" ]]; then
   frame env_source grub s8_grub
 fi
 

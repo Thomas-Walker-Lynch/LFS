@@ -13,12 +13,12 @@
 script="$@"
 
 if [[ ! -f "$REPO_USER_DIR/build/config" ]]; then
-  echo "build/config is missing.  See library/configuration for an example. Exiting."
+  echo "build/config is missing.  See lib/configuration for an example. Exiting."
   exit 1
 fi
 
 if [[ -z "$script" ]]; then
-  script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/library/bashrc_lfs
+  script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/lib/bashrc_lfs
 fi
 
 source frame-initialize
@@ -40,8 +40,8 @@ env --ignore-environment \
   REPO_DIR="$REPO_DIR"\
   REPO_USER_DIR="$REPO_USER_DIR"\
   PROJECT="$PROJECT:env_m1"\
-  LFS_ENV="m1"\
-  LFS_LOG="$LFS_LOG"\
+  LUS_ENV="m1"\
+  LUS_LOG="$LUS_LOG"\
   "$REPO_USER_DIR"/bin/env_m1-1 $script
   
 

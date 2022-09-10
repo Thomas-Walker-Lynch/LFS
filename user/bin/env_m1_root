@@ -19,11 +19,11 @@ if [[ -z "$script" ]]; then
   script="/bin/bash --norc"
 fi
 
-if [[ "$LFS_ENV" != "m1" ]];then
+if [[ "$LUS_ENV" != "m1" ]];then
   echo $(basename "$0") "must be run in env_m1"
   exit 1
 fi
-LFS_ENV="m1_root"
+LUS_ENV="m1_root"
 
 # sudo -E and env without the '-i' passes most environment variables to $script
 # bash removes PS1 so we need to reset it

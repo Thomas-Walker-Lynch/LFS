@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [[ "$LFS_ENV" != "m2" ]];then
+if [[ "$LUS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
   exit 1
 fi
 
-if [[ "$LFS_BOOT_STYLE" == "UEFI" ]];then
+if [[ "$LUS_BOOT_STYLE" == "UEFI" ]];then
   frame efi_build
   frame efi_fstab
   frame env_source linux efi_linux
@@ -15,7 +15,7 @@ else
 fi
 
 # BLFS called it grub_setup,  LFS calls it grub_install
-if [[ "$LFS_BOOT_STYLE" == "UEFI" ]];then
+if [[ "$LUS_BOOT_STYLE" == "UEFI" ]];then
   frame efi_grub_setup
 else
   frame s10.4_grub_install

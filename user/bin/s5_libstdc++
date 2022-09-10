@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$LFS_ENV" != "m1" ]];then
+if [[ "$LUS_ENV" != "m1" ]];then
   echo $(basename "$0") "must be run in env_m1"
   exit 1
 fi
@@ -9,13 +9,13 @@ mkdir -v build
 cd build
 
 ../libstdc++-v3/configure           \
-    --host=$LFS_TGT                 \
+    --host=$LUS_TGT                 \
     --build=$(../config.guess)      \
     --prefix=/usr                   \
     --disable-multilib              \
     --disable-nls                   \
     --disable-libstdcxx-pch         \
-    --with-gxx-include-dir=/tools/$LFS_TGT/include/c++/11.2.0
+    --with-gxx-include-dir=/tools/$LUS_TGT/include/c++/11.2.0
 
 make
 
@@ -36,5 +36,5 @@ make
 # many more warnings ...
 
 
-make DESTDIR=$LFS_M2_FS_MP install
+make DESTDIR=$LUS_M2_FS_MP install
 

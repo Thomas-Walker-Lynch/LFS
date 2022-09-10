@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$LFS_ENV" != "m1_root" ]];then
+if [[ "$LUS_ENV" != "m1_root" ]];then
   echo $(basename "$0") "must be run in env_m1_root"
   exit 1
 fi
@@ -8,9 +8,9 @@ fi
 frame s7.02_m2_chown_root
 frame s7.03_devices
 
-mkdir -p "$LFS_M2_FS_MP"/usr/local/bin
+mkdir -p "$LUS_M2_FS_MP"/usr/local/bin
 
 # not from the book, but we need the time stamp
-cp "$REPO_USER_DIR"/bin/Z  "$LFS_M2_FS_MP"/usr/local/bin
+cp "$REPO_USER_DIR"/bin/Z  "$LUS_M2_FS_MP"/usr/local/bin
 
 

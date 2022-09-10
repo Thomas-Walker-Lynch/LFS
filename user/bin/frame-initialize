@@ -1,6 +1,6 @@
 #!/bin/bash
-# source this because it exports the LFS_LOG
-# careful, $REPO_USER_DIR may be different in m1fs and m2fs, which is why LFS_LOG is not a path
+# source this because it exports the LUS_LOG
+# careful, $REPO_USER_DIR may be different in m1fs and m2fs, which is why LUS_LOG is not a path
 
 if [[ -z "REPO_USER_DIR" ]];then
   echo "$(basename "$0") no \$REPO_USER_DIR" > /dev/stderr
@@ -18,12 +18,12 @@ if [[ ! -d "$log_dir" ]];then
   chmod ug+rwx,g+s "$log_dir"
 fi
 stamp="$(Z)"
-export LFS_LOG=$(basename $(mktemp -d --tmpdir="$log_dir" -t "$stamp"'-XXXXXXXXXX' ))
+export LUS_LOG=$(basename $(mktemp -d --tmpdir="$log_dir" -t "$stamp"'-XXXXXXXXXX' ))
 
 
-frame="$log_dir/$LFS_LOG/frame"
-build="$log_dir/$LFS_LOG/build"
-telltale="$log_dir/$LFS_LOG/telltale"
+frame="$log_dir/$LUS_LOG/frame"
+build="$log_dir/$LUS_LOG/build"
+telltale="$log_dir/$LUS_LOG/telltale"
 
 cat <<EOF | tee "$frame" | tee "$build" | tee "$telltale"
 #--------------------------------------------------------------------------------

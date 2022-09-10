@@ -24,7 +24,7 @@
 #--------------------------------------------------------------------------------
 # packages to be bult
 
-if [[ "$LFS_ENV" != "m1" ]];then
+if [[ "$LUS_ENV" != "m1" ]];then
   echo $(basename "$0") "must be run in env_m1"
   exit 1
 fi

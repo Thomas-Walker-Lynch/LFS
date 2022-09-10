@@ -2,9 +2,9 @@
 #
 # this latest version is untested
 #
-# based on s7.14 then generalized to work in any environment that has REPO_USER_DIR and LFS_M2_FS
+# based on s7.14 then generalized to work in any environment that has REPO_USER_DIR and LUS_M2_FS
 #
-# checkpoint tars "$LFS_M2_FS_MP" and puts that tar file into build/checkpoint/
+# checkpoint tars "$LUS_M2_FS_MP" and puts that tar file into build/checkpoint/
 #
 # checkpoint files may be large, and out of diskspace errors might be subtle, so perhaps rebuild instead? Rebuilding
 # might be fast enough on modern machine.
@@ -17,8 +17,8 @@ if [[ -z "$REPO_USER_DIR" ]];then
   exit 1
 fi
 
-if [[ -z "$LFS_M2_FS_MP" ]];then
-  echo $(basename "$0") "requires variable \$LFS_M2_FS_MP to be set" > /dev/stderr
+if [[ -z "$LUS_M2_FS_MP" ]];then
+  echo $(basename "$0") "requires variable \$LUS_M2_FS_MP to be set" > /dev/stderr
   exit 1
 fi
 
@@ -31,11 +31,11 @@ fi
 stamp="$(Z)"
 export checkpoint_path=$(mktemp --tmpdir="$checkpoint_dir" -t "$stamp"'-XXXXXXXXXX' --suffix '.tar.xz)
 
-sudo umount -v "$LFS_M2_FS_MP"/dev/pts || true
-sudo umount -v "$LFS_M2_FS_MP"/{sys,proc,run,dev} || true
+sudo umount -v "$LUS_M2_FS_MP"/dev/pts || true
+sudo umount -v "$LUS_M2_FS_MP"/{sys,proc,run,dev} || true
 
 checkpoint_file=$(mktemp --tmpdir="$checkpoint_dir" "$checkpoint.XXXXX.tgz")
-sudo tar -cJpf $checkpoint_file "$LFS_M2_FS_MP"
+sudo tar -cJpf $checkpoint_file "$LUS_M2_FS_MP"
 sudo chown lfs:lfs $checkpoint_file
 
 set +x
