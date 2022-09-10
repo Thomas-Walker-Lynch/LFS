@@ -1,7 +1,7 @@
 #!/bin/bash
 # bash without -i resets PS1
 # except for the log file variables this comes from section 4.4
-set -x
+# set -x
 
 script="$@"
 

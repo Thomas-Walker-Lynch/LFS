@@ -13,4 +13,4 @@ case $(uname -m) in
   x86_64) chown -hR root:root "$LUS_M2_FS_MP"/lib64 ;;
 esac
 
-set +x
+

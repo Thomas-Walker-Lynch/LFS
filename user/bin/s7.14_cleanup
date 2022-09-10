@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 
 if [[ "$LUS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"
@@ -11,4 +10,3 @@ rm -rf /usr/share/{info,man,doc}/*
 find /usr/{lib,libexec} -name \*.la -delete
 rm -rf /tools
 
-set +x

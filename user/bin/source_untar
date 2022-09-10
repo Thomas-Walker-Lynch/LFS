@@ -9,7 +9,7 @@ if [ -z "$source_stem" ]; then
 fi
 
 (return 0 2>/dev/null) && sourced=true || sourced=false
-! sourced && echo $(basename "$0") "must be sourced" && exit 2
+! $sourced && echo $(basename "$0") "must be sourced" && exit 2
 
 export LUS_UPSTREAM_SOURCE_PATH="$(ls -d "$REPO_USER_DIR"/build/upstream/source/"$source_stem"-*.tar* | head -1)"
 export SOURCE="$(basename "$LUS_UPSTREAM_SOURCE_PATH")"

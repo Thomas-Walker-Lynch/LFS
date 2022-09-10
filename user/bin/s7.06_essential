@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 if [[ "$LUS_ENV" != "m2" ]];then
   echo $(basename "$0") "must be run in env_m2"

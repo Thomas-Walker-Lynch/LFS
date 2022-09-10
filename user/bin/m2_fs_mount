@@ -1,16 +1,17 @@
 #!/bin/bash
 # If the mount does not work, the build will end up on the local disk.
+# On my F36 system mountpoint is not reliable, writing it out of the script.
 
 if [[ "$LUS_ENV" != "m1_root" ]];then
   echo $(basename "$0") "must be run in env_m1_root"
   exit 1
 fi
 
-mkdir -p "$LUS_M2_FS_MP"
-mountpoint -q "$LUS_M2_FS_MP" || mount -v $LUS_M2_FS_NODE "$LUS_M2_FS_MP"
-chmod ugo+rwxt  "$LUS_M2_FS_MP"
+mkdir -p "$LUS_M2_FS_MP" &&
+ mount -v $LUS_M2_FS_NODE "$LUS_M2_FS_MP" && 
+ chmod ugo+rwxt  "$LUS_M2_FS_MP"
 
-mkdir -p "$LUS_M2_EFI_MP"
-mountpoint -q "$LUS_M2_EFI_MP" || mount -v -t vfat $LUS_M2_EFI_NODE "$LUS_M2_EFI_MP"
+mkdir -p "$LUS_M2_EFI_MP" &&
+  mount -v -t vfat $LUS_M2_EFI_NODE "$LUS_M2_EFI_MP"
 
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+# unused for a long time ...
 # this latest version is untested
 #
 # based on s7.14 then generalized to work in any environment that has REPO_USER_DIR and LUS_M2_FS
