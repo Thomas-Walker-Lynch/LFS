@@ -7,7 +7,7 @@ script="$@"
 
 # for our build scripts
 source "$REPO_USER_DIR/build/config"
-source "$REPO_USER_DIR/build/config_m1"
+source "$REPO_USER_DIR/build/config_env_m1"
 
 # according to the book	   
 umask 022

@@ -1,28 +1,34 @@
 #!/bin/bash
 # If the mount does not work, the build will end up on the local disk.
+#
+# umount return code zero even when it fails to unmount due to the directory not
+# being mounted in the first place; though it does return a descriptive message on stderr.
+# So we do not want to rmdir if there is a message on stderr.
+#
 
 if [[ "$LUS_ENV" != "m1_root" ]];then
   echo $(basename "$0") "must be run in env_m1_root"
   exit 1
 fi
 
-err0=0
-mountpoint -q "$LUS_M2_EFI_MP"
-if test $? -eq 0 ;then
-  umount -v "$LUS_M2_EFI" && rmdir "$LUS_M2_EFI_MP"
-  err0=$?
-fi
+umnterr=false
+mess0=$(umount "$LUS_M2_EFI_MP" 2>&1 || umnterr=true)
+mess1=$(umount "$LUS_M2_FS_MP" 2>&1 || umnterr=true)
 
-err1=0
-mountpoint -q "$LUS_M2_FS_MP"
-if test $? -eq 0 ;then
-  umount -v "$LUS_M2_FS_MP" && rmdir "$LUS_M2_FS_MP"
-  err1=$?
-fi
+err0=false
+err1=false
+! test -z "$mess0" && err0=true 
+! test -z "$mess1" && err1=true
 
-if test $err0 -ne 0; then exit 1; fi
-if test $err1 -ne 0; then exit 1; fi
+$err0 && echo $mess0 || echo $LUS_M2_EFI_MP unmounted
+$err1 && echo $mess1 || echo $LUS_M2_FS_MP unmounted
+
+! $err0 && rmdir "$LUS_M2_EFI_MP"
+! $err1 && rmdir "$LUS_M2_FS_MP"
+
+$umnterr && exit 1
 exit 0
+
 
 
 

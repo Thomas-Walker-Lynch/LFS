@@ -20,7 +20,7 @@ export REPO_DIR="$REPO_HOME/$REPO"
 export REPO_USER_DIR="$REPO_DIR/user"
 
 source "$REPO_USER_DIR/build/config"
-source "$REPO_USER_DIR/build/config_m2"
+source "$REPO_USER_DIR/build/config_env_m2"
 
 export PATH="$REPO_USER_DIR/bin":/usr/local/bin:$PATH
 

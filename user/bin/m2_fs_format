@@ -4,6 +4,10 @@
 #
 #  If given a device argument that is used.  Otherwise LUS_M2_EFI_NODE and LUS_FS_NODE are used.
 #
+# After Fedora automounts a device plugged in, mountpoint still says that it is not mounted, but other commands act like
+# it is mounted. I tested this twice because it is so surprising.  What a mess, hence the extra umount command after the
+# mountpoint test.
+
 
 err0=false
 if ! (return 0 2>/dev/null); then
@@ -34,6 +38,22 @@ if [[ ! -z "$1" ]];then
   echo setting LUS_M2_EFI_NODE to: $LUS_M2_EFI_NODE
   echo setting LUS_M2_SWAP_NODE to: $LUS_M2_SWAP_NODE
   echo setting LUS_M2_FS_NODE to: $LUS_M2_FS_NODE
+fi
+
+err=false
+if mountpoint -q $LUS_M2_FS_NODE;then
+  echo LUS_M2_FS_NODE, $LUS_M2_FS_NODE, is mounted
+  err=true
+fi
+umount $LUS_M2_FS_NODE # note comment in header
+if mountpoint -q $LUS_M2_EFI_NODE;then
+  echo LUS_M2_EFI_NODE, $LUS_M2_EFI_NODE, is mounted
+  err=true
+fi
+umount $LUS_M2_EFI_NODE # note comment in header
+if $err;then
+  echo no formatting done
+  exit 1
 fi
 
 mkfs.ext4 $LUS_M2_FS_NODE
@@ -90,10 +110,6 @@ export LUS_M2_EFI_UUID=$LUS_M2_EFI_UUID
 export LUS_M2_SWAP_PARTUUID=$LUS_M2_SWAP_PARTUUID
 export LUS_M2_FS_UUID=$LUS_M2_FS_UUID
 EOF
-
-
-
-
 
 return 0
    
