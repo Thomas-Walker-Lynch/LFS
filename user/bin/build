@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# still doing this manually
-# env_m1 env_m1_root m2fs_mount && m2fs_wipe
+source frame-initialize
 
-env_m1 frame book
+frame env_m1 env_m1_root m2_fs_unmount
+frame env_m1 env_m1_root m2_fs_format
+frame env_m1 env_m1_root m2_fs_mount
+
+frame env_m1 book
 

@@ -21,8 +21,6 @@ if [[ -z "$script" ]]; then
   script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/lib/bashrc_lfs
 fi
 
-source frame-initialize
-
 env --ignore-environment \
   HOME="$HOME"\
   HOSTNAME="$HOSTNAME"\

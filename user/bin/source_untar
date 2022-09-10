@@ -8,19 +8,19 @@ if [ -z "$source_stem" ]; then
   exit 1
 fi
 
-(return 0 2>/dev/null) && sourced=1 || sourced=0
-test $sourced -eq 0 && echo $(basename "$0") "must be sourced" && exit 2
+(return 0 2>/dev/null) && sourced=true || sourced=false
+! sourced && echo $(basename "$0") "must be sourced" && exit 2
 
-export INCANTATIO_PATH="$(ls -d "$REPO_USER_DIR"/build/upstream/source/"$source_stem"-*.tar* | head -1)"
-export INCANTATIO="$(basename "$INCANTATIO_PATH")"
-export SOURCE_DIR="${INCANTATIO%\.tar*}"
-# echo $(basename "$0") $INCANTATIO_PATH $INCANTATIO $SOURCE_DIR
+export LUS_UPSTREAM_SOURCE_PATH="$(ls -d "$REPO_USER_DIR"/build/upstream/source/"$source_stem"-*.tar* | head -1)"
+export SOURCE="$(basename "$LUS_UPSTREAM_SOURCE_PATH")"
+export SOURCE_DIR="${SOURCE%\.tar*}"
+echo $(basename "$0") $LUS_UPSTREAM_SOURCE_PATH $SOURCE_DIR $SOURCE
 
 cd "$LUS_M2_FS_MP"
 ! test -d source && mkdir source
 cd source
 
-tar -xf "$INCANTATIO_PATH"
+tar -xf "$LUS_UPSTREAM_SOURCE_PATH"
 cd "$SOURCE_DIR"
 pwd
 

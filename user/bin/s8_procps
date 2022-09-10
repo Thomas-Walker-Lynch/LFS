@@ -5,9 +5,9 @@ if [[ "$LUS_ENV" != "m2" ]];then
   exit 1
 fi
 
-./configure --prefix=/usr                      \
-            --docdir=/usr/share/doc/"$INCANTATIO" \
-            --disable-static                   \
+./configure --prefix=/usr                     \
+            --docdir=/usr/share/doc/"$SOURCE" \
+            --disable-static                  \
             --disable-kill
 
 make
