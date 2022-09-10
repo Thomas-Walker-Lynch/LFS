@@ -1,0 +1,5 @@
+#!/bin/bash
+# print environment
+
+
+printenv | grep "^$1" | sort

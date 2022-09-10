@@ -5,28 +5,32 @@
 #  If given a device argument that is used.  Otherwise LFS_M2_EFI_NODE and LFS_FS_NODE are used.
 #
 
+err_0=0
 if ! (return 0 2>/dev/null); then
   echo $(basename "$0") must be sourced, not executed, so that it may update LFS_M2_EFI_UUID and LFS_M2_FS_UUID.
-  exit 1
+  err_0=1
 fi
 
+err_1=0
 if [[ "$LFS_ENV" != "m1_root" ]];then
   echo $(basename "$0") must be run in env_m1_root
-  return 1
+  err_1=1
 fi
+
+test $err_0 -eq 1 && exit 1
+test $err_1 -eq 1 && return 1
 
 if [[ ! -z "$1" ]];then
   ! test -z "$LFS_M2_EFI_NODE" && umount $LFS_M2_EFI_NODE
   ! test -z "$LFS_M2_FS_NODE" && umount $LFS_M2_FS_NODE
 
-  LFS_DEVICE_NODE=$1
+  LFS_M2_DEVICE_NODE=$1
   LFS_M2_EFI_NODE="$1"1
   LFS_M2FS_NODE="$1"3
-  echo LFS_DEVICE_NODE passed in as: $LFS_DEVICE_NODE
+  echo LFS_M2_DEVICE_NODE passed in as: $LFS_M2_DEVICE_NODE
   echo setting LFS_M2_EFI_NODE to: $LFS_M2_EFI_NODE
   echo setting LFS_M2_FS_NODE to: $LFS_M2_FS_NODE
 fi
-
 
 mkfs.ext4 $LFS_M2_FS_NODE
 err_mkm2fs=$?

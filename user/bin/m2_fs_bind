@@ -24,7 +24,7 @@ mkdir -p "$LFS_M2_FS_MP/run"
 mount -vt tmpfs tmpfs "$LFS_M2_FS_MP/run"
 
 # bind our sources directory
-repo_dir_target="$LFS_M2_FS$LFSM2_REPO_DIR"
+repo_dir_target="$LFS_M2_FS$LFS_M2_REPO_DIR"
 mkdir -p "$repo_dir_target"
 mount -v --bind "$REPO_DIR" "$repo_dir_target"
 

@@ -19,7 +19,7 @@ fi
 
 lfs_m2_fs_node=$(blkid --uuid $LFS_M2_FS_UUID)
 device=$(sed -e 's/\([a-z]*\).*/\1/g' <<<  $lfs_m2_fs_node)
-grub-install --target=i386-pc $LFS_M2_DEVICE
+grub-install --target=i386-pc $LFS_M2_DEVICE_NODE
 
 # from section 10.4.4
 cat > /boot/grub/grub.cfg << "EOF"
