@@ -15,14 +15,16 @@
 #  bash resets PS1 unless called with a -i option, so setting driectly here in case someone calls bash itself as $1
 #
 script="$@"
-if [[ -z "$script" ]]; then
-  script="/bin/bash --norc"
-fi
 
 if [[ "$LUS_ENV" != "m1" ]];then
   echo $(basename "$0") "must be run in env_m1"
   exit 1
 fi
+
+if [[ -z "$script" ]]; then
+  script=/bin/bash\ --init-file\ "$REPO_USER_DIR"/lib/bashrc_lfs
+fi
+
 LUS_ENV="m1_root"
 
 # sudo -E and env without the '-i' passes most environment variables to $script
