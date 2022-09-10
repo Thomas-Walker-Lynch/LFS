@@ -7,9 +7,9 @@ if [[ "$LFS_ENV" != "m1_root" ]];then
 fi
 
 err0=0
-mountpoint -q "$LFS_M2_EFI"
+mountpoint -q "$LFS_M2_EFI_MP"
 if test $? -eq 0 ;then
-  umount -v "$LFS_M2_EFI" && rmdir "$LFS_M2_EFI"
+  umount -v "$LFS_M2_EFI" && rmdir "$LFS_M2_EFI_MP"
   err0=$?
 fi
 

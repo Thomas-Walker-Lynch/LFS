@@ -3,9 +3,11 @@
 # this is sourced into the environment
 # perhpas add a flag for installing documenation or not
 
-# where to mount the m2 target device
-export LFS_M2_FS="/mnt/m2fs"
-export LFS_M2_EFI="$LFS_M2_FS/boot/efi"
+# m2 filesystem mount point
+export LFS_M2_FS_MP="/mnt/m2_fs"
+
+# m2 EFI partition mount point
+export LFS_M2_EFI_MP="$LFS_M2_FS/boot/efi"
 
 # where the repo will be mounted relative to the root of the m2 fs
 export LFSM2_REPO_DIR="/mnt/$REPO"
