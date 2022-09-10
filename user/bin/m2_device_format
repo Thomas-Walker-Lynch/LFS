@@ -1,6 +1,9 @@
 #!/bin/bash
-# The UUID of the partition changes after formatting, but its device node will be the same.  Hence I use the device node to find the new UUID.
-# This script must be sourced because it changes the UUID envrionment variables.  Those are needed when making fstab and the grub configuration.
+#
+#  This script must be sourced, because it sets UUID an possibly NODE environment variables.
+#
+#  If given a device argument that is used.  Otherwise LFS_M2_EFI_NODE and LFS_FS_NODE are used.
+#
 
 if ! (return 0 2>/dev/null); then
   echo $(basename "$0") must be sourced, not executed, so that it may update LFS_M2_EFI_UUID and LFS_M2_FS_UUID.
@@ -12,32 +15,33 @@ if [[ "$LFS_ENV" != "m1_root" ]];then
   return 1
 fi
 
-m2fs_unmount
-if test $? -ne 0; then
-  echo m2fs_unmount failed, no format done
-  return 1
+if [[ ! -z "$1" ]];then
+  ! test -z "$LFS_M2_EFI_NODE" && umount $LFS_M2_EFI_NODE
+  ! test -z "$LFS_M2_FS_NODE" && umount $LFS_M2_FS_NODE
+
+  LFS_DEVICE_NODE=$1
+  LFS_M2_EFI_NODE="$1"1
+  LFS_M2FS_NODE="$1"3
+  echo LFS_DEVICE_NODE passed in as: $LFS_DEVICE_NODE
+  echo setting LFS_M2_EFI_NODE to: $LFS_M2_EFI_NODE
+  echo setting LFS_M2_FS_NODE to: $LFS_M2_FS_NODE
 fi
 
-lfs_m2_efi_node=$(blkid --uuid $LFS_M2_EFI_UUID)
-lfs_m2_fs_node=$(blkid --uuid $LFS_M2_FS_UUID)
 
-echo found lfs_m2_efi_node: $lfs_m2_efi_node
-echo found lfs_m2_fs_node: $lfs_m2_fs_node
-
-mkfs.ext4 $lfs_m2_fs_node
+mkfs.ext4 $LFS_M2_FS_NODE
 err_mkm2fs=$?
 
-mkfs.msdos $lfs_m2_efi_node
+mkfs.msdos $LFS_M2_EFI_NODE
 err_mkfsefi=$?
 
-# mount $lfs_m2_fs_node then initialize its selinx labels, unmount it
+# mount $LFS_M2_FS_NODE then initialize its selinx labels, unmount it
 err_test_umount=0
 err_sel_label=0
 if $LFS_M2_SELINUX && test $err_mkm2fs -eq 0 && test $err_mkfsefi -eq 0;then
   pushd /mnt >& /dev/null
   if tmp_mnt=$(mktemp -d --tmpdir=/mnt);then
-    if mount $lfs_m2_fs_node $tmp_mnt >& /dev/null && restorecon -R $tmp_mnt;then
-      umount $lfs_m2_fs_node
+    if mount $LFS_M2_FS_NODE $tmp_mnt >& /dev/null && restorecon -R $tmp_mnt;then
+      umount $LFS_M2_FS_NODE
       err_test_umount=$?
     fi
     rmdir "$tmp_mnt"
@@ -48,11 +52,11 @@ if $LFS_M2_SELINUX && test $err_mkm2fs -eq 0 && test $err_mkfsefi -eq 0;then
 fi
 
 if test $err_mkm2fs -ne 0;then
-  echo mkfs.ext4 lfs_m2_fs_node, $lfs_m2_fs_node, failed
+  echo mkfs.ext4 LFS_M2_FS_NODE, $LFS_M2_FS_NODE, failed
   return 1
 fi
 if test $err_mkfsefi -ne 0;then
-  echo mkfs.msdos lfs_m2_efi_node, $lfs_m2_efi_node, failed
+  echo mkfs.msdos LFS_M2_EFI_NODE, $LFS_M2_EFI_NODE, failed
   return 2
 fi
 if test $err_sel_label -ne 0;then
@@ -64,8 +68,9 @@ if test $err_test_umount -ne 0;then
   return 4
 fi
 
-export LFS_M2_EFI_UUID=$(blkid -s UUID $lfs_m2_efi_node | awk '{print $2}' | awk -F  '"' '{print $2}' )
-export LFS_M2_FS_UUID=$(blkid -s UUID $lfs_m2_fs_node | awk '{print $2}' | awk -F  '"' '{print $2}' )
+# updated UUID numbers for the environment
+LFS_M2_EFI_UUID=$(blkid -s UUID $LFS_M2_EFI_NODE | awk '{print $2}' | awk -F  '"' '{print $2}' )
+LFS_M2_FS_UUID=$(blkid -s UUID $LFS_M2_FS_NODE | awk '{print $2}' | awk -F  '"' '{print $2}' )
 
 echo new LFS_M2_EFI_UUID: $LFS_M2_EFI_UUID
 echo new LFS_M2_FS_UUID: $LFS_M2_FS_UUID

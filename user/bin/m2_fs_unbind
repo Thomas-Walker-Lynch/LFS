@@ -1,5 +1,5 @@
 #!/bin/bash
-# just goes backwards from m2fs_bind
+# just goes backwards from m2_fs_bind
 
 if [[ "$LFS_ENV" != "m1_root" ]];then
  echo $(basename "$0") "must be run from env_m1_root"

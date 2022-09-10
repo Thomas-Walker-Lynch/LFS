@@ -16,6 +16,9 @@ fi
 
 # from section 10.4.3
 # looks like a small error in the book, grub-install assumed efi. Legacy boot requires a specific target
+
+lfs_m2_fs_node=$(blkid --uuid $LFS_M2_FS_UUID)
+device=$(sed -e 's/\([a-z]*\).*/\1/g' <<<  $lfs_m2_fs_node)
 grub-install --target=i386-pc $LFS_M2_DEVICE
 
 # from section 10.4.4

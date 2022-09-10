@@ -1,0 +1,12 @@
+
+LFS Linux From Scratch
+LFS Linux File System
+
+This is an unfortunate collision because LFS is a partition type, 8300, and we use EFI and LFS
+to distinguish between the EFI and LFS partitions.
+
+I will change the namespace for environment variables to LUSTUCRU_.  That should not
+collide with anything else.
+
+
+

@@ -14,7 +14,7 @@ mkdir -p $HOME
 
 export PATH=/usr/bin:/usr/sbin
 
-# view of repo in m2 after being mounted by m2fs_bind
+# view of repo in m2 after being mounted by m2_fs_bind
 export REPO_HOME="/mnt"
 export REPO_DIR="$REPO_HOME/$REPO"
 export REPO_USER_DIR="$REPO_DIR/user"

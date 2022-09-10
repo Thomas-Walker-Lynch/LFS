@@ -1,0 +1,17 @@
+#!/bin/bash
+# bash without -i resets PS1
+# except for the log file variables this comes from section 4.4
+#set -x
+
+script="$@"
+
+export LFS_M2_EFI_NODE=$(blkid --uuid $LFS_M2_EFI_UUID)
+export LFS_M2_FS_NODE=$(blkid --uuid $LFS_M2_FS_UUID)
+export LFS_DEVICE_NODE=$(sed -e 's/\([a-zA-Z/]*\).*/\1/' <<< $LFS_M2_EFI_NODE )
+
+echo found LFS_M2_EFI_NODE: $LFS_M2_EFI_NODE
+echo found LFS_M2_FS_NODE: $LFS_M2_FS_NODE
+echo found LFS_DEVICE_NODE: $LFS_DEVICE_NODE
+
+$script
+#set +x

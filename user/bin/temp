@@ -1,7 +1,4 @@
-(return 0 2>/dev/null) && echo "sourced" || echo "executed"
-
-if ! (return 0 2>/dev/null); then
-  echo "executed"
-else
-  echo "sourced"
-fi
+sed -i -e 's/m2_fs_bind/m2_fs_bind/g'  *
+sed -i -e 's/m2_fs_mount/m2_fs_mount/g' *
+sed -i -e 's/m2_fs_unbind/m2_fs_unbind/g' *
+sed -i -e 's/m2_fs_unmount/m2_fs_unmount/g' * 

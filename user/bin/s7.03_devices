@@ -10,7 +10,7 @@ mkdir -pv $LFS_M2_FS/{dev,proc,sys,run}
 mknod -m 600 $LFS_M2_FS/dev/console c 5 1
 mknod -m 666 $LFS_M2_FS/dev/null c 1 3
 
-m2fs_bind
+m2_fs_bind
 
 if test -h $LFS_M2_FS/dev/shm; then
    mkdir -pv $LFS_M2_FS/$(readlink $LFS_M2_FS/dev/shm)

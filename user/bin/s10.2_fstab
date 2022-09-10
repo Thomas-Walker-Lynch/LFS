@@ -13,8 +13,8 @@ cat > /etc/fstab << EOF
 # Will have to partition target media to make these device names
 # Correct, Or will have to come back here and change the device names.
 
-$LFS_M2_DEVICE_FS       /            ext4    defaults            1     1
-$LFS_M2_DEVICE_SWAP     swap         swap     pri=1               0     0
+UUID=$LFS_M2_FS_UUID       /            ext4    defaults            1     1
+UUID=$LFS_M2_SWAP_PARTUUID     swap         swap     pri=1               0     0
 proc           /proc        proc     nosuid,noexec,nodev 0     0
 sysfs          /sys         sysfs    nosuid,noexec,nodev 0     0
 devpts         /dev/pts     devpts   gid=5,mode=620      0     0
