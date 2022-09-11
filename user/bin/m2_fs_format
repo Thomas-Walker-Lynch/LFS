@@ -1,12 +1,8 @@
 #!/bin/bash
 #
-#  This script must be sourced, because it sets UUID an possibly NODE environment variables.
+# This script must be sourced, because it sets UUID an possibly NODE environment variables.
 #
-#  If given a device argument that is used.  Otherwise LUS_M2_EFI_NODE and LUS_FS_NODE are used.
-#
-# After F36 automounts a device plugged in, mountpoint still says that it is not mounted, but other commands act like
-# it is mounted. I tested this twice because it is so surprising.  What a mess, hence the extra umount command after the
-# mountpoint test.
+# If given a device argument that is used.  Otherwise LUS_M2_EFI_NODE and LUS_FS_NODE are used.
 #
 # Generally not a good idea to rely upon communicationt through the file system, better to
 # source this and let it update the environment.
@@ -47,7 +43,7 @@ if ! m2_fs_unmount; then
 fi
 
 if test -z "$LUS_M2_FS_NODE" || test -z "$LUS_M2_EFI_NODE";then
-  echo $(basename "$0") devices not specified
+  echo "expected EFI_NODE and FS_NODE environment variables or a device parameter: $(basename "$0") <device>" 
   exit 1
 fi
 
