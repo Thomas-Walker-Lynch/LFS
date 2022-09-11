@@ -5,9 +5,10 @@
 # being mounted in the first place; though it does return a descriptive message on stderr.
 # So we do not want to rmdir if there is a message on stderr.
 #
-mp="$1"
+node=$1
+mp="$2" 
 
-mess0=$(umount "$mp" 2>&1)
+mess0=$(umount $node 2>&1)
 mess1=$(grep -e "no mount point specified" -e "not mounted" <<< $mess0)
 
 if [ -z "$mess0" ];then

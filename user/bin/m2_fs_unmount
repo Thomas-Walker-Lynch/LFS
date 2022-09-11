@@ -12,8 +12,8 @@ if [[ "$LUS_ENV" != "m1_root" ]];then
 fi
 
 err=false
-m2_fs_unmount-1 "$LUS_M2_EFI_MP" || err=true
-m2_fs_unmount-1 "$LUS_M2_FS_MP"  || err=true
+m2_fs_unmount-1 "$LUS_M2_EFI_NODE" "$LUS_M2_EFI_MP" || err=true
+m2_fs_unmount-1 "$LUS_M2_FS_NODE" "$LUS_M2_FS_MP"  || err=true
 
 $err && exit 1
 exit 0
