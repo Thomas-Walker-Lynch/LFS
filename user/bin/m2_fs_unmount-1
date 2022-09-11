@@ -10,11 +10,13 @@
 node=$1
 mp="$2" 
 
+test -z "$1" && exit 0
+
 mess0=$(umount $node 2>&1)
 mess1=$(grep -e "no mount point specified" -e "not mounted" <<< $mess0)
 
 if [ -z "$mess0" ];then
-  rmdir "$mp"
+  ! test -z "$mp" && rmdir "$mp"
   exit 0
 fi
 

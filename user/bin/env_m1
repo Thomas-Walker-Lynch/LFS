@@ -40,6 +40,7 @@ env --ignore-environment \
   PROJECT="$PROJECT:env_m1"\
   LUS_ENV="m1"\
   LUS_LOG="$LUS_LOG"\
+  LUS_USER="$LUS_USER"\
   "$REPO_USER_DIR"/bin/env_m1-1 $script
   
 

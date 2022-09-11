@@ -1,6 +1,15 @@
 #!/bin/bash
-# source this because it exports the LUS_LOG
-# careful, $REPO_USER_DIR may be different in m1fs and m2fs, which is why LUS_LOG is not a path
+#
+# source this because it exports the LUS_LOG.  LUS_LOG is the only global variable set here.
+#
+# This may be run at any time, as LUS_LOG is passed through to all subshells.  It may even be
+# run in the shell before running env_m1. 
+#
+# careful, $REPO_USER_DIR will be different in env_m1 and env_m2, which is why LUS_LOG is
+# relative to $REPO_USER_DIR/build/log.
+#
+# If build/log does not exist, this script will create it.
+
 
 if [[ -z "REPO_USER_DIR" ]];then
   echo "$(basename "$0") no \$REPO_USER_DIR" > /dev/stderr

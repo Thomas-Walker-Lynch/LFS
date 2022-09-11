@@ -66,7 +66,7 @@ make defconfig
 make
 make modules_install
 
-# the bind step is done the m2_fs_bind script
+# the bind step is done by the m2_fs_bind script
 # if there is a separate /boot directory
 # mount --bind /boot /mnt/lfs/boot
 

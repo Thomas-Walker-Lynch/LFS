@@ -11,19 +11,18 @@
 # Generally not a good idea to rely upon communicationt through the file system, better to
 # source this and let it update the environment.
 
-sourced=true
+return_command=return
 if ! (return 0 2>/dev/null); then
   echo consider sourcing $(basename "$0") so that it can modify the current evironment
-  sourced=false
+  return_command=exit
 fi
 
 err=false
 if [[ "$LUS_ENV" != "m1_root" ]];then
-  echo must be run in env_m1_root
+  echo $(basename "$0") must be run in env_m1_root
   err=true
 fi
-
-$err && ($sourced && return 1 || exit 1)
+$err && $return_command 1
 
 derived_from_device=false
 if [[ ! -z "$1" ]];then
@@ -43,8 +42,13 @@ if [[ ! -z "$1" ]];then
 fi
 
 if ! m2_fs_unmount; then
-  echo no formatting done due to mounted partitions
-  $err && ($sourced && return 1 || exit 1)
+  echo no formatting done due to m2_fs_unmount fail
+  $return_command 1
+fi
+
+if test -z "$LUS_M2_FS_NODE" || test -z "$LUS_M2_EFI_NODE";then
+  echo $(basename "$0") devices not specified
+  exit 1
 fi
 
 mkfs.ext4 $LUS_M2_FS_NODE
@@ -87,7 +91,7 @@ if test $err_test_umount -ne 0;then
   echo umount of $tmp_mnt failed
   err=true
 fi
-$err && ($sourced && return 1 || exit 1)
+$err && $return_command 1
 
 LUS_M2_EFI_UUID=$(blkid -s UUID $LUS_M2_EFI_NODE | awk '{print $2}' | awk -F  '"' '{print $2}' )
 LUS_M2_SWAP_PARTUUID=$(blkid -s PARTUUID $LUS_M2_SWAP_NODE | awk '{print $2}' | awk -F  '"' '{print $2}' )
@@ -104,5 +108,5 @@ export LUS_M2_SWAP_PARTUUID=$LUS_M2_SWAP_PARTUUID
 export LUS_M2_FS_UUID=$LUS_M2_FS_UUID
 EOF
 
-$sourced && return 0 || exit 0
+$return_command 0
    

@@ -5,6 +5,7 @@
 # being mounted in the first place; though it does return a descriptive message on stderr.
 # So we do not want to rmdir if there is a message on stderr.
 #
+# set -x
 
 if [[ "$LUS_ENV" != "m1_root" ]];then
   echo $(basename "$0") "must be run in env_m1_root"
@@ -12,8 +13,12 @@ if [[ "$LUS_ENV" != "m1_root" ]];then
 fi
 
 err=false
-m2_fs_unmount-1 "$LUS_M2_EFI_NODE" "$LUS_M2_EFI_MP" || err=true
-m2_fs_unmount-1 "$LUS_M2_FS_NODE" "$LUS_M2_FS_MP"  || err=true
+if [[ ! -z "$LUS_M2_EFI_NODE" ]];then
+  m2_fs_unmount-1 "$LUS_M2_EFI_NODE" "$LUS_M2_EFI_MP" || err=true
+fi
+if [[ ! -z "$LUS_M2_FS_NODE" ]];then
+  m2_fs_unmount-1 "$LUS_M2_FS_NODE" "$LUS_M2_FS_MP"  || err=true
+fi
 
 $err && exit 1
 exit 0

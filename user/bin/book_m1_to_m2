@@ -8,9 +8,8 @@ fi
 frame s7.02_m2_chown_root
 frame s7.03_devices
 
-mkdir -p "$LUS_M2_FS_MP"/usr/local/bin
-
 # not from the book, but we need the time stamp
-cp "$REPO_USER_DIR"/bin/Z  "$LUS_M2_FS_MP"/usr/local/bin
+mkdir -p "$LUS_M2_FS_MP"/usr/local/bin
+cp -v "$REPO_USER_DIR"/bin/Z  "$LUS_M2_FS_MP"/usr/local/bin
 
 

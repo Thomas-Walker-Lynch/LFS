@@ -27,7 +27,7 @@ echo "make sure secure boot is turned off in the bios settings before booting th
 # section Mount the EFI Variable File System
 # m2_fs_bind also does this, but m2_fs_bind will not have run as part of a normal build,
 # we only run that if we come back later and need to mount an existing build.  I wonder
-# if m2_fs_bind will mess up if we haven't build efivars yet.
+# if m2_fs_bind will mess up if we haven't already build efivars.
 #
 mountpoint /sys/firmware/efi/efivars || mount -v -t efivarfs efivarfs /sys/firmware/efi/efivars
 

@@ -27,7 +27,7 @@ fi
 checkpoint_dir="$REPO_USER_DIR/build/checkpoint"
 if [[ ! -d "$checkpoint_dir" ]];then
   mkdir -p "$checkpoint_dir" || { echo $(basename "$0") "can't make checkpoint_dir" > /dev/stderr ; exit 2 ; }
-  sudo chown lfs:lfs "$checkpoint_dir"
+  sudo chown "$LUS_USER":"$LUS_USER" "$checkpoint_dir"
 fi
 stamp="$(Z)"
 export checkpoint_path=$(mktemp --tmpdir="$checkpoint_dir" -t "$stamp"'-XXXXXXXXXX' --suffix '.tar.xz)
@@ -37,6 +37,6 @@ sudo umount -v "$LUS_M2_FS_MP"/{sys,proc,run,dev} || true
 
 checkpoint_file=$(mktemp --tmpdir="$checkpoint_dir" "$checkpoint.XXXXX.tgz")
 sudo tar -cJpf $checkpoint_file "$LUS_M2_FS_MP"
-sudo chown lfs:lfs $checkpoint_file
+sudo chown "$LUS_USER":"$LUS_USER" $checkpoint_file
 
 set +x
