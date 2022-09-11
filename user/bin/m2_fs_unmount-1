@@ -5,25 +5,19 @@
 # being mounted in the first place; though it does return a descriptive message on stderr.
 # So we do not want to rmdir if there is a message on stderr.
 #
-
 mp="$1"
 
 mess0=$(umount "$mp" 2>&1)
-mess1=$(grep -v -e "no mount point specified" -e "not mounted" <<< $mess0)
-mess2=$(grep -e "no mount point specified" -e "not mounted" <<< $mess0)
+mess1=$(grep -e "no mount point specified" -e "not mounted" <<< $mess0)
 
-test -z $mess1 && (
+if [ -z "$mess0" ];then
   rmdir "$mp"
-  return 1
-)
+  exit 0
+fi
 
-! test -z $mess2 && (
-  return 1
-)
+if [ ! -z "$mess1" ];then
+  exit 0
+fi
 
-return 0
-
-
-
-
-
+echo $mess0
+exit 1

@@ -11,11 +11,12 @@ if [[ "$LUS_ENV" != "m1_root" ]];then
   exit 1
 fi
 
-err=0
-source m2_fs_unmount-1 "$LUS_M2_EFI_MP" || err=1
-source m2_fs_unmount-1 "$LUS_M2_FS_MP" || err=2
+err=false
+m2_fs_unmount-1 "$LUS_M2_EFI_MP" || err=true
+m2_fs_unmount-1 "$LUS_M2_FS_MP"  || err=true
 
-return $err
+$err && exit 1
+exit 0
 
 
 
