@@ -6,16 +6,23 @@
 # So we do not want to rmdir if there is a message on stderr.
 #
 
-if [[ "$LUS_ENV" != "m1_root" ]];then
-  echo $(basename "$0") "must be run in env_m1_root"
-  exit 1
-fi
+mp="$1"
 
-err=0
-source m2_fs_unmount-1 "$LUS_M2_EFI_MP" || err=1
-source m2_fs_unmount-1 "$LUS_M2_FS_MP" || err=2
+mess0=$(umount "$mp" 2>&1)
+mess1=$(grep -v -e "no mount point specified" -e "not mounted" <<< $mess0)
+mess2=$(grep -e "no mount point specified" -e "not mounted" <<< $mess0)
 
-return $err
+test -z $mess1 && (
+  rmdir "$mp"
+  return 1
+)
+
+! test -z $mess2 && (
+  return 1
+)
+
+return 0
+
 
 
 
