@@ -5,6 +5,8 @@
 # being mounted in the first place; though it does return a descriptive message on stderr.
 # So we do not want to rmdir if there is a message on stderr.
 #
+# set -x
+
 node=$1
 mp="$2" 
 

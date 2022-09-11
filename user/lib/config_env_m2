@@ -3,7 +3,7 @@
 # this is sourced into the environment
 # perhpas add a flag for installing documenation or not
 
-export LUS_M2_FS="/"
+export LUS_M2_FS_MP="/"
 
 
 
