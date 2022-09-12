@@ -1,4 +1,15 @@
 
+rfc 2911
+
+camel case, snake case
+
+camel case can not exist for all caps variables, which is a convention going way back for
+globals in C and unix
+
+all caps for exported variables, all smalls for locals, snake case - prevents conflicts
+with the environment inherited from the parent, as we never export lower case variable names.
+
+
 $ returns value
 
 no space before or after the equal when assigning a value
@@ -26,8 +37,6 @@ assignment has a return code of zero if no command follows
 
 export to make available to children
 
-all caps for exported variables, all smalls for locals, snake case - prevents conflicts
-with the environment inherited from the parent, as we never export lower case variable names.
 
 -
 helper scripts
@@ -42,3 +51,10 @@ or pipe with variable set to true or false
 return code of script is the return code of the last command called in the script,
 or the value of exit for executed scripts or the value of return for sourced scripts.  If when
 in an interactive shell you source a script with exit, and it will exit your shell.
+
+The command for unmount is umount.
+A device may be mounted in multiple places, umount by mp affects the specified mp mount, umount
+by device unmounts all.  
+
+prefix of variable name may be interpreted as a namespace for a number of variables.  Do not use the prefix itself as a
+variable name or grep and sed will never be able find or change it.

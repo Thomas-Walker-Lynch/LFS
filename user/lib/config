@@ -1,12 +1,13 @@
 #!/bin/bash
+# set -x
+
+export LUS_USER="$(whoami)"
+
 # build configuration
 # this is sourced into the environment
 # perhpas add a flag for installing documenation or not
 
 export MAKEFLAGS="-j12" 
-
-# put true here if the build system has selinux
-export LUS_M1_SELINUX=true
 
 # currently the scripts just build into the $REPO_DIR/user/build directory, but in the near
 # future we will be able to set this variable
@@ -17,7 +18,9 @@ export LUS_BUILD_DIR="$REPO_DIR/user/build"
 export LUS_BOOT_STYLE=UEFI
 
 # set the M2 partition UUID numbers
-source "$REPO_USER_DIR"/build/config_m2_UUID
+fuuid="$REPO_USER_DIR"/build/config_m2_UUID
+test -f "$fuuid" && source "$fuuid"
+
 
 
 
