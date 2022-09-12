@@ -54,7 +54,8 @@ in an interactive shell you source a script with exit, and it will exit your she
 
 The command for unmount is umount.
 A device may be mounted in multiple places, umount by mp affects the specified mp mount, umount
-by device unmounts all.  
+by device unmounts all.  It is important to umount the devices by node name at the beginning in
+case the build system has automouned them, or a mount was forgotten about.
 
 prefix of variable name may be interpreted as a namespace for a number of variables.  Do not use the prefix itself as a
 variable name or grep and sed will never be able find or change it.

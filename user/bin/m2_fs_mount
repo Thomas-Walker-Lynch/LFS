@@ -8,9 +8,9 @@ fi
 
 good=false
 mp="$LUS_M2_FS_MP"
-m2_fs_mount-1 "$LUS_M2_FS_NODE" "$mp" "LUS_M2_FS"  && good=true
-good && ! chmod ugo+rwxt "$mp" && echo "Did mount, but could not adjust permissions of $prefix_mp, $mp, afterward."
+m2_fs_mount-1 LUS_M2_FS_NODE LUS_M2_FS_MP && good=true
+$good && ! chmod ugo+rwxt "$mp" && echo "$LUS_M2_FS_NODE mounted on $mp but could not chmod ugo+rwxt $mp"
 
-m2_fs_mount-1 "$LUS_M2_EFI_NODE" "$LUS_M2_EFI_MP" "LUS_M2_EFI"
+m2_fs_mount-1 LUS_M2_EFI_NODE LUS_M2_EFI_MP
 
 
