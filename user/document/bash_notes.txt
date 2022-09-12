@@ -1,0 +1,44 @@
+
+$ returns value
+
+no space before or after the equal when assigning a value
+
+single quotes no variable expansion
+double quotes has variable expansion
+
+    > a=3
+    > echo $a
+    3
+
+    > echo '$a' 
+    $a
+
+    > echo "$a" 
+    3
+
+quotes needed on variables for:
+ 1. embedded space characters
+ 2. variable is a place holder, such as in an argument list or -z test.
+
+
+assignment may be done before calling a command and it affects the environment of the command
+assignment has a return code of zero if no command follows
+
+export to make available to children
+
+all caps for exported variables, all smalls for locals, snake case - prevents conflicts
+with the environment inherited from the parent, as we never export lower case variable names.
+
+-
+helper scripts
+sourced helper scripts
+chained helper scripts
+
+
+true and false are commands with error code returns
+test return_code -eq value  ; gets to be tedious
+or pipe with variable set to true or false
+
+return code of script is the return code of the last command called in the script,
+or the value of exit for executed scripts or the value of return for sourced scripts.  If when
+in an interactive shell you source a script with exit, and it will exit your shell.

@@ -1,0 +1,41 @@
+#!/bin/bash
+# If the mount does not work, the build will end up on the local disk.
+
+err=false
+err_executed=false
+if [[ "$LUS_ENV" != "m1_root" ]];then
+  echo $(basename "$0") "must be run in env_m1_root"
+  err=true
+fi
+if ! (return 0 2>/dev/null); then
+  echo $(basename "$0") sets environment variables, so must be sourced rather than executed
+  err_executed=true
+fi
+$err_executed && exit 1
+$err && return 1
+
+err=false
+test -z "$LUS_M2_EFI_UUID" && err=true && echo "no LUS_M2_EFI_UUID specificed in the environment" 
+test -z "$LUS_M2_FS_UUID" && err=true && echo "no LUS_M2_FS_UUID specificed in the environment" 
+$err &&  echo "$(basename "$0") no work done." 
+$err && return 2
+
+err=false
+export LUS_M2_EFI_NODE=$(blkid --uuid $LUS_M2_EFI_UUID)
+export LUS_M2_FS_NODE=$(blkid --uuid $LUS_M2_FS_UUID)
+export LUS_M2_DEVICE_NODE=$(sed -e 's/\([a-zA-Z/]*\).*/\1/' <<< $LUS_M2_EFI_NODE )
+export LUS_M2_SWAP_NODE="$LUS_M2_DEVICE_NODE"2
+
+test -z "$LUS_M2_DEVICE_NODE" && err=true && echo "failed to set LUS_M2_DEVICE_NODE"
+test -z "$LUS_M2_FS_NODE" && err=true && echo "failed to set LUS_M2_FS_NODE"
+test -z "$LUS_M2_EFI_NODE" && err=true && echo "failed to set LUS_M2_EFI_NODE"
+test "$LUS_M2_SWAP_NODE" == "2" && err=true && echo "failed to set LUS_M2_SWAP_NODE"
+
+echo LUS_M2_DEVICE_NODE: $LUS_M2_DEVICE_NODE
+echo LUS_M2_EFI_NODE: $LUS_M2_EFI_NODE
+echo LUS_M2_SWAP_NODE: $LUS_M2_SWAP_NODE
+echo LUS_M2_FS_NODE: $LUS_M2_FS_NODE
+$err && return 3
+
+return 0
+

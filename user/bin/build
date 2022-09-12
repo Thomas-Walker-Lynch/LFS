@@ -1,10 +1,15 @@
 #!/bin/bash
 
+if [[ ! -z "$LUS_ENV" ]];then
+  echo $(basename "$0") "is best run in a fresh shell"
+  exit 1
+fi
+
 source frame-initialize
 
-# frame env_m1 env_m1_root m2_fs_unmount
-# frame env_m1 env_m1_root m2_fs_format
-# frame env_m1 env_m1_root m2_fs_mount
+frame env_m1 env_m1_root m2_fs_unmount
+frame env_m1 env_m1_root m2_fs_format
+frame env_m1 env_m1_root m2_fs_mount
 
 frame env_m1 book
 

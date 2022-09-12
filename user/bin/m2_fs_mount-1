@@ -1,0 +1,34 @@
+#!/bin/bash
+# Mounts an the specified node on the specified mp, optional prefix for error messages.
+# Intended to be called from m2_fs_mount.
+
+set -x
+
+node=$1
+mp=$2
+prefix=$3
+
+prefix_mp="$prefix"_MP
+prefix_node="$prefix"_NODE
+
+err=false
+test -z "$mp" && err=true && echo "No $prefix_mp in the environment."
+test -z "$node" && err=true &&  echo "No $prefix_node in the environment."
+
+if $err; then
+  echo "No mount done."
+  exit 1
+fi   
+
+if ! test -d "$mp" && mkdir "$mp";then
+  echo "Could not find nor create $prefix_mp, so exiting with no mount done."
+  exit 2
+fi
+
+if ! mount $node "$mp";then
+  echo "could not do mount of $prefix_node $node on $mp"
+  exit 1
+fi
+
+exit 0
+
